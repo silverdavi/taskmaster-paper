@@ -30,9 +30,16 @@ LOADINGS_FILE = SCRIPT_DIR / "pca_loadings.csv"
 SERIES_METRICS_FILE = SCRIPT_DIR / "series_metrics.csv"
 CONFIG_FILE = SCRIPT_DIR.parent.parent / "config" / "plot_config.yaml"
 
-def create_pca_plot():
+def create_series_rating_pca_visualization():
     """
-    Create a publication-quality PCA plot using pre-calculated PCA data.
+    Create a publication-quality PCA visualization of Taskmaster series IMDb ratings.
+    
+    This function loads pre-calculated PCA data and generates a plot showing how different
+    Taskmaster series relate to each other based on their rating patterns. It visualizes:
+    1. Series positioned in PC space with colors from the configured colormap
+    2. Feature vectors showing how variables (1-star %, 10-star %, mean, std) influence the space
+    3. Background shading indicating quality of reception
+    4. Annotations with detailed stats for extreme series
     """
     # Load config
     with open(CONFIG_FILE, 'r') as file:
@@ -442,4 +449,4 @@ def create_pca_plot():
     print(f"Explained variance: PC1={explained_variance[0]:.2%}, PC2={explained_variance[1]:.2%}")
 
 if __name__ == "__main__":
-    create_pca_plot() 
+    create_series_rating_pca_visualization() 

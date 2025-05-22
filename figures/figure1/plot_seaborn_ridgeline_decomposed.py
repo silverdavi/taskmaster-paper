@@ -30,9 +30,10 @@ GAUSSIANS_FILE = SCRIPT_DIR / "series_gaussians.csv"  # Optional: if exists
 OUTPUT_FILE = SCRIPT_DIR / "figure1_ridge_output.png"
 CONFIG_FILE = SCRIPT_DIR.parent.parent / "config" / "plot_config.yaml"
 
-def create_ridgeline_plot():
+def create_series_rating_distribution_plot():
     """
-    Create a ridgeline plot using pre-calculated Gaussian parameters.
+    Create a ridgeline plot showing the distribution of IMDb ratings for each Taskmaster series.
+    The plot shows fitted Gaussian curves for ratings 2-9, with special markers for 1-star and 10-star ratings.
     """
     # Load config
     with open(CONFIG_FILE, 'r') as file:
@@ -122,7 +123,7 @@ def create_ridgeline_plot():
     
     # Set up the plot
     ax.set_xlim(x_min - 0.5, x_max + 0.5)
-    y_max = y_step * (n_series + 1)
+    y_max = y_step * (n_series) 
     ax.set_ylim(-1, y_max)
     
     # Create a range of x values for plotting the Gaussian curves
@@ -294,7 +295,6 @@ def create_ridgeline_plot():
                    ha='right', va='center', fontsize=10, color='#555555')
     
     # Set up the axes
-    ax.set_title('IMDb Rating Distributions by Taskmaster Series', fontsize=16, fontweight='bold', pad=20)
     ax.set_xlabel('IMDb Rating', fontsize=14, fontweight='bold', labelpad=10)
     
     # Format x-axis to show only integer ratings
@@ -328,4 +328,4 @@ def create_ridgeline_plot():
     print(f"Ridgeline plot created and saved to {pdf_file} and {png_file}")
 
 if __name__ == "__main__":
-    create_ridgeline_plot() 
+    create_series_rating_distribution_plot() 
