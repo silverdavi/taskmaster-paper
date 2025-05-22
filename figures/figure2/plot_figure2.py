@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Plot Figure 2: Episode Rating Trajectories by Contestant Ranking Patterns
+Plot Figure 2: Episode Rating Trajectories by Position Patterns
 
 This script creates a violin plot visualization showing episode rating distributions
-for different contestant ranking patterns (123, 213, 231, 312) and positions (First, Middle, Last).
+for different series patterns (123, 213, etc.) based on the ratings of first, middle, and last episodes.
 """
 
 import pandas as pd
@@ -128,25 +128,26 @@ def create_violin_plot(episode_df, series_df, stats_df, config):
     )
     
     # Set plot labels and title
-    plt.xlabel('Contestant Ranking Pattern', fontsize=14, fontweight='bold')
+    plt.xlabel('Episode Rating Pattern (First-Middle-Last)', fontsize=14, fontweight='bold')
     plt.ylabel('IMDb Rating', fontsize=14, fontweight='bold')
+    plt.title('Episode Rating Trajectories by Series Pattern', fontsize=16, fontweight='bold')
     
     # Customize legend
     legend_elements = [
-        mpatches.Patch(facecolor=position_colors[0], edgecolor='black', label='First Third'),
-        mpatches.Patch(facecolor=position_colors[1], edgecolor='black', label='Middle Third'),
-        mpatches.Patch(facecolor=position_colors[2], edgecolor='black', label='Last Third')
+        mpatches.Patch(facecolor=position_colors[0], edgecolor='black', label='First Episode'),
+        mpatches.Patch(facecolor=position_colors[1], edgecolor='black', label='Middle Episodes'),
+        mpatches.Patch(facecolor=position_colors[2], edgecolor='black', label='Last Episode')
     ]
     plt.legend(handles=legend_elements, title='Episode Position', fontsize=12)
     
     # Add pattern descriptions as annotations
     pattern_descriptions = {
-        '123': 'Rising: Contestants start\nlow, improve steadily',
-        '213': 'J-shaped: Drop\nthen rebound',
-        '231': 'Middle improvement\nthen decline',
-        '312': 'Improving\nsignificantly at end',
-        '132': 'Rise then\nslight improvement',
-        '321': 'Consistently\nimproving'
+        '123': 'Rising: Ratings\nimprove throughout series',
+        '213': 'J-shaped: Middle episodes\nlower rated than start/end',
+        '231': 'Mid-peak: Middle episodes\nhighest rated',
+        '312': 'Late-dip: Last episode\nlowest rated',
+        '132': 'End-dip: Ratings rise\nthen fall at end',
+        '321': 'Declining: Ratings\ndecrease throughout series'
     }
     
     # Add pattern descriptions above the violins
@@ -199,18 +200,29 @@ def create_violin_plot(episode_df, series_df, stats_df, config):
             p_value = stats_df.loc[stats_df['statistic'] == 'binomial_test_p_value', 'value'].values[0]
             significant = stats_df.loc[stats_df['statistic'] == 'binomial_test_significant', 'value'].values[0]
             
+            # Extract rating difference statistics
+            first_to_last = stats_df.loc[stats_df['statistic'] == 'first_to_last_mean_diff', 'value'].values[0]
+            first_to_last_p = stats_df.loc[stats_df['statistic'] == 'first_to_last_p_value', 'value'].values[0]
+            middle_to_last = stats_df.loc[stats_df['statistic'] == 'middle_to_last_mean_diff', 'value'].values[0]
+            middle_to_last_p = stats_df.loc[stats_df['statistic'] == 'middle_to_last_p_value', 'value'].values[0]
+            
             # Convert values to appropriate types for formatting
             total_series = int(total_series)
             key_patterns_count = int(key_patterns_count)
             key_patterns_pct = float(key_patterns_pct) * 100  # Convert to percentage
             p_value = float(p_value)
             significant = bool(significant)
+            first_to_last = float(first_to_last)
+            first_to_last_p = float(first_to_last_p)
+            middle_to_last = float(middle_to_last)
+            middle_to_last_p = float(middle_to_last_p)
             
             # Create stats text
             stats_text = (
                 f"Statistical Analysis:\n"
-                f"Series with 123 or 213 patterns: {key_patterns_count}/{total_series} ({key_patterns_pct:.1f}%)\n"
-                f"p-value: {p_value:.4f} ({'Significant' if significant else 'Not significant'} at α=0.05)"
+                f"Series with Rising (123) or J-shaped (213) patterns: {key_patterns_count}/{total_series} ({key_patterns_pct:.1f}%)\n"
+                f"Mean rating increase from first to last episode: {first_to_last:.2f} (p={first_to_last_p:.4f})\n"
+                f"Mean rating increase from middle to last episode: {middle_to_last:.2f} (p={middle_to_last_p:.4f})"
             )
             
             # Add stats text to plot
@@ -248,7 +260,7 @@ def create_violin_plot(episode_df, series_df, stats_df, config):
 
 def main():
     """Main plotting function."""
-    print("Creating Figure 2: Episode Rating Trajectories by Contestant Ranking Patterns")
+    print("Creating Figure 2: Episode Rating Trajectories by Position")
     
     # Load config
     config = load_config()
