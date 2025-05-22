@@ -81,15 +81,6 @@ def create_violin_plot(episode_df, series_df, stats_df, config):
         config['colors']['position'].get('last', '#c0392b')      # Deep red
     ]
     
-    # Create a dictionary for pattern colors
-    pattern_colors = {
-        '123': config['colors']['pattern'].get('rising', '#3498db'),      # Blue
-        '213': config['colors']['pattern'].get('j_shaped', '#9b59b6'),    # Purple
-        '321': config['colors']['pattern'].get('improving', '#2ecc71'),   # Green
-    }
-    # Default color for other patterns
-    default_pattern_color = config['colors']['pattern'].get('others', '#95a5a6')  # Gray
-    
     # Filter to only include common patterns (with at least 2 series)
     pattern_counts = series_df['pattern'].value_counts()
     common_patterns = pattern_counts[pattern_counts >= 2].index.tolist()
@@ -150,13 +141,10 @@ def create_violin_plot(episode_df, series_df, stats_df, config):
         '321': 'Declining: Ratings\ndecrease throughout series'
     }
     
-    # Add pattern descriptions above the violins
+    # Add pattern descriptions above the violins - using neutral colors (white background with dark text)
     for i, pattern in enumerate(ax.get_xticklabels()):
         pattern_text = pattern.get_text()
         if pattern_text in pattern_descriptions:
-            # Get color for pattern (use default if not specified)
-            bbox_color = pattern_colors.get(pattern_text, default_pattern_color)
-            
             ax.text(
                 i, 
                 9.5,  # Position above the highest violin
@@ -164,9 +152,9 @@ def create_violin_plot(episode_df, series_df, stats_df, config):
                 ha='center', 
                 va='center',
                 fontsize=10,
-                color='white',
+                color='black',
                 bbox=dict(
-                    facecolor=bbox_color, 
+                    facecolor='white', 
                     alpha=0.9, 
                     boxstyle='round,pad=0.3', 
                     edgecolor='gray'
@@ -225,13 +213,15 @@ def create_violin_plot(episode_df, series_df, stats_df, config):
                 f"Mean rating increase from middle to last episode: {middle_to_last:.2f} (p={middle_to_last_p:.4f})"
             )
             
-            # Add stats text to plot
-            plt.figtext(
-                0.5, 0.01,  # Position at bottom center
+            # Add stats text within the plot rather than at the bottom
+            ax.text(
+                0.5, 0.15,  # Position in normalized axes coordinates (center, near bottom)
                 stats_text,
                 ha='center',
+                va='center',
                 fontsize=10,
-                bbox=dict(facecolor='white', alpha=0.8, boxstyle='round,pad=0.5', edgecolor='gray')
+                transform=ax.transAxes,  # Use axes coordinates
+                bbox=dict(facecolor='white', alpha=0.9, boxstyle='round,pad=0.5', edgecolor='gray')
             )
             
         except Exception as e:
@@ -240,11 +230,11 @@ def create_violin_plot(episode_df, series_df, stats_df, config):
     # Set y-axis limits to ensure all annotations are visible
     plt.ylim(6.0, 9.7)
     
-    # Add gridlines
-    plt.grid(True, linestyle='--', alpha=0.7)
+    # Remove gridlines
+    plt.grid(False)
     
     # Adjust layout
-    plt.tight_layout(rect=[0, 0.05, 1, 1])  # Make room for stats text at bottom
+    plt.tight_layout()
     
     # Save the figure
     output_file_pdf = SCRIPT_DIR / f"figure2_output.pdf"
