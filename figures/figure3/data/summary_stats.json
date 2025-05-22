@@ -1,0 +1,34 @@
+{
+  "total_tasks": 917,
+  "assignment_counts": {
+    "solo": 806,
+    "team": 111,
+    "special": 12,
+    "split": 13,
+    "tiebreaker": 27
+  },
+  "format_counts": {
+    "prize": 167,
+    "filmed": 569,
+    "homework": 10,
+    "live": 171
+  },
+  "activity_counts": {
+    "creative": 399,
+    "mental": 380,
+    "physical": 441,
+    "social": 155
+  },
+  "judgment_counts": {
+    "objective": 513,
+    "subjective": 381
+  },
+  "brief_counts": {
+    "single": 856,
+    "multiple": 61
+  },
+  "originality_counts": {
+    "original": 848,
+    "adapted": 69
+  }
+}

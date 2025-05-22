@@ -1,0 +1,42 @@
+[
+  {
+    "activity": "creative",
+    "judgment": "objective",
+    "count": 33
+  },
+  {
+    "activity": "creative",
+    "judgment": "subjective",
+    "count": 358
+  },
+  {
+    "activity": "mental",
+    "judgment": "objective",
+    "count": 328
+  },
+  {
+    "activity": "mental",
+    "judgment": "subjective",
+    "count": 44
+  },
+  {
+    "activity": "physical",
+    "judgment": "objective",
+    "count": 378
+  },
+  {
+    "activity": "physical",
+    "judgment": "subjective",
+    "count": 50
+  },
+  {
+    "activity": "social",
+    "judgment": "objective",
+    "count": 102
+  },
+  {
+    "activity": "social",
+    "judgment": "subjective",
+    "count": 52
+  }
+]

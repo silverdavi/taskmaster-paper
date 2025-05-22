@@ -1,0 +1,34 @@
+{
+  "creative": {
+    "tau": 0.2622964917882113,
+    "p_value": 0.12946977717929317,
+    "significant": false,
+    "trend": "no trend",
+    "slope": 0.0058277111614439235,
+    "percent_change": 42.3076923076923
+  },
+  "mental": {
+    "tau": -0.17049271966233734,
+    "p_value": 0.3243650515471622,
+    "significant": false,
+    "trend": "no trend",
+    "slope": -0.004211081281113664,
+    "percent_change": 1.1133603238866534
+  },
+  "physical": {
+    "tau": -0.2960590387431259,
+    "p_value": 0.08783184920745972,
+    "significant": false,
+    "trend": "no trend",
+    "slope": -0.008881086691479361,
+    "percent_change": -46.63461538461539
+  },
+  "social": {
+    "tau": -0.15737789507292677,
+    "p_value": 0.3629714323398304,
+    "significant": false,
+    "trend": "no trend",
+    "slope": -0.0012225063125440678,
+    "percent_change": 84.99999999999999
+  }
+}

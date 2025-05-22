@@ -1,0 +1,254 @@
+[
+  {
+    "series": "Series 1",
+    "task_count": 37,
+    "activity_proportions": {
+      "creative": 0.2972972972972973,
+      "mental": 0.5135135135135135,
+      "physical": 0.43243243243243246,
+      "social": 0.13513513513513514
+    },
+    "judgment_proportions": {
+      "objective": 0.6216216216216216,
+      "subjective": 0.2972972972972973
+    }
+  },
+  {
+    "series": "Series 2",
+    "task_count": 28,
+    "activity_proportions": {
+      "creative": 0.32142857142857145,
+      "mental": 0.39285714285714285,
+      "physical": 0.5,
+      "social": 0.2857142857142857
+    },
+    "judgment_proportions": {
+      "objective": 0.5357142857142857,
+      "subjective": 0.4642857142857143
+    }
+  },
+  {
+    "series": "Series 3",
+    "task_count": 28,
+    "activity_proportions": {
+      "creative": 0.4642857142857143,
+      "mental": 0.42857142857142855,
+      "physical": 0.42857142857142855,
+      "social": 0.21428571428571427
+    },
+    "judgment_proportions": {
+      "objective": 0.5357142857142857,
+      "subjective": 0.42857142857142855
+    }
+  },
+  {
+    "series": "Series 4",
+    "task_count": 52,
+    "activity_proportions": {
+      "creative": 0.38461538461538464,
+      "mental": 0.34615384615384615,
+      "physical": 0.6538461538461539,
+      "social": 0.17307692307692307
+    },
+    "judgment_proportions": {
+      "objective": 0.5576923076923077,
+      "subjective": 0.36538461538461536
+    }
+  },
+  {
+    "series": "Series 5",
+    "task_count": 49,
+    "activity_proportions": {
+      "creative": 0.42857142857142855,
+      "mental": 0.5102040816326531,
+      "physical": 0.5306122448979592,
+      "social": 0.12244897959183673
+    },
+    "judgment_proportions": {
+      "objective": 0.5510204081632653,
+      "subjective": 0.40816326530612246
+    }
+  },
+  {
+    "series": "Series 6",
+    "task_count": 59,
+    "activity_proportions": {
+      "creative": 0.4745762711864407,
+      "mental": 0.4067796610169492,
+      "physical": 0.5423728813559322,
+      "social": 0.1864406779661017
+    },
+    "judgment_proportions": {
+      "objective": 0.559322033898305,
+      "subjective": 0.423728813559322
+    }
+  },
+  {
+    "series": "Series 7",
+    "task_count": 58,
+    "activity_proportions": {
+      "creative": 0.4482758620689655,
+      "mental": 0.43103448275862066,
+      "physical": 0.5689655172413793,
+      "social": 0.1724137931034483
+    },
+    "judgment_proportions": {
+      "objective": 0.5344827586206896,
+      "subjective": 0.43103448275862066
+    }
+  },
+  {
+    "series": "Series 8",
+    "task_count": 56,
+    "activity_proportions": {
+      "creative": 0.4107142857142857,
+      "mental": 0.35714285714285715,
+      "physical": 0.5357142857142857,
+      "social": 0.19642857142857142
+    },
+    "judgment_proportions": {
+      "objective": 0.5892857142857143,
+      "subjective": 0.4107142857142857
+    }
+  },
+  {
+    "series": "Series 9",
+    "task_count": 52,
+    "activity_proportions": {
+      "creative": 0.5,
+      "mental": 0.4807692307692308,
+      "physical": 0.38461538461538464,
+      "social": 0.15384615384615385
+    },
+    "judgment_proportions": {
+      "objective": 0.4807692307692308,
+      "subjective": 0.5
+    }
+  },
+  {
+    "series": "Series 10",
+    "task_count": 54,
+    "activity_proportions": {
+      "creative": 0.42592592592592593,
+      "mental": 0.48148148148148145,
+      "physical": 0.46296296296296297,
+      "social": 0.16666666666666666
+    },
+    "judgment_proportions": {
+      "objective": 0.6481481481481481,
+      "subjective": 0.35185185185185186
+    }
+  },
+  {
+    "series": "Series 11",
+    "task_count": 52,
+    "activity_proportions": {
+      "creative": 0.4230769230769231,
+      "mental": 0.4230769230769231,
+      "physical": 0.5769230769230769,
+      "social": 0.15384615384615385
+    },
+    "judgment_proportions": {
+      "objective": 0.5384615384615384,
+      "subjective": 0.4423076923076923
+    }
+  },
+  {
+    "series": "Series 12",
+    "task_count": 51,
+    "activity_proportions": {
+      "creative": 0.4117647058823529,
+      "mental": 0.49019607843137253,
+      "physical": 0.5686274509803921,
+      "social": 0.23529411764705882
+    },
+    "judgment_proportions": {
+      "objective": 0.5882352941176471,
+      "subjective": 0.39215686274509803
+    }
+  },
+  {
+    "series": "Series 13",
+    "task_count": 54,
+    "activity_proportions": {
+      "creative": 0.46296296296296297,
+      "mental": 0.37037037037037035,
+      "physical": 0.42592592592592593,
+      "social": 0.1111111111111111
+    },
+    "judgment_proportions": {
+      "objective": 0.5370370370370371,
+      "subjective": 0.4444444444444444
+    }
+  },
+  {
+    "series": "Series 14",
+    "task_count": 53,
+    "activity_proportions": {
+      "creative": 0.4528301886792453,
+      "mental": 0.2830188679245283,
+      "physical": 0.4528301886792453,
+      "social": 0.07547169811320754
+    },
+    "judgment_proportions": {
+      "objective": 0.6037735849056604,
+      "subjective": 0.37735849056603776
+    }
+  },
+  {
+    "series": "Series 15",
+    "task_count": 51,
+    "activity_proportions": {
+      "creative": 0.45098039215686275,
+      "mental": 0.3137254901960784,
+      "physical": 0.43137254901960786,
+      "social": 0.09803921568627451
+    },
+    "judgment_proportions": {
+      "objective": 0.5686274509803921,
+      "subjective": 0.4117647058823529
+    }
+  },
+  {
+    "series": "Series 16",
+    "task_count": 53,
+    "activity_proportions": {
+      "creative": 0.4339622641509434,
+      "mental": 0.2830188679245283,
+      "physical": 0.4528301886792453,
+      "social": 0.11320754716981132
+    },
+    "judgment_proportions": {
+      "objective": 0.5660377358490566,
+      "subjective": 0.4339622641509434
+    }
+  },
+  {
+    "series": "Series 17",
+    "task_count": 52,
+    "activity_proportions": {
+      "creative": 0.5384615384615384,
+      "mental": 0.38461538461538464,
+      "physical": 0.38461538461538464,
+      "social": 0.2692307692307692
+    },
+    "judgment_proportions": {
+      "objective": 0.4807692307692308,
+      "subjective": 0.4807692307692308
+    }
+  },
+  {
+    "series": "Series 18",
+    "task_count": 52,
+    "activity_proportions": {
+      "creative": 0.4230769230769231,
+      "mental": 0.5192307692307693,
+      "physical": 0.23076923076923078,
+      "social": 0.25
+    },
+    "judgment_proportions": {
+      "objective": 0.5961538461538461,
+      "subjective": 0.38461538461538464
+    }
+  }
+]
