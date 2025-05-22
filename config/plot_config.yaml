@@ -1,6 +1,6 @@
 # Global plot settings
 global:
-  dpi: 300
+  dpi: 450
   figure_size: [10, 6]
   font_family: "Arial"
   output_format: "pdf"
@@ -22,6 +22,19 @@ colors:
     sarcasm: "#d62728"
     awkwardness: "#9467bd"
     joy: "#2ca02c"
+    
+  # Figure 2 specific colors
+  position:
+    first: "#f4d03f"   # Mustard yellow
+    middle: "#e67e22"  # Orange
+    last: "#c0392b"    # Deep red
+  
+  # Pattern colors
+  pattern:
+    rising: "#3498db"     # Blue (123)
+    j_shaped: "#9b59b6"   # Purple (213) 
+    improving: "#2ecc71"  # Green (321)
+    others: "#95a5a6"     # Gray
 
 # Text settings
 fonts:

@@ -24,6 +24,7 @@ CONFIG_FILE = ROOT_DIR / "config" / "plot_config.yaml"
 # Input files
 PATTERN_EPISODES_FILE = SCRIPT_DIR / "episode_patterns.csv"
 SERIES_PATTERNS_FILE = SCRIPT_DIR / "series_patterns.csv"
+STATS_FILE = SCRIPT_DIR / "pattern_statistics.csv"
 
 # Output files - will be determined based on config
 
@@ -50,14 +51,20 @@ def load_data():
         series_df = pd.read_csv(SERIES_PATTERNS_FILE)
         print(f"Loaded {len(series_df)} series patterns")
         
-        return episode_df, series_df
+        # Try to load stats if available
+        stats_df = None
+        if os.path.exists(STATS_FILE):
+            stats_df = pd.read_csv(STATS_FILE)
+            print(f"Loaded pattern statistics")
+            
+        return episode_df, series_df, stats_df
     
     except Exception as e:
         print(f"Error loading data: {e}")
-        return None, None
+        return None, None, None
 
 
-def create_violin_plot(episode_df, series_df, config):
+def create_violin_plot(episode_df, series_df, stats_df, config):
     """
     Create a violin plot visualization of episode ratings by pattern and position.
     """
@@ -67,8 +74,21 @@ def create_violin_plot(episode_df, series_df, config):
     # Get DPI setting
     dpi = config['global'].get('dpi', 300)
     
-    # Define color palette for positions (First, Middle, Last)
-    position_colors = ['#f4d03f', '#e67e22', '#c0392b']  # Mustard yellow, Orange, Deep red
+    # Define color palette for positions (First, Middle, Last) from config
+    position_colors = [
+        config['colors']['position'].get('first', '#f4d03f'),    # Mustard yellow
+        config['colors']['position'].get('middle', '#e67e22'),   # Orange
+        config['colors']['position'].get('last', '#c0392b')      # Deep red
+    ]
+    
+    # Create a dictionary for pattern colors
+    pattern_colors = {
+        '123': config['colors']['pattern'].get('rising', '#3498db'),      # Blue
+        '213': config['colors']['pattern'].get('j_shaped', '#9b59b6'),    # Purple
+        '321': config['colors']['pattern'].get('improving', '#2ecc71'),   # Green
+    }
+    # Default color for other patterns
+    default_pattern_color = config['colors']['pattern'].get('others', '#95a5a6')  # Gray
     
     # Filter to only include common patterns (with at least 2 series)
     pattern_counts = series_df['pattern'].value_counts()
@@ -133,6 +153,9 @@ def create_violin_plot(episode_df, series_df, config):
     for i, pattern in enumerate(ax.get_xticklabels()):
         pattern_text = pattern.get_text()
         if pattern_text in pattern_descriptions:
+            # Get color for pattern (use default if not specified)
+            bbox_color = pattern_colors.get(pattern_text, default_pattern_color)
+            
             ax.text(
                 i, 
                 9.5,  # Position above the highest violin
@@ -140,7 +163,13 @@ def create_violin_plot(episode_df, series_df, config):
                 ha='center', 
                 va='center',
                 fontsize=10,
-                bbox=dict(facecolor='white', alpha=0.8, boxstyle='round,pad=0.3', edgecolor='gray')
+                color='white',
+                bbox=dict(
+                    facecolor=bbox_color, 
+                    alpha=0.9, 
+                    boxstyle='round,pad=0.3', 
+                    edgecolor='gray'
+                )
             )
     
     # Add series numbers below each pattern
@@ -160,6 +189,42 @@ def create_violin_plot(episode_df, series_df, config):
             color='#555555'
         )
     
+    # Add statistical information if available
+    if stats_df is not None:
+        try:
+            # Extract key statistics
+            total_series = stats_df.loc[stats_df['statistic'] == 'total_series', 'value'].values[0]
+            key_patterns_count = stats_df.loc[stats_df['statistic'] == 'key_patterns_count', 'value'].values[0]
+            key_patterns_pct = stats_df.loc[stats_df['statistic'] == 'key_patterns_percentage', 'value'].values[0]
+            p_value = stats_df.loc[stats_df['statistic'] == 'binomial_test_p_value', 'value'].values[0]
+            significant = stats_df.loc[stats_df['statistic'] == 'binomial_test_significant', 'value'].values[0]
+            
+            # Convert values to appropriate types for formatting
+            total_series = int(total_series)
+            key_patterns_count = int(key_patterns_count)
+            key_patterns_pct = float(key_patterns_pct) * 100  # Convert to percentage
+            p_value = float(p_value)
+            significant = bool(significant)
+            
+            # Create stats text
+            stats_text = (
+                f"Statistical Analysis:\n"
+                f"Series with 123 or 213 patterns: {key_patterns_count}/{total_series} ({key_patterns_pct:.1f}%)\n"
+                f"p-value: {p_value:.4f} ({'Significant' if significant else 'Not significant'} at α=0.05)"
+            )
+            
+            # Add stats text to plot
+            plt.figtext(
+                0.5, 0.01,  # Position at bottom center
+                stats_text,
+                ha='center',
+                fontsize=10,
+                bbox=dict(facecolor='white', alpha=0.8, boxstyle='round,pad=0.5', edgecolor='gray')
+            )
+            
+        except Exception as e:
+            print(f"Error adding stats information: {e}")
+    
     # Set y-axis limits to ensure all annotations are visible
     plt.ylim(6.0, 9.7)
     
@@ -167,7 +232,7 @@ def create_violin_plot(episode_df, series_df, config):
     plt.grid(True, linestyle='--', alpha=0.7)
     
     # Adjust layout
-    plt.tight_layout()
+    plt.tight_layout(rect=[0, 0.05, 1, 1])  # Make room for stats text at bottom
     
     # Save the figure
     output_file_pdf = SCRIPT_DIR / f"figure2_output.pdf"
@@ -189,14 +254,14 @@ def main():
     config = load_config()
     
     # Load data
-    episode_df, series_df = load_data()
+    episode_df, series_df, stats_df = load_data()
     
     if episode_df is None or series_df is None:
         print("Data loading failed. Cannot create plot.")
         return
     
     # Create violin plot
-    output_files = create_violin_plot(episode_df, series_df, config)
+    output_files = create_violin_plot(episode_df, series_df, stats_df, config)
     
     print(f"Figure 2 plotting complete! Output files: {output_files}")
 

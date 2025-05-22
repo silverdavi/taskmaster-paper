@@ -1,0 +1,12 @@
+statistic,value
+total_series,18
+total_contestants,91
+rising_pattern_count,2
+j_shaped_pattern_count,0
+key_patterns_count,2
+key_patterns_percentage,0.1111111111111111
+binomial_test_p_value,0.04708147740735524
+binomial_test_significant,True
+chi_square_statistic,29.999999999999996
+chi_square_p_value,3.9308448184484666e-05
+chi_square_significant,True
