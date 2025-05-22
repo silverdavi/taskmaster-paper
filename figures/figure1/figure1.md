@@ -6,7 +6,8 @@ Figure 1 consists of two panels that visualize the IMDb ratings across all Taskm
 
 1. **Panel A: Ridge plot** showing the distribution of ratings for each series, decomposed into:
    - A Gaussian fit for ratings 2-9
-   - Delta markers for extreme ratings (1s and 10s)
+   - Red spikes for 1-star ratings and green spikes for 10-star ratings
+   - Official IMDb rating labels with IMDb-style yellow formatting
 
 2. **Panel B: PCA plot** showing how series relate to each other based on their rating profiles:
    - PC1 and PC2 derived from four key metrics: percentage of 1s, percentage of 10s, mean of ratings 2-9, standard deviation of ratings 2-9
@@ -19,13 +20,14 @@ Figure 1 consists of two panels that visualize the IMDb ratings across all Taskm
 
 The data processing script:
 
-1. Loads IMDb rating data from `taskmaster_histograms_corrected.csv`
+1. Loads IMDb rating data from `taskmaster_histograms_corrected.csv` with fixes for column naming (histogram columns were reversed)
 2. For each series:
    - Fits a Gaussian distribution to ratings 2-9
    - Calculates percentage of 1-star and 10-star ratings
    - Computes mean and standard deviation for the Gaussian
    - Records episode count and total votes
    - Calculates overall mean rating
+   - Adds official IMDb ratings
 3. Performs PCA on these four metrics:
    - Percentage of 1-star ratings (`pct_1s`)
    - Percentage of 10-star ratings (`pct_10s`)
@@ -53,18 +55,20 @@ This panel shows:
 
 - One ridge per series, ordered by series number
 - Gaussian curves fitted to ratings 2-9, showing the "central tendency" of ratings
-- Red markers at rating 1 showing percentage of 1-star ratings (size proportional to percentage)
-- Green markers at rating 10 showing percentage of 10-star ratings (size proportional to percentage)
+- Red spikes at rating 1 showing percentage of 1-star ratings (size proportional to percentage)
+- Green spikes at rating 10 showing percentage of 10-star ratings (size proportional to percentage)
 - Series labels with mean rating (μ) annotated
-- Reference line at rating 7 (common threshold for "good" ratings)
-- Legend explaining the components
+- Official IMDb ratings displayed with IMDb yellow styling
+- Simplified labels that only show prefixes (μ=, IMDb=) on the first series
+- No axis borders or explanatory text boxes for cleaner presentation
 
-Improvements from the reference script (`plot_seaborn_ridgeline_decomposed.py`):
+Key features:
+
 - Marker size scales with percentage of extreme ratings
-- Text annotations showing percentage values for significant extremes
+- IMDb labels positioned based on their rating values
 - White outlines around text for better readability
 - Integration with central styling configuration
-- More informative labeling with mean ratings
+- Clear visual distinction between fitted Gaussian means and official IMDb ratings
 
 #### Panel B: PCA Plot
 
@@ -73,18 +77,18 @@ This panel shows:
 - Each series as a point in 2D space determined by PCA
 - Series numbers as labels with white outlines for visibility
 - Color gradient from red (low mean) to green (high mean)
-- Loading vectors (blue arrows) showing the influence of each feature
-- Feature labels with intelligent positioning based on vector direction
-- Legend explaining point colors and loading vectors
-- Annotation showing total explained variance
-- Grid and axis lines for better readability
+- Loading vectors (blue arrows) showing the influence of each feature, elongated by 20% for better visibility
+- Feature labels with intelligent positioning
+- Focused axis limits (-4 to 3 on x-axis, -2.2 to 3 on y-axis)
+- Annotation labels for extreme series
 
-Improvements from the reference script (`plot_pca_analysis.py`):
+Key improvements:
+
 - More focused visualization with clearer feature vectors
-- Better labeling of features with descriptive names in boxes
-- Intelligent text positioning based on vector direction
-- Integration with central styling configuration
-- Concise legend explaining the components
+- Optimized positioning of series and feature labels
+- Better use of space with adjusted axis limits
+- Proper PDF output with correct shading
+- Maintained detailed statistics for extreme examples
 
 ## Code Structure
 
@@ -100,8 +104,8 @@ The implementation follows a strict separation of concerns:
    - Handles ONLY visualization
    - Takes processed data as input (assumes processing is complete)
    - Loads data directly from the figure1 folder
-   - Creates visualizations with consistent styling
-   - Generates caption based on metrics
+   - Creates visualizations with consistent styling from `plot_config.yaml`
+   - Saves outputs in both PDF and PNG formats
    - Contains NO data processing logic
 
 ## Output Files
@@ -115,13 +119,13 @@ The implementation produces the following files in the figure1 directory:
   - `explained_variance.npy` - Explained variance ratios
 
 - **Figure Output**:
-  - `figure1_output.pdf` - The final figure
+  - `figure1.pdf` - The final figure in PDF format
+  - `figure1.png` - The final figure in PNG format
   - `metrics.json` - Key metrics used in the caption
-  - `caption.txt` - Generated caption for the paper
 
 ## Expected Insights
 
-This figure should reveal:
+This figure reveals:
 
 - Which series have the highest/lowest mean ratings
 - How the distribution of ratings varies across series
@@ -129,5 +133,6 @@ This figure should reveal:
 - How series cluster based on their rating profiles
 - Whether later series show different rating patterns than earlier ones
 - The relationship between mean ratings and extreme ratings
+- Discrepancies between fitted Gaussian means and official IMDb ratings
 
 The PCA plot in particular helps identify which aspects of the rating distribution (mean, variance, extremes) contribute most to differences between series. 
