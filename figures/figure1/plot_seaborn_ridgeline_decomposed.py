@@ -21,6 +21,7 @@ from pathlib import Path
 import os
 import yaml
 import matplotlib as mpl
+import cmcrameri.cm as cmc  # Import Fabio Crameri's colormaps
 
 # File paths relative to this script
 SCRIPT_DIR = Path(__file__).parent
@@ -77,13 +78,24 @@ def create_ridgeline_plot():
     # Create a custom colormap with sequential but distinct colors
     n_series = len(df_gaussians)
     
-    # Use the colormap from config
-    try:
-        # Modern matplotlib (3.7+)
-        cmap = plt.colormaps[series_cmap_name]
-    except:
-        # Fallback for older matplotlib
-        cmap = plt.cm.get_cmap(series_cmap_name)
+    # Get the colormap - Special handling for cmcrameri colormaps
+    if series_cmap_name.startswith('cmc.'):
+        # Extract the colormap name without the 'cmc.' prefix
+        cmap_name = series_cmap_name.split('.')[1]
+        # Get the colormap from cmcrameri
+        if hasattr(cmc, cmap_name):
+            cmap = getattr(cmc, cmap_name)
+        else:
+            print(f"Warning: Colormap {cmap_name} not found in cmcrameri, falling back to viridis")
+            cmap = plt.cm.viridis
+    else:
+        # Use the colormap from config
+        try:
+            # Modern matplotlib (3.7+)
+            cmap = plt.colormaps[series_cmap_name]
+        except:
+            # Fallback for older matplotlib
+            cmap = plt.cm.get_cmap(series_cmap_name)
     
     # Create discrete colors for all 18 series
     colors = [cmap(i/18) for i in range(18)]
@@ -141,6 +153,15 @@ def create_ridgeline_plot():
     # Define size range
     min_size = 20
     max_size = 200
+    
+    # After loading data, find min and max IMDb ratings for scaling
+    min_imdb = None
+    max_imdb = None
+    if 'imdb_rating' in df_gaussians.columns:
+        min_imdb = df_gaussians['imdb_rating'].min()
+        max_imdb = df_gaussians['imdb_rating'].max()
+        imdb_range = max_imdb - min_imdb
+        print(f"IMDb rating range: {min_imdb:.2f} - {max_imdb:.2f}, range: {imdb_range:.2f}")
     
     # Plot each distribution
     for i, (_, row) in enumerate(df_gaussians.iterrows()):
@@ -212,10 +233,16 @@ def create_ridgeline_plot():
             ax.scatter(10, y_base + spike_height * pct_10s, color='green', s=size_10s, zorder=5,
                       edgecolor='black', linewidth=1)
         
-        # Add mean label on the curve
+        # Add mean label on the curve - only show "μ=" on the first one
         if remaining_proportion > 0.05:  # Only label if enough area under curve
+            # Determine if this is the first visible series
+            is_first = i == (len(df_gaussians) - 1)  # Since we're plotting in reverse order
+            
+            # Create label text with or without μ prefix
+            mu_label = f"μ={mu:.2f}" if is_first else f"{mu:.2f}"
+            
             ax.text(mu, y_base + pdf_scaled.max() / 2, 
-                   f"μ={mu:.2f}", ha='center', va='center', 
+                   mu_label, ha='center', va='center', 
                    fontweight='bold', fontsize=10,
                    bbox=dict(facecolor='white', alpha=0.8, boxstyle='round,pad=0.2'))
         
@@ -223,18 +250,31 @@ def create_ridgeline_plot():
         if imdb_rating is not None and not pd.isna(imdb_rating):
             print(f"Adding IMDb rating label for Series {series}: {imdb_rating}")
             
-            # Position at x=4.5 (between ratings 4-5)
-            imdb_x = 4.5
+            # Determine if this is the first visible series
+            is_first = i == (len(df_gaussians) - 1)  # Since we're plotting in reverse order
+            
+            # Create label text with or without IMDb prefix
+            imdb_label = f"IMDb={imdb_rating:.1f}" if is_first else f"{imdb_rating:.2f}"
+            
+            # Position at x=4 plus a scaling factor based on the IMDb rating
+            if min_imdb is not None and max_imdb is not None:
+                # Scale position based on where this rating falls in the range
+                # Use a smaller scaling factor (0.5) to keep positions reasonable
+                position_offset = 0.5 * (imdb_rating - min_imdb) / (max_imdb - min_imdb)
+                imdb_x = 4.0 + position_offset
+            else:
+                imdb_x = 4.0
+            
             # Use a different y-position to avoid overlap with μ
             imdb_y = y_base + pdf_scaled.max() * 0.75
             
-            # Create label with more prominent styling
+            # Create label with IMDb yellow styling
             ax.text(imdb_x, imdb_y, 
-                   f"IMDb={imdb_rating:.1f}", ha='center', va='center', 
+                   imdb_label, ha='center', va='center', 
                    fontweight='bold', fontsize=10,
-                   color='white',  # White text
+                   color='black',  # Black text on yellow background
                    bbox=dict(
-                       facecolor='#E50914',  # Netflix red for contrast
+                       facecolor='#F5C518',  # IMDb yellow
                        alpha=0.9, 
                        boxstyle='round,pad=0.3',
                        edgecolor='black',

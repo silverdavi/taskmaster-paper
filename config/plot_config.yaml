@@ -9,7 +9,7 @@ global:
 
 # Color schemes
 colors:
-  series_colormap: "viridis"  # For 18 series
+  series_colormap: "cmc.hawaii"  # Using Fabio Crameri's perceptual colormap
   archetype_palette: "Set2"
   task_type_palette: "Paired"
   highlight:

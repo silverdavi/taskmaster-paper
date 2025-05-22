@@ -21,6 +21,7 @@ from matplotlib.colors import LinearSegmentedColormap
 from pathlib import Path
 import yaml
 import os
+import cmcrameri.cm as cmc  # Import Fabio Crameri's colormaps
 
 # File paths relative to this script
 SCRIPT_DIR = Path(__file__).parent
@@ -84,13 +85,24 @@ def create_pca_plot():
     # Create a colormap using the series colormap from config
     series_cmap_name = config['colors']['series_colormap']
     
-    # Get the colormap in a way that works with newer matplotlib versions
-    try:
-        # Modern matplotlib (3.7+)
-        cmap = plt.colormaps[series_cmap_name]
-    except:
-        # Fallback for older matplotlib
-        cmap = plt.cm.get_cmap(series_cmap_name)
+    # Get the colormap - Special handling for cmcrameri colormaps
+    if series_cmap_name.startswith('cmc.'):
+        # Extract the colormap name without the 'cmc.' prefix
+        cmap_name = series_cmap_name.split('.')[1]
+        # Get the colormap from cmcrameri
+        if hasattr(cmc, cmap_name):
+            cmap = getattr(cmc, cmap_name)
+        else:
+            print(f"Warning: Colormap {cmap_name} not found in cmcrameri, falling back to viridis")
+            cmap = plt.cm.viridis
+    else:
+        # Get the colormap in a way that works with newer matplotlib versions
+        try:
+            # Modern matplotlib (3.7+)
+            cmap = plt.colormaps[series_cmap_name]
+        except:
+            # Fallback for older matplotlib
+            cmap = plt.cm.get_cmap(series_cmap_name)
     
     # Create colors for all 18 series
     colors = [cmap(i/18) for i in range(18)]
