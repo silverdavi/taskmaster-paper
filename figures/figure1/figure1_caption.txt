@@ -1,0 +1,7 @@
+Figure 1: Analysis of IMDb Ratings Across Taskmaster Series
+
+(A) Ridgeline plot showing the distribution of IMDb ratings for each Taskmaster series. Ratings 2-9 are modeled as a Gaussian distribution (shown as filled curves with mean μ indicated), while 1-star and 10-star ratings are represented as discrete delta functions (red and green spikes, respectively). The area of dots is proportional to the percentage of these extreme ratings. Series are ordered by season number (S1-S18), with the total number of votes (n) shown for each series.
+
+(B) Principal Component Analysis (PCA) of IMDb rating patterns. Each point represents a Taskmaster series, colored using the same scheme as panel A. The first principal component (PC1, 66.7% of variance) primarily captures overall quality, with higher values indicating better reception. The second component (PC2, 22.1% of variance) distinguishes between series with extreme vs. moderate rating patterns. Feature vectors show the influence of each metric: mean rating (μ), standard deviation (σ), percentage of 1-star ratings, and percentage of 10-star ratings.
+
+Together, these visualizations reveal distinct rating profiles across series, with some series receiving more polarized responses (high percentages of both 1-star and 10-star ratings), while others show more consensus in their reception. 
