@@ -121,8 +121,7 @@ def create_violin_plot(episode_df, series_df, stats_df, config):
     # Set plot labels and title
     plt.xlabel('Episode Rating Pattern (First-Middle-Last)', fontsize=14, fontweight='bold')
     plt.ylabel('IMDb Rating', fontsize=14, fontweight='bold')
-    plt.title('Episode Rating Trajectories by Series Pattern', fontsize=16, fontweight='bold')
-    
+
     # Customize legend
     legend_elements = [
         mpatches.Patch(facecolor=position_colors[0], edgecolor='black', label='First Episode'),
@@ -209,8 +208,8 @@ def create_violin_plot(episode_df, series_df, stats_df, config):
             stats_text = (
                 f"Statistical Analysis:\n"
                 f"Series with Rising (123) or J-shaped (213) patterns: {key_patterns_count}/{total_series} ({key_patterns_pct:.1f}%)\n"
-                f"Mean rating increase from first to last episode: {first_to_last:.2f} (p={first_to_last_p:.4f})\n"
-                f"Mean rating increase from middle to last episode: {middle_to_last:.2f} (p={middle_to_last_p:.4f})"
+                f"Mean rating increase from first to last episode: {first_to_last:.3f} (p={first_to_last_p:.4f})\n"
+                f"Mean rating increase from middle to last episode: {middle_to_last:.3f} (p={middle_to_last_p:.4f})"
             )
             
             # Add stats text within the plot rather than at the bottom
