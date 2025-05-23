@@ -1,0 +1,248 @@
+{
+  "correlations": {
+    "task_prop_is_solo": {
+      "correlation": 0.35774745427710375,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "task_prop_is_team": {
+      "correlation": -0.3577474542771036,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "task_prop_is_special": {
+      "correlation": 0.37079237542215343,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "task_prop_is_split": {
+      "correlation": -0.12734162582917707,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "task_prop_is_tiebreaker": {
+      "correlation": 0.02818400748020274,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "task_prop_is_prize": {
+      "correlation": -0.3314587208717284,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "task_prop_is_filmed": {
+      "correlation": 0.24431131590838118,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "task_prop_is_homework": {
+      "correlation": 0.09054891321285075,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "task_prop_is_live": {
+      "correlation": -0.27684378306444873,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "task_prop_is_creative": {
+      "correlation": -0.2545050899552561,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "total_series_tasks": {
+      "correlation": -0.19128237522291316,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "num_sentences": {
+      "correlation": -0.22055202772168198,
+      "valid_points": 139,
+      "total_points": 154
+    },
+    "num_words": {
+      "correlation": -0.08391991111136805,
+      "valid_points": 139,
+      "total_points": 154
+    },
+    "mean_sentence_length": {
+      "correlation": 0.24187050330451595,
+      "valid_points": 139,
+      "total_points": 154
+    },
+    "greg_mentions": {
+      "correlation": -0.2082379959914809,
+      "valid_points": 139,
+      "total_points": 154
+    },
+    "alex_mentions": {
+      "correlation": 0.09403328732037973,
+      "valid_points": 139,
+      "total_points": 154
+    },
+    "laughter_count": {
+      "correlation": -0.16357587403229906,
+      "valid_points": 139,
+      "total_points": 154
+    },
+    "applause_count": {
+      "correlation": -0.07425097795466093,
+      "valid_points": 139,
+      "total_points": 154
+    },
+    "avg_anger": {
+      "correlation": 0.10676288305418088,
+      "valid_points": 139,
+      "total_points": 154
+    },
+    "avg_awkwardness": {
+      "correlation": -0.16354688959355226,
+      "valid_points": 139,
+      "total_points": 154
+    },
+    "avg_frustration_or_despair": {
+      "correlation": 0.004620716871225525,
+      "valid_points": 139,
+      "total_points": 154
+    },
+    "avg_humor": {
+      "correlation": -0.012840948693801514,
+      "valid_points": 139,
+      "total_points": 154
+    },
+    "avg_joy_or_excitement": {
+      "correlation": -0.04947360032169412,
+      "valid_points": 139,
+      "total_points": 154
+    },
+    "avg_sarcasm": {
+      "correlation": -0.012744599609191115,
+      "valid_points": 139,
+      "total_points": 154
+    },
+    "avg_self_deprecation": {
+      "correlation": 0.04575394424131985,
+      "valid_points": 139,
+      "total_points": 154
+    },
+    "total_anger": {
+      "correlation": 0.07537112958947055,
+      "valid_points": 139,
+      "total_points": 154
+    },
+    "total_awkwardness": {
+      "correlation": -0.1779705873483487,
+      "valid_points": 139,
+      "total_points": 154
+    },
+    "total_frustration_or_despair": {
+      "correlation": -0.018491283498726266,
+      "valid_points": 139,
+      "total_points": 154
+    },
+    "total_humor": {
+      "correlation": -0.1642334259589089,
+      "valid_points": 139,
+      "total_points": 154
+    },
+    "total_joy_or_excitement": {
+      "correlation": -0.08012294986400235,
+      "valid_points": 139,
+      "total_points": 154
+    },
+    "total_sarcasm": {
+      "correlation": -0.15234634539541422,
+      "valid_points": 139,
+      "total_points": 154
+    },
+    "total_self_deprecation": {
+      "correlation": -0.11826360169211673,
+      "valid_points": 139,
+      "total_points": 154
+    },
+    "score_mean": {
+      "correlation": 0.03324377185174831,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "score_std": {
+      "correlation": -0.10164035526104007,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "score_range": {
+      "correlation": -0.08975391317075938,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "score_max": {
+      "correlation": -0.04164836841784114,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "score_min": {
+      "correlation": 0.09565943225565147,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "contestant_avg_age": {
+      "correlation": 0.39710047725751757,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "contestant_prop_female": {
+      "correlation": 0.10927050279275377,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "contestant_prop_male": {
+      "correlation": 0.18780785031680008,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "contestant_prop_comedians": {
+      "correlation": 0.3307607716908227,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "contestant_prop_actors": {
+      "correlation": -0.5471015454339254,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "contestant_prop_presenters": {
+      "correlation": 0.19309538271919738,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "contestant_nationality_diversity": {
+      "correlation": 0.00880336718207523,
+      "valid_points": 154,
+      "total_points": 154
+    },
+    "contestant_prop_british": {
+      "correlation": -0.140661065369744,
+      "valid_points": 154,
+      "total_points": 154
+    }
+  },
+  "summary": {
+    "total_features": 45,
+    "mean_correlation": -0.02544038286472963,
+    "std_correlation": 0.19934488325059063,
+    "min_correlation": -0.5471015454339254,
+    "max_correlation": 0.39710047725751757,
+    "positive_correlations": 19,
+    "negative_correlations": 26,
+    "strong_positive": 0,
+    "strong_negative": 1
+  },
+  "data_sources": {
+    "imdb_episodes": 154,
+    "task_episodes": 190,
+    "sentiment_episodes": 149,
+    "scoring_episodes": 180,
+    "contestant_series": 18,
+    "final_merged": 154
+  }
+}

@@ -1,0 +1,294 @@
+{
+  "feature_ranking": {
+    "contestant_avg_age": {
+      "rank": 1,
+      "score": 0.9433121314383692,
+      "mi": 0.2877755922533908,
+      "entropy": 1.6482673455248122
+    },
+    "contestant_avg_experience": {
+      "rank": 2,
+      "score": 0.8225113654641609,
+      "mi": 0.21711663581268703,
+      "entropy": 1.9942553276198254
+    },
+    "contestant_prop_comedians": {
+      "rank": 3,
+      "score": 0.6677893061673188,
+      "mi": 0.19167864060028572,
+      "entropy": 1.3652936106211853
+    },
+    "avg_awkwardness": {
+      "rank": 4,
+      "score": 0.4279762499349046,
+      "mi": 0.05261205874197876,
+      "entropy": 2.0322875013845954
+    },
+    "contestant_prop_female": {
+      "rank": 5,
+      "score": 0.4210284675488537,
+      "mi": 0.1142067549155708,
+      "entropy": 0.9702556684707839
+    },
+    "avg_sarcasm": {
+      "rank": 6,
+      "score": 0.3739170659934781,
+      "mi": 0.03539370013194447,
+      "entropy": 1.9498012063197325
+    },
+    "avg_self_deprecation": {
+      "rank": 7,
+      "score": 0.37332802667622716,
+      "mi": 0.05100301576355228,
+      "entropy": 1.688598520161846
+    },
+    "avg_anger": {
+      "rank": 8,
+      "score": 0.3613764337990955,
+      "mi": 0.03125324851287492,
+      "entropy": 1.9330742140425674
+    },
+    "contestant_nationality_diversity": {
+      "rank": 9,
+      "score": 0.3300731507858153,
+      "mi": 0.07219525464703365,
+      "entropy": 1.046368866865146
+    },
+    "avg_humor": {
+      "rank": 10,
+      "score": 0.3172370332637942,
+      "mi": 0.04641380923165763,
+      "entropy": 1.3842433212531304
+    },
+    "avg_joy_or_excitement": {
+      "rank": 11,
+      "score": 0.12429451899583771,
+      "mi": 0.008718897132298963,
+      "entropy": 0.698336187755652
+    },
+    "avg_frustration_or_despair": {
+      "rank": 12,
+      "score": 0.1239759919621454,
+      "mi": 0.01404184137059492,
+      "entropy": 0.6084662154110662
+    }
+  },
+  "selection_criteria": [
+    {
+      "name": "top_5",
+      "description": "Top 5 features by combined score",
+      "features": [
+        "contestant_avg_age",
+        "contestant_avg_experience",
+        "contestant_prop_comedians",
+        "avg_awkwardness",
+        "contestant_prop_female"
+      ]
+    },
+    {
+      "name": "top_10",
+      "description": "Top 10 features by combined score",
+      "features": [
+        "contestant_avg_age",
+        "contestant_avg_experience",
+        "contestant_prop_comedians",
+        "avg_awkwardness",
+        "contestant_prop_female",
+        "avg_sarcasm",
+        "avg_self_deprecation",
+        "avg_anger",
+        "contestant_nationality_diversity",
+        "avg_humor"
+      ]
+    },
+    {
+      "name": "high_mi",
+      "description": "Features with MI > 0.01",
+      "features": [
+        "avg_anger",
+        "avg_awkwardness",
+        "avg_frustration_or_despair",
+        "avg_humor",
+        "avg_sarcasm",
+        "avg_self_deprecation",
+        "contestant_avg_age",
+        "contestant_prop_female",
+        "contestant_prop_comedians",
+        "contestant_nationality_diversity",
+        "contestant_avg_experience"
+      ]
+    },
+    {
+      "name": "all_features",
+      "description": "All available features",
+      "features": [
+        "avg_anger",
+        "avg_awkwardness",
+        "avg_frustration_or_despair",
+        "avg_humor",
+        "avg_joy_or_excitement",
+        "avg_sarcasm",
+        "avg_self_deprecation",
+        "contestant_avg_age",
+        "contestant_prop_female",
+        "contestant_prop_comedians",
+        "contestant_nationality_diversity",
+        "contestant_avg_experience"
+      ]
+    }
+  ],
+  "mutual_info_by_target": {
+    "hist1_pct": {
+      "avg_anger": 0.07200818199601988,
+      "avg_awkwardness": 0.2058635175303487,
+      "avg_frustration_or_despair": 0.0,
+      "avg_humor": 0.18032160614446946,
+      "avg_joy_or_excitement": 0.0,
+      "avg_sarcasm": 0.08274299204680302,
+      "avg_self_deprecation": 0.051565113983746524,
+      "contestant_avg_age": 0.8842080315513625,
+      "contestant_prop_female": 0.17099028568428531,
+      "contestant_prop_comedians": 0.3692939368767747,
+      "contestant_nationality_diversity": 0.09076267076241251,
+      "contestant_avg_experience": 0.6723759714312525
+    },
+    "hist2_pct": {
+      "avg_anger": 0.0,
+      "avg_awkwardness": 0.0,
+      "avg_frustration_or_despair": 0.045702733316510535,
+      "avg_humor": 0.0,
+      "avg_joy_or_excitement": 0.0,
+      "avg_sarcasm": 0.023088095754545623,
+      "avg_self_deprecation": 0.08351503530790483,
+      "contestant_avg_age": 0.39282935209160774,
+      "contestant_prop_female": 0.2290171864593984,
+      "contestant_prop_comedians": 0.1747294984561658,
+      "contestant_nationality_diversity": 0.04712144379892447,
+      "contestant_avg_experience": 0.40070209952667035
+    },
+    "hist3_pct": {
+      "avg_anger": 0.013602538186824109,
+      "avg_awkwardness": 0.07246627761251512,
+      "avg_frustration_or_despair": 0.0,
+      "avg_humor": 0.0,
+      "avg_joy_or_excitement": 0.009368873371804032,
+      "avg_sarcasm": 0.0021799614040123316,
+      "avg_self_deprecation": 0.0,
+      "contestant_avg_age": 0.283384534108424,
+      "contestant_prop_female": 0.08894966241240398,
+      "contestant_prop_comedians": 0.13849445718153897,
+      "contestant_nationality_diversity": 0.04462454221702039,
+      "contestant_avg_experience": 0.1669272227878058
+    },
+    "hist4_pct": {
+      "avg_anger": 0.05028697362924106,
+      "avg_awkwardness": 0.0,
+      "avg_frustration_or_despair": 0.0,
+      "avg_humor": 0.002166845720969146,
+      "avg_joy_or_excitement": 0.0,
+      "avg_sarcasm": 0.050446592893570674,
+      "avg_self_deprecation": 0.05097878871874251,
+      "contestant_avg_age": 0.2784939117226757,
+      "contestant_prop_female": 0.18592595969558356,
+      "contestant_prop_comedians": 0.22341036222584787,
+      "contestant_nationality_diversity": 0.04703178908312822,
+      "contestant_avg_experience": 0.12970253118141484
+    },
+    "hist5_pct": {
+      "avg_anger": 0.0,
+      "avg_awkwardness": 0.009995376806915868,
+      "avg_frustration_or_despair": 0.0,
+      "avg_humor": 0.10814872471379688,
+      "avg_joy_or_excitement": 0.0,
+      "avg_sarcasm": 0.06053747832945566,
+      "avg_self_deprecation": 0.03159745361056476,
+      "contestant_avg_age": 0.048538369294020445,
+      "contestant_prop_female": 0.06691045552718822,
+      "contestant_prop_comedians": 0.21119760848953906,
+      "contestant_nationality_diversity": 0.09929187153081886,
+      "contestant_avg_experience": 0.05590143380203383
+    },
+    "hist6_pct": {
+      "avg_anger": 0.021660572448090942,
+      "avg_awkwardness": 0.05236680423879525,
+      "avg_frustration_or_despair": 0.0,
+      "avg_humor": 0.08126248624896526,
+      "avg_joy_or_excitement": 0.0,
+      "avg_sarcasm": 0.02669130030448974,
+      "avg_self_deprecation": 0.09681649772054257,
+      "contestant_avg_age": 0.17416021436297502,
+      "contestant_prop_female": 0.10562393269696169,
+      "contestant_prop_comedians": 0.13068937133549818,
+      "contestant_nationality_diversity": 0.006835541875704898,
+      "contestant_avg_experience": 0.03157076080133825
+    },
+    "hist7_pct": {
+      "avg_anger": 0.13138801925922428,
+      "avg_awkwardness": 0.1347023766081885,
+      "avg_frustration_or_despair": 0.0,
+      "avg_humor": 0.0,
+      "avg_joy_or_excitement": 0.0,
+      "avg_sarcasm": 0.0,
+      "avg_self_deprecation": 0.0,
+      "contestant_avg_age": 0.261664200543561,
+      "contestant_prop_female": 0.06444799964033421,
+      "contestant_prop_comedians": 0.21933770104066763,
+      "contestant_nationality_diversity": 0.1409916215995879,
+      "contestant_avg_experience": 0.18922378010057228
+    },
+    "hist8_pct": {
+      "avg_anger": 9.414817945252452e-06,
+      "avg_awkwardness": 0.0,
+      "avg_frustration_or_despair": 0.05953323289781398,
+      "avg_humor": 0.019820660678024016,
+      "avg_joy_or_excitement": 0.02430572351113547,
+      "avg_sarcasm": 0.01791885269886384,
+      "avg_self_deprecation": 0.04557333303112321,
+      "contestant_avg_age": 0.02400486325300255,
+      "contestant_prop_female": 0.06191670380199321,
+      "contestant_prop_comedians": 0.001708468709824551,
+      "contestant_nationality_diversity": 0.028441673276152324,
+      "contestant_avg_experience": 0.08661316350783554
+    },
+    "hist9_pct": {
+      "avg_anger": 0.0,
+      "avg_awkwardness": 0.05072623462302417,
+      "avg_frustration_or_despair": 0.0077318893537872135,
+      "avg_humor": 0.0,
+      "avg_joy_or_excitement": 0.05351437444005014,
+      "avg_sarcasm": 0.0,
+      "avg_self_deprecation": 0.13709359253869025,
+      "contestant_avg_age": 0.23425777778686818,
+      "contestant_prop_female": 0.07819583749846015,
+      "contestant_prop_comedians": 0.1828465424716348,
+      "contestant_nationality_diversity": 0.0760140764388979,
+      "contestant_avg_experience": 0.14897569883254702
+    },
+    "hist10_pct": {
+      "avg_anger": 0.023576784791403682,
+      "avg_awkwardness": 0.0,
+      "avg_frustration_or_despair": 0.027450558137837477,
+      "avg_humor": 0.07241776881035156,
+      "avg_joy_or_excitement": 0.0,
+      "avg_sarcasm": 0.09033172788770383,
+      "avg_self_deprecation": 0.012890342724208192,
+      "contestant_avg_age": 0.29621466781941086,
+      "contestant_prop_female": 0.09008952573909923,
+      "contestant_prop_comedians": 0.26507845921536566,
+      "contestant_nationality_diversity": 0.140837315887689,
+      "contestant_avg_experience": 0.2891736961553999
+    }
+  },
+  "high_correlation_pairs": [
+    {
+      "feature1": "avg_frustration_or_despair",
+      "feature2": "avg_joy_or_excitement",
+      "correlation": 0.9635563307166279
+    }
+  ],
+  "summary": {
+    "total_features": 12,
+    "episodes": 154,
+    "targets": 10
+  }
+}
