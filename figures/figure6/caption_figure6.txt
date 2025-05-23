@@ -1,0 +1,15 @@
+Figure 6: The Geometry of Taskmaster Scoring Patterns
+
+This scatter plot reveals the mathematical structure underlying Taskmaster's 5-contestant scoring system. Each point represents a possible way to distribute scores (0-5) among contestants, positioned by mean score (x-axis) and variance (y-axis), with color indicating skew. Black circles show patterns actually used in the show, sized by frequency.
+
+The visualization demonstrates that despite 252 theoretically possible scoring patterns, the show uses only 98 (38.9%) in practice. The most common pattern is the perfect spread {1,2,3,4,5} (353 instances), reflecting the show's preference for clear ranking differentiation. 
+
+Key patterns include:
+- {1,2,3,4,5}: Perfect ranking spread (353 times, mean=3.00)
+- {0,2,3,4,5}: One failure, others ranked (35 times, mean=2.80) 
+- {0,0,0,0,5}: Dramatic failure/success split (22 times, mean=1.00)
+- {2,2,3,4,5}: Tied low scores (27 times, mean=3.20)
+
+The geometric constraints reveal the show's implicit scoring philosophy: favoring patterns with moderate variance that preserve contestant ranking while avoiding extreme skew. Points without black circles represent valid distributions never used, highlighting the systematic nature of Taskmaster's scoring decisions.
+
+Color scale: Red indicates positive skew (more low scores), blue indicates negative skew (more high scores), white represents symmetric distributions. Circle size is proportional to frequency of use in the dataset. 
