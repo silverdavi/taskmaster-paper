@@ -1,107 +1,176 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.colors as mcolors
-from matplotlib.offsetbox import OffsetImage, AnnotationBbox
-from PIL import Image, ImageDraw
-import seaborn as sns
-from scipy.stats import gaussian_kde
+from PIL import Image, ImageDraw, ImageFilter
 import os
-from process_figure4_data import get_uk_density_data, get_international_contestants, get_contestant_counts_by_country, get_project_root
+import sys
+from pathlib import Path
 
-def geo_to_pixel(lat, lon, matrix):
-    """Convert latitude and longitude to pixel coordinates"""
-    x = matrix[0, 0] * lon + matrix[0, 1] * lat + matrix[0, 2]
-    y = matrix[1, 0] * lon + matrix[1, 1] * lat + matrix[1, 2]
-    return int(x), int(y)
+# Import the plotting configuration utilities
+sys.path.append(str(Path(__file__).parent.parent.parent))
+from config.plot_utils import load_config, apply_plot_style
 
-def is_within_map(lat, lon, lat_min, lat_max, lon_min, lon_max):
-    """Check if coordinates are within the map bounds"""
-    return lat_min <= lat <= lat_max and lon_min <= lon <= lon_max
+def create_heat_kernel(size, intensity=1.0, sigma=0.2):
+    """Create a heat kernel for the heatmap
+    
+    Args:
+        size: Size of the kernel (should be odd)
+        intensity: Overall intensity multiplier
+        sigma: Controls the spread of the kernel (higher = wider heat spot)
+    """
+    # Create a radial gradient
+    x = np.linspace(-1, 1, size)
+    y = np.linspace(-1, 1, size)
+    xx, yy = np.meshgrid(x, y)
+    
+    # Calculate radial distance from center
+    r = np.sqrt(xx**2 + yy**2)
+    
+    # Create gaussian kernel
+    kernel = np.exp(-(r**2) / (2 * sigma**2))
+    
+    # Normalize and apply intensity
+    kernel = kernel / kernel.max() * intensity
+    
+    return kernel
+
+def get_project_root():
+    """Get the absolute path to the project root directory"""
+    # Assuming we're in figures/figure4
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    # Go up two levels to get to project root
+    project_root = os.path.dirname(os.path.dirname(current_dir))
+    return project_root
 
 def create_figure4():
+    """Create Figure 4 using pre-processed data from CSV files"""
     # Get project root path
     project_root = get_project_root()
+    figure_dir = os.path.join(project_root, "figures", "figure4")
+    
+    # Load configuration
+    config = load_config()
+    
+    # Load the pre-processed data
+    try:
+        # Load the transform info
+        transform_info = pd.read_csv(os.path.join(figure_dir, "transform_info.csv"))
+        if len(transform_info) == 0:
+            raise ValueError("Transform info is empty")
+            
+        # Load the grid cell data
+        cell_data = pd.read_csv(os.path.join(figure_dir, "grid_cell_data.csv"))
+        if len(cell_data) == 0:
+            raise ValueError("Cell data is empty")
+            
+        # Load the country counts
+        country_counts = pd.read_csv(os.path.join(figure_dir, "country_counts.csv"))
+        if len(country_counts) == 0:
+            raise ValueError("Country counts are empty")
+            
+    except Exception as e:
+        print(f"Error loading pre-processed data: {e}")
+        print("Please run process_figure4_data.py first to generate the required CSV files")
+        sys.exit(1)
     
     # Load the background map image
-    img_path = os.path.join(project_root, "figures", "figure4", "British_Isles_map_showing_UK,_Republic_of_Ireland,_and_historic_counties.svg.png")
+    img_path = os.path.join(figure_dir, "British_Isles_map_showing_UK,_Republic_of_Ireland,_and_historic_counties.svg.png")
     img = Image.open(img_path).convert("RGBA")
     img_width, img_height = img.size
     
-    # Define geographic bounds of the image manually (as provided)
-    lat_min, lat_max = 49.5, 61.0
-    lon_min, lon_max = -11.0, 2.0
+    # Create empty heat map layer (transparent)
+    heatmap = np.zeros((img_height, img_width, 4), dtype=np.uint8)
     
-    # Create affine matrix for lat/lon to pixel transform
-    affine_matrix = np.array([
-        [img_width / (lon_max - lon_min), 0, -lon_min * img_width / (lon_max - lon_min)],
-        [0, -img_height / (lat_max - lat_min), lat_max * img_height / (lat_max - lat_min)]
-    ])
+    # Define base kernel size
+    base_kernel_size = 61  # Base size of the heat spot (odd number)
     
-    # Get data for UK/Ireland contestants
-    uk_data = get_uk_density_data()
+    # Define heat colors (yellow to red gradient)
+    color_map = plt.cm.YlOrRd(np.linspace(0, 1, 256))
+    color_map = (color_map[:, :3] * 255).astype(np.uint8)
     
-    # Get data for international contestants
-    intl_data = get_international_contestants()
+    # Process each grid cell
+    for _, cell in cell_data.iterrows():
+        # Get cell center coordinates
+        cell_center_x = int(cell['center_x'])
+        cell_center_y = int(cell['center_y'])
+        count = int(cell['count'])
+        
+        # Scale kernel intensity based on count (logarithmic scaling)
+        intensity_factor = 0.7 + 0.3 * np.log1p(count) / np.log1p(3)
+        intensity_factor = min(intensity_factor, 1.5)  # Cap the maximum intensity
+        
+        # Scale kernel size based on count (logarithmic scaling)
+        # Larger counts get larger heat spots
+        size_factor = 1.0 + 0.4 * np.log1p(count - 1) / np.log1p(5)  # No increase for count=1
+        kernel_size = int(base_kernel_size * size_factor)
+        if kernel_size % 2 == 0:  # Ensure odd size
+            kernel_size += 1
+            
+        # Increase sigma (spread) for higher counts
+        sigma_factor = 0.2 + 0.1 * np.log1p(count - 1) / np.log1p(5)  # No increase for count=1
+        
+        # Create kernel with appropriate size and intensity
+        kernel = create_heat_kernel(kernel_size, intensity=intensity_factor, sigma=sigma_factor)
+        
+        # Skip if too close to edge
+        half_size = kernel_size // 2
+        if (cell_center_x < half_size or cell_center_x >= img_width - half_size or 
+            cell_center_y < half_size or cell_center_y >= img_height - half_size):
+            continue
+            
+        # Place heat kernel at this location
+        x_min, x_max = cell_center_x - half_size, cell_center_x + half_size + 1
+        y_min, y_max = cell_center_y - half_size, cell_center_y + half_size + 1
+        
+        # Apply kernel to alpha channel
+        for i in range(y_min, y_max):
+            for j in range(x_min, x_max):
+                if 0 <= i < img_height and 0 <= j < img_width:
+                    kernel_val = kernel[i - y_min, j - x_min]
+                    
+                    # Apply color based on kernel value
+                    color_idx = int(min(kernel_val, 1.0) * 255)
+                    if color_idx > 0:
+                        # Blend colors if already set
+                        alpha = int(min(kernel_val * 200, 255))  # Cap at 255 (max for uint8)
+                        
+                        # Only override if new value is more intense
+                        if alpha > heatmap[i, j, 3]:
+                            heatmap[i, j, 0] = color_map[color_idx, 0]  # R
+                            heatmap[i, j, 1] = color_map[color_idx, 1]  # G
+                            heatmap[i, j, 2] = color_map[color_idx, 2]  # B
+                            heatmap[i, j, 3] = alpha  # A
     
-    # Get country counts for the legend
-    country_counts = get_contestant_counts_by_country()
+    # Convert numpy array to PIL Image
+    heatmap_img = Image.fromarray(heatmap)
     
-    # Create figure and axis
+    # Apply slight blur for smoother appearance
+    heatmap_img = heatmap_img.filter(ImageFilter.GaussianBlur(radius=1))
+    
+    # Composite heatmap over background
+    result_img = Image.alpha_composite(img, heatmap_img)
+    
+    # Create figure and axis for matplotlib (for legend and annotations)
+    # Use a fixed figure size for this specific visualization
     fig, ax = plt.subplots(figsize=(12, 15))
     
-    # Display the map image
-    ax.imshow(img)
+    # Apply the plot style but don't use it for this specific figure
+    # We'll just load the config for DPI settings
+    
+    # Display the composited image
+    ax.imshow(result_img)
     ax.axis('off')
     
-    # Extract coordinates for UK/Ireland contestants
-    uk_lats = uk_data['Latitude'].values
-    uk_lons = uk_data['Longitude'].values
+    # Sort countries by count (descending)
+    sorted_countries = country_counts.sort_values('Count', ascending=False)
     
-    # Convert UK coordinates to pixel values
-    uk_pixels = []
-    for lat, lon in zip(uk_lats, uk_lons):
-        if is_within_map(lat, lon, lat_min, lat_max, lon_min, lon_max):
-            x, y = geo_to_pixel(lat, lon, affine_matrix)
-            uk_pixels.append((x, y))
-    
-    uk_x, uk_y = zip(*uk_pixels) if uk_pixels else ([], [])
-    
-    # Create a meshgrid covering the map for the heatmap
-    x_grid = np.linspace(0, img_width, 200)  # Higher resolution grid
-    y_grid = np.linspace(0, img_height, 250)
-    xx, yy = np.meshgrid(x_grid, y_grid)
-    
-    # Stack coordinates for density calculation
-    positions = np.vstack([xx.ravel(), yy.ravel()])
-    values = np.vstack([uk_x, uk_y])
-    
-    # Compute kernel density estimate with a smaller bandwidth to make single points more visible
-    kernel = gaussian_kde(values, bw_method=0.08)  # Smaller bandwidth makes single points more visible
-    density = kernel(positions).reshape(xx.shape)
-    
-    # Plot density heatmap
-    heatmap = ax.pcolormesh(
-        xx, yy, density,
-        cmap='Blues',
-        alpha=0.5,
-        shading='gouraud',  # Smooth shading
-        zorder=2
-    )
-    
-    # Plot density contour
-    contour = ax.contour(
-        xx, yy, density,
-        levels=10,
-        colors='steelblue',
-        linewidths=0.8,
-        alpha=0.7,
-        zorder=3
-    )
+    # Calculate required height for the legend box
+    # Each country entry takes about 30 pixels of height, plus margins
+    num_countries = len(sorted_countries)
     
     # Create a box for country listing in top-left corner
-    countries_box_width = img_width * 0.3
-    countries_box_height = img_height * 0.25  # Increased height to accommodate UK
+    countries_box_width = img_width * 0.25
+    countries_box_height = 60 + (num_countries * 30)  # Height based on number of countries
     countries_box_x = img_width * 0.05
     countries_box_y = img_height * 0.05
     
@@ -110,82 +179,67 @@ def create_figure4():
         (countries_box_x, countries_box_y), 
         countries_box_width, 
         countries_box_height, 
-        facecolor='lightgray', 
+        facecolor='white', 
         alpha=0.8,
         edgecolor='black', 
         zorder=5
     )
     ax.add_patch(rect)
     
-    # Add title for countries box
+    # Add title for countries box with fixed size
     ax.text(
         countries_box_x + countries_box_width/2, 
-        countries_box_y + 20, 
+        countries_box_y + 33, 
         'Countries',
         ha='center',
-        fontsize=14,
+        fontsize=14,  # Fixed size for this visualization
         fontweight='bold',
         zorder=6
     )
     
-    # Prepare combined country data with counts
-    # First add the UK/Ireland counts
-    uk_countries = uk_data['Country'].value_counts().to_dict()
-    
-    # Group international contestants by country
-    intl_grouped = intl_data.groupby('Country').size().to_dict()
-    
-    # Combine all country data
-    all_countries = {**uk_countries, **intl_grouped}
-    
-    # Sort countries by count (descending)
-    sorted_countries = sorted(all_countries.items(), key=lambda x: x[1], reverse=True)
-    
     # Place circles for each country
     y_offset = 50
-    for i, (country, count) in enumerate(sorted_countries):
+    for i, (_, row) in enumerate(sorted_countries.iterrows()):
+        country = row['Country']
+        count = row['Count']
+        
+        # Only include countries with data
+        if pd.isna(country) or pd.isna(count):
+            continue
+            
         # Calculate position in the countries box
-        x_pos = countries_box_x + countries_box_width * 0.2
+        x_pos = countries_box_x + 20
         y_pos = countries_box_y + y_offset + i * 30
         
         # Use different colors for UK/Ireland vs international
-        color = 'steelblue' if country in ['England', 'Scotland', 'Wales', 'Ireland', 'Northern Ireland'] else 'darkgoldenrod'
+        color = 'darkred' if country in ['England', 'Scotland', 'Wales', 'Ireland', 'Northern Ireland'] else 'darkorange'
         
         # Draw circle
         circle = plt.Circle(
             (x_pos, y_pos), 
-            10, 
+            8, 
             color=color,
             alpha=0.8,
             zorder=6
         )
         ax.add_patch(circle)
         
-        # Add country name and count
+        # Add country name and count with fixed font size
         ax.text(
-            x_pos + 20, 
+            x_pos + 15, 
             y_pos, 
-            f"{country} ({count})",
+            f"{country} ({int(count)})",
             va='center',
-            fontsize=12,
+            fontsize=11,  # Fixed size for this visualization
             zorder=6
         )
     
-    # Add title and footer
-    plt.suptitle(
-        'Figure 4: Geographic Origins of Taskmaster Contestants',
-        fontsize=18,
-        fontweight='bold',
-        y=0.95
-    )
+    # No title - let the figure speak for itself
     
-    # Add footnote about missing contestants
-    footnote = "Note: Map shows birthplaces of contestants. Emma Sidi (USA) has no specific coordinates available."
-    plt.figtext(0.5, 0.01, footnote, ha='center', fontsize=10)
-    
-    # Save the figure
-    plt.savefig(os.path.join(project_root, "figures", "figure4", "figure4.png"), dpi=300, bbox_inches='tight')
-    plt.savefig(os.path.join(project_root, "figures", "figure4", "figure4.pdf"), bbox_inches='tight')
+    # Save the figure with configured DPI
+    dpi = config['global'].get('dpi', 300)
+    plt.savefig(os.path.join(figure_dir, "figure4.png"), dpi=dpi, bbox_inches='tight')
+    plt.savefig(os.path.join(figure_dir, "figure4.pdf"), bbox_inches='tight')
     
     plt.close()
     

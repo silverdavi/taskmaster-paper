@@ -1,0 +1,46 @@
+grid_cell_x,grid_cell_y,center_x,center_y,count,country,contestant_ids,contestant_names
+72.0,178.0,725.0,1785.0,1,England,38,Lou Sanders
+105.0,174.0,1055.0,1745.0,1,England,46,Daisy May Cooper
+76.0,93.0,765.0,935.0,1,Scotland,67,Fern Brady
+103.0,145.0,1035.0,1455.0,1,England,26,Alice Levine
+121.0,167.0,1215.0,1675.0,1,England,10,Richard Osman
+96.0,129.0,965.0,1295.0,1,England,32,Jessica Knappett
+89.0,131.0,895.0,1315.0,1,England,85,Steve Pemberton
+90.0,134.0,905.0,1345.0,1,England,84,Sophie Willan
+50.0,142.0,505.0,1425.0,1,Ireland,66,Dara Ó Briain
+114.0,124.0,1145.0,1245.0,1,England,90,Rosie Jones
+88.0,171.0,885.0,1715.0,3,England,"82,23,29","John Robins,Mark Watson,Russell Howard"
+115.0,170.0,1155.0,1705.0,29,England,"89,7,3,30,51,43,79,15,13,64,42,2,60,86,48,27,52,6,87,65,14,74,33,80,76,18,24,68,20","Jack Dee,Joe Wilkinson,Roisin Conaty,Tim Vine,Charlotte Ritchie,Jo Brand,Sue Perkins,Sara Pascoe,Paul Chowdhry,Judi Love,Ed Gamble,Josh Widdicombe,Victoria Coren Mitchell,Andy Zaltzman,Katherine Parkinson,Asim Chaudhry,Jamali Maddix,Doc Brown,Babatunde Aléshé,Sophie Duker,Rob Beckett,Kiell Smith-Bynoe,Kerry Godliman,Susan Wokoma,Julian Clary,Lolly Adefope,Nish Kumar,John Kearns,Noel Fielding"
+118.0,157.0,1185.0,1575.0,1,England,5,Tim Key
+69.0,165.0,695.0,1655.0,1,Wales,35,Rhod Gilbert
+43.0,128.0,435.0,1285.0,1,Ireland,61,Ardal O'Hanlon
+122.0,165.0,1225.0,1655.0,1,England,37,Joe Thomas
+27.0,135.0,275.0,1355.0,1,Ireland,81,Joanne McNally
+100.0,154.0,1005.0,1545.0,1,England,58,Guz Khan
+115.0,177.0,1155.0,1775.0,1,England,4,Romesh Ranganathan
+100.0,145.0,1005.0,1455.0,1,England,69,Munya Chawawa
+81.0,92.0,815.0,925.0,1,Scotland,36,Iain Stirling
+114.0,173.0,1145.0,1735.0,1,England,19,Mel Giedroyc
+92.0,164.0,925.0,1645.0,1,England,62,Bridget Christie
+96.0,153.0,965.0,1535.0,1,England,17,Joe Lycett
+109.0,154.0,1095.0,1545.0,2,England,"16,31","Hugh Dennis,James Acaster"
+41.0,143.0,415.0,1435.0,1,Ireland,21,Aisling Bea
+86.0,126.0,865.0,1265.0,1,England,8,Jon Richardson
+100.0,130.0,1005.0,1305.0,1,England,83,Nick Mohammed
+84.0,137.0,845.0,1375.0,1,England,28,Liza Tarbuck
+117.0,167.0,1175.0,1675.0,1,England,56,Alan Davies
+112.0,163.0,1125.0,1635.0,1,England,39,Paul Sinha
+103.0,116.0,1035.0,1165.0,1,England,22,Bob Mortimer
+82.0,141.0,825.0,1415.0,1,Wales,40,Sian Gibson
+103.0,166.0,1035.0,1665.0,1,England,54,Mike Wozniak
+108.0,127.0,1085.0,1275.0,1,England,50,Richard Herring
+70.0,94.0,705.0,945.0,1,Scotland,71,Frankie Boyle
+80.0,169.0,805.0,1695.0,1,Wales,44,Katy Wix
+101.0,108.0,1015.0,1085.0,2,England,"63,70","Chris Ramsey,Sarah Millican"
+84.0,133.0,845.0,1335.0,1,England,53,Lee Mack
+86.0,136.0,865.0,1365.0,1,England,47,Johnny Vegas
+93.0,147.0,935.0,1475.0,1,England,12,Dave Gorman
+108.0,162.0,1085.0,1625.0,1,England,11,Al Murray
+93.0,144.0,935.0,1445.0,1,England,34,Phil Wang
+61.0,193.0,615.0,1935.0,1,England,77,Lucy Beaumont
+95.0,152.0,955.0,1525.0,1,England,1,Frank Skinner
