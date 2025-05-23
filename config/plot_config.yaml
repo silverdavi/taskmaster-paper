@@ -9,7 +9,7 @@ global:
 
 # Color schemes
 colors:
-  series_colormap: "cmc.hawaii"  # Using Fabio Crameri's perceptual colormap
+  series_colormap: "turbo"  # Using turbo colormap (modern jet replacement)
   archetype_palette: "Set2"
   task_type_palette: "Paired"
   highlight:

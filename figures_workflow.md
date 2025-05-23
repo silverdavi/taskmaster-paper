@@ -8,15 +8,17 @@ taskmaster_paper/
 │   ├── plot_config.yaml                # Main configuration file for all plots
 │   └── plot_utils.py                   # Shared utility functions for plotting
 ├── data/
-│   └── raw/                            # Original CSV files
-│       ├── contestants.csv
-│       ├── scores.csv
-│       ├── tasks.csv
-│       ├── sentiment.csv
-│       ├── imdb_ratings.csv
-│       ├── taskmaster_histograms_corrected.csv
-│       ├── taskmaster_UK_tasks.csv
-│       └── taskmaster_uk_episodes.csv
+│   ├── raw/                            # Original CSV files
+│   │   ├── contestants.csv
+│   │   ├── scores.csv
+│   │   ├── tasks.csv
+│   │   ├── sentiment.csv
+│   │   ├── imdb_ratings.csv
+│   │   ├── taskmaster_histograms_corrected.csv
+│   │   ├── taskmaster_UK_tasks.csv
+│   │   └── taskmaster_uk_episodes.csv
+│   └── processed/                      # Processed data files
+│       └── scores_by_series/           # Score data split by series
 ├── figures/
 │   ├── figure1/                        # Series-Level IMDb Ratings
 │   │   ├── process_data_figure1.py     # Data processing script
@@ -33,7 +35,31 @@ taskmaster_paper/
 │   │   ├── process_data_figure2.py
 │   │   ├── plot_figure2.py
 │   │   └── ...
-│   └── ...
+│   ├── figure3/                        # Task Type Landscape
+│   │   ├── process_data_figure3.py
+│   │   ├── plot_figure3.py
+│   │   └── ...
+│   ├── figure4/                        # Contestant Geography and Demographics
+│   │   ├── process_data_figure4.py
+│   │   ├── plot_figure4.py
+│   │   ├── britain_map.png
+│   │   └── ...
+│   ├── figure5/                        # Contestant Dynamics and Clustering
+│   │   ├── process_data_figure5.py
+│   │   ├── plot_figure5.py
+│   │   └── ...
+│   ├── figure6/                        # Task Scoring Patterns
+│   │   ├── process_data_figure6.py
+│   │   ├── plot_figure6.py
+│   │   └── ...
+│   ├── figure7/                        # Sentiment Profiles
+│   │   ├── process_data_figure7.py
+│   │   ├── plot_figure7.py
+│   │   └── ...
+│   └── figure8/                        # Synthesis of All Correlations
+│       ├── process_data_figure8.py
+│       ├── plot_figure8.py
+│       └── ...
 └── notebooks/                          # Optional exploratory notebooks
     ├── explore_figure1.ipynb
     └── ...
@@ -159,60 +185,75 @@ This script:
   - Heatmap of location vs. task type (subplot D)
   - Generate output: `figure3_output.pdf`, `caption.txt`
 
-### Figure 4: Task Scoring Patterns
+### Figure 4: Contestant Geography and Demographics
+
+- **Data Processing**:
+  - Load `contestants.csv`
+  - Extract geographical information (birthplaces)
+  - Calculate demographic distributions
+  - Process spatial density of contestants across regions
+  - Save processed data directly to figure4 folder
+  
+- **Plotting**:
+  - Geographical map of contestant birthplaces with heatmap overlay (subplot A)
+  - Country/region distribution bar chart (subplot B)
+  - Demographic summary charts (age, gender, profession) (subplot C)
+  - Generate output: `figure4_output.pdf`, `caption.txt`
+
+### Figure 5: Contestant Dynamics and Clustering
+
+- **Data Processing**:
+  - Load `contestants.csv` and `scores.csv`
+  - Calculate average scores and performance metrics per contestant
+  - Perform clustering analysis on contestant archetypes
+  - Extract score progression for selected series
+  - Save processed data directly to figure5 folder
+  
+- **Plotting**:
+  - Contestant clusters visualization (subplot A)
+  - Sorted average scores by archetype (subplot B)
+  - Line plots of score progression (subplot C)
+  - Generate output: `figure5_output.pdf`, `caption.txt`
+
+### Figure 6: Task Scoring Patterns
 
 - **Data Processing**:
   - Load `scores.csv`
   - Calculate score distributions
   - Compute mean and variance of scores per series
-  - Save processed data directly to figure4 folder
+  - Save processed data directly to figure6 folder
   
 - **Plotting**:
   - Histogram of individual scores (subplot A)
   - Scatter plot of mean vs. variance by series (subplot B)
-  - Generate output: `figure4_output.pdf`, `caption.txt`
+  - Generate output: `figure6_output.pdf`, `caption.txt`
 
-### Figure 5: Contestant Demographics and Dynamics
-
-- **Data Processing**:
-  - Load `contestants.csv` and `scores.csv`
-  - Analyze demographic distributions
-  - Calculate average scores per contestant
-  - Extract score progression for Series 7
-  - Save processed data directly to figure5 folder
-  
-- **Plotting**:
-  - Demographic summary plots (subplot A)
-  - Sorted average scores (subplot B)
-  - Line plots of score progression (subplot C)
-  - Generate output: `figure5_output.pdf`, `caption.txt`
-
-### Figure 6: Sentiment Profiles
+### Figure 7: Sentiment Profiles
 
 - **Data Processing**:
   - Load `sentiment.csv`
   - Analyze sentiment trends over series
   - Calculate correlation matrix of sentiments
-  - Save processed data directly to figure6 folder
+  - Save processed data directly to figure7 folder
   
 - **Plotting**:
   - Line plots of key sentiments (subplot A)
   - Correlation matrix or scatter plots (subplot B)
-  - Generate output: `figure6_output.pdf`, `caption.txt`
+  - Generate output: `figure7_output.pdf`, `caption.txt`
 
-### Figure 7: Synthesis of All Correlations
+### Figure 8: Synthesis of All Correlations
 
 - **Data Processing**:
   - Merge data from all sources
   - Calculate correlations between key variables
   - Perform MDS on task composition
-  - Save processed data directly to figure7 folder
+  - Save processed data directly to figure8 folder
   
 - **Plotting**:
   - Boxplots of scores by task type/location (subplot A)
   - Scatter plots of sentiment vs. metrics (subplot B)
   - MDS plot and correlation table (subplot C)
-  - Generate output: `figure7_output.pdf`, `caption.txt`
+  - Generate output: `figure8_output.pdf`, `caption.txt`
 
 ## 6. Execution Strategy
 

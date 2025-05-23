@@ -184,7 +184,7 @@ def create_series_rating_pca_visualization():
     
     # Add grid if enabled in config
     if config['global'].get('grid', True):
-        plt.grid(True, linestyle='--', alpha=0.5, zorder=1)
+    plt.grid(True, linestyle='--', alpha=0.5, zorder=1)
     
     # Add origin lines
     plt.axhline(y=0, color='#222222', linestyle='-', alpha=0.4, zorder=1, linewidth=1.5)
