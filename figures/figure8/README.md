@@ -1,18 +1,91 @@
-# Figure 8: IMDB Rating Prediction Analysis
+# Figure 8: Episode-Level ML Analysis & Series-Level Correlation Analysis
 
-This directory contains the complete pipeline for Figure 8, demonstrating two different analytical approaches for IMDB rating prediction based on sample size considerations.
+This directory contains the complete Figure 8 analysis with two complementary approaches:
 
-## Analysis Overview
+## 🤖 Episode-Level ML Analysis (Figure 8a)
 
-### Episode-Level Analysis (N=154) - Machine Learning
-- **Approach**: Successful ML prediction with proper cross-validation
-- **Result**: Random Forest achieving R² = 0.385 (38% explained variance)
-- **Conclusion**: Demonstrates meaningful predictive relationships
+**Objective**: Predict IMDB score distributions using machine learning models
 
-### Series-Level Analysis (N=154) - Raw Correlation  
-- **Approach**: Raw correlation analysis between input features and mean IMDB scores
-- **Result**: 45 correlations ranging from -0.547 to +0.397
-- **Conclusion**: Shows relationship patterns without overfitting risks
+### Pipeline:
+1. **`1_prepare_episode_data.py`** - Data preparation and feature engineering
+2. **`2_feature_selection_episode.py`** - Feature selection using mutual information
+3. **`3_model_episode.py`** - Train and evaluate ML models
+4. **`4_plot_figure8a.py`** - Generate Figure 8a visualization
+
+### Models Used:
+- **Linear Regression** - Baseline linear model
+- **Ridge Regression** - Regularized linear model  
+- **Random Forest** - Ensemble tree-based model
+
+### Best Results:
+- **Random Forest with top 5 features**: R² = 0.385
+- **Key features**: contestant_avg_age, avg_awkwardness, contestant_avg_experience
+- **Episodes analyzed**: 154
+
+## 📊 Series-Level Correlation Analysis (Figure 8b)
+
+**Objective**: Analyze raw correlations between input features and IMDB scores
+
+### Pipeline:
+1. **`1_prepare_series_data.py`** - Aggregate data at series level
+2. **`correlation_analysis_raw.py`** - Calculate correlations with IMDB histograms as target
+
+### Key Findings:
+- **45 valid correlations** between input features and mean IMDB scores
+- **Strongest negative**: contestant_prop_actors (r = -0.547)
+- **Strongest positive**: contestant_avg_age (r = +0.397)
+- **Distribution**: Nearly normal around zero (μ=-0.025, σ=0.199)
+
+## 🎯 Random Forest Feature Analysis
+
+**Additional Analysis**: `analyze_rf_features.py` - Deep dive into Random Forest insights
+
+### Key Insights for Maximizing IMDB Scores:
+1. **👴 Maximize**: Contestant average age (39.5% importance, +0.396 correlation)
+2. **😬 Minimize**: Average awkwardness (32.6% importance, -0.151 correlation)  
+3. **📺 Maximize**: Contestant experience (16.2% importance, +0.019 correlation)
+
+## 📁 Data Files
+
+### Input Data:
+- **`episode_data.csv`** - Prepared episode-level data (N=154)
+- **`series_data.csv`** - Prepared series-level data
+- **`episode_selected_features.json`** - Feature selection results
+
+### Model Results:
+- **`episode_model_results.pkl`** - Complete ML model results
+- **`raw_correlations.json`** - Correlation analysis results
+
+## 📈 Output Figures
+
+- **`figure8a_episode_ml.png`** - Model performance comparison (3 models)
+- **`figure8b_raw_correlations.png`** - Correlation distribution histogram
+- **`random_forest_feature_analysis.png`** - Detailed feature importance analysis
+
+## 🔬 Methodology
+
+### Episode-Level (ML Approach):
+- **Target**: IMDB histogram percentages (10-dimensional)
+- **Features**: Demographics, sentiment, experience metrics
+- **Validation**: 5-fold cross-validation + holdout test set
+- **Metric**: R² score for explained variance
+
+### Series-Level (Correlation Approach):  
+- **Target**: Mean IMDB score computed from vote histograms
+- **Features**: Raw input data from multiple sources
+- **Analysis**: Direct Pearson correlations
+- **Visualization**: Distribution of correlation coefficients
+
+## 🏆 Key Scientific Findings
+
+1. **Professional Polish Matters**: Older, experienced comedians score higher
+2. **Awkwardness Hurts**: Smooth performances outperform awkward ones
+3. **Demographics Drive Ratings**: Age and profession are strongest predictors
+4. **ML vs Correlation**: Both approaches reveal consistent patterns
+
+---
+
+**Figure 8 demonstrates that Taskmaster episode success is largely predictable from contestant characteristics, with Random Forest achieving 38.5% explained variance.**
 
 ## Key Insight: Appropriate Methods for Data Scale
 

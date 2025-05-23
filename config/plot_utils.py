@@ -13,6 +13,7 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 import json
+import cmcrameri.cm as cmc  # Import Fabio Crameri's colormaps
 
 def load_config():
     """Load configuration from plot_config.yaml"""

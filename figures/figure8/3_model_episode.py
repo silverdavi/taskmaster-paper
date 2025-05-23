@@ -10,7 +10,6 @@ import json
 import pickle
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression, Ridge
-from sklearn.neural_network import MLPRegressor  
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
@@ -80,13 +79,6 @@ def train_models(X, y, feature_names):
             min_samples_split=5,
             min_samples_leaf=2,
             random_state=RANDOM_STATE
-        ),
-        'Neural Network': MLPRegressor(
-            hidden_layer_sizes=(50, 25),
-            max_iter=1000,
-            random_state=RANDOM_STATE,
-            early_stopping=True,
-            validation_fraction=0.2
         )
     }
     
@@ -98,7 +90,7 @@ def train_models(X, y, feature_names):
     print(f"  Training set: {X_train.shape[0]} episodes")
     print(f"  Test set: {X_test.shape[0]} episodes")
     
-    # Scale features for neural network
+    # Scale features for consistency (though only Ridge really benefits)
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)
@@ -108,8 +100,8 @@ def train_models(X, y, feature_names):
     for model_name, model in models.items():
         print(f"\n  🔸 Training {model_name}...")
         
-        # Use scaled features for Neural Network, original for others
-        if model_name == 'Neural Network':
+        # Use scaled features for Ridge, original for Random Forest and Linear Regression
+        if model_name == 'Ridge Regression':
             X_train_model = X_train_scaled
             X_test_model = X_test_scaled
         else:
