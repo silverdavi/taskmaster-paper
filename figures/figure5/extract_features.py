@@ -195,6 +195,12 @@ def extract_all_contestant_features():
             }
             contestant_row.update(features)
             
+            # Special case for Series 1: Josh Widdicombe (ID 2) won, not Frank Skinner (ID 1)
+            if i == 1 and contestant_id == 2:  # Josh Widdicombe
+                contestant_row['last_rank'] = 1
+            elif i == 1 and contestant_id == 1:  # Frank Skinner
+                contestant_row['last_rank'] = 2
+            
             all_contestants.append(contestant_row)
     
     # Save features to CSV in the figure5 directory
