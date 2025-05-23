@@ -67,51 +67,49 @@ def create_figure4():
     
     uk_x, uk_y = zip(*uk_pixels) if uk_pixels else ([], [])
     
-    # Create scatterplot of UK/Ireland contestants
-    scatter = ax.scatter(
-        uk_x, uk_y, 
-        alpha=0.7, 
-        c='steelblue', 
-        edgecolor='white',
-        s=100,
+    # Create a meshgrid covering the map for the heatmap
+    x_grid = np.linspace(0, img_width, 200)  # Higher resolution grid
+    y_grid = np.linspace(0, img_height, 250)
+    xx, yy = np.meshgrid(x_grid, y_grid)
+    
+    # Stack coordinates for density calculation
+    positions = np.vstack([xx.ravel(), yy.ravel()])
+    values = np.vstack([uk_x, uk_y])
+    
+    # Compute kernel density estimate with a smaller bandwidth to make single points more visible
+    kernel = gaussian_kde(values, bw_method=0.08)  # Smaller bandwidth makes single points more visible
+    density = kernel(positions).reshape(xx.shape)
+    
+    # Plot density heatmap
+    heatmap = ax.pcolormesh(
+        xx, yy, density,
+        cmap='Blues',
+        alpha=0.5,
+        shading='gouraud',  # Smooth shading
+        zorder=2
+    )
+    
+    # Plot density contour
+    contour = ax.contour(
+        xx, yy, density,
+        levels=10,
+        colors='steelblue',
+        linewidths=0.8,
+        alpha=0.7,
         zorder=3
     )
     
-    # Calculate kernel density estimate for heat map
-    if len(uk_x) > 1:  # Need at least 2 points for KDE
-        # Create a meshgrid covering the map
-        x_grid = np.linspace(0, img_width, 100)
-        y_grid = np.linspace(0, img_height, 125)
-        xx, yy = np.meshgrid(x_grid, y_grid)
-        
-        # Stack coordinates for density calculation
-        positions = np.vstack([xx.ravel(), yy.ravel()])
-        values = np.vstack([uk_x, uk_y])
-        
-        # Compute kernel density estimate
-        kernel = gaussian_kde(values, bw_method=0.15)  # Adjust bandwidth for smoother/sharper density
-        density = kernel(positions).reshape(xx.shape)
-        
-        # Plot density contour
-        contour = ax.contourf(
-            xx, yy, density, 
-            levels=15, 
-            cmap='Blues', 
-            alpha=0.4,
-            zorder=2
-        )
+    # Create a box for country listing in top-left corner
+    countries_box_width = img_width * 0.3
+    countries_box_height = img_height * 0.25  # Increased height to accommodate UK
+    countries_box_x = img_width * 0.05
+    countries_box_y = img_height * 0.05
     
-    # Create a box for international contestants in top-left corner
-    intl_box_width = img_width * 0.3
-    intl_box_height = img_height * 0.2
-    intl_box_x = img_width * 0.05
-    intl_box_y = img_height * 0.05
-    
-    # Draw a background box for international contestants
+    # Draw a background box for countries
     rect = plt.Rectangle(
-        (intl_box_x, intl_box_y), 
-        intl_box_width, 
-        intl_box_height, 
+        (countries_box_x, countries_box_y), 
+        countries_box_width, 
+        countries_box_height, 
         facecolor='lightgray', 
         alpha=0.8,
         edgecolor='black', 
@@ -119,32 +117,45 @@ def create_figure4():
     )
     ax.add_patch(rect)
     
-    # Add title for international box
+    # Add title for countries box
     ax.text(
-        intl_box_x + intl_box_width/2, 
-        intl_box_y + 20, 
-        'International Contestants',
+        countries_box_x + countries_box_width/2, 
+        countries_box_y + 20, 
+        'Countries',
         ha='center',
         fontsize=14,
         fontweight='bold',
         zorder=6
     )
     
-    # Group international contestants by country
-    intl_grouped = intl_data.groupby('Country')
+    # Prepare combined country data with counts
+    # First add the UK/Ireland counts
+    uk_countries = uk_data['Country'].value_counts().to_dict()
     
-    # Place circles for each country with international contestants
+    # Group international contestants by country
+    intl_grouped = intl_data.groupby('Country').size().to_dict()
+    
+    # Combine all country data
+    all_countries = {**uk_countries, **intl_grouped}
+    
+    # Sort countries by count (descending)
+    sorted_countries = sorted(all_countries.items(), key=lambda x: x[1], reverse=True)
+    
+    # Place circles for each country
     y_offset = 50
-    for i, (country, group) in enumerate(intl_grouped):
-        # Calculate position in the international box
-        x_pos = intl_box_x + intl_box_width * 0.2
-        y_pos = intl_box_y + y_offset + i * 30
+    for i, (country, count) in enumerate(sorted_countries):
+        # Calculate position in the countries box
+        x_pos = countries_box_x + countries_box_width * 0.2
+        y_pos = countries_box_y + y_offset + i * 30
+        
+        # Use different colors for UK/Ireland vs international
+        color = 'steelblue' if country in ['England', 'Scotland', 'Wales', 'Ireland', 'Northern Ireland'] else 'darkgoldenrod'
         
         # Draw circle
         circle = plt.Circle(
             (x_pos, y_pos), 
             10, 
-            color='darkgoldenrod',
+            color=color,
             alpha=0.8,
             zorder=6
         )
@@ -154,7 +165,7 @@ def create_figure4():
         ax.text(
             x_pos + 20, 
             y_pos, 
-            f"{country} ({len(group)})",
+            f"{country} ({count})",
             va='center',
             fontsize=12,
             zorder=6

@@ -4,9 +4,9 @@
 
 Figure 4 visualizes the geographic distribution of Taskmaster contestants' birthplaces, with a focus on the United Kingdom and Ireland where the majority of contestants originated. The visualization includes:
 
-1. A map of the British Isles showing precise birthplace locations for UK and Irish contestants
-2. A density overlay highlighting regions with higher concentrations of contestants
-3. A supplementary box showing international contestants grouped by country
+1. A map of the British Isles showing birthplace density for UK and Irish contestants
+2. A heatmap and contour overlay highlighting regions with higher concentrations of contestants
+3. A comprehensive legend showing contestant counts by country of origin
 
 ## Data Sources
 
@@ -34,10 +34,24 @@ The visualization uses two primary data sources:
 ### Visualization (`plot_figure4.py`)
 - Uses a high-quality map of the British Isles as the background
 - Transforms geographic coordinates to pixel positions on the map
-- Creates a scatter plot of contestant birthplaces
-- Generates a kernel density estimate to show concentration areas
-- Adds a box for international contestants with counts by country
+- Creates a heatmap to visualize contestant density
+- Adds contour lines to highlight concentration patterns
+- Uses a smaller bandwidth for the kernel density estimation to ensure individual points remain visible
+- Provides a comprehensive "Countries" legend showing all contestant countries of origin
 - Saves both PNG and PDF versions of the figure
+
+## Visualization Choices
+
+Several specific design decisions were made for this visualization:
+
+1. **Heatmap Instead of Scatter**: A heatmap with contours was chosen instead of a scatter plot to address projection imperfections that might place points in inaccurate locations (such as in the sea or on beaches).
+
+2. **Density Estimation**: The kernel density estimation uses a smaller bandwidth parameter to ensure that even isolated points create visible "hot spots" in the visualization.
+
+3. **Unified Country Legend**: All countries are represented in a single legend with:
+   - Steel blue circles for UK and Ireland
+   - Dark golden rod circles for international countries
+   - Countries sorted by contestant count (descending)
 
 ## Key Findings
 
