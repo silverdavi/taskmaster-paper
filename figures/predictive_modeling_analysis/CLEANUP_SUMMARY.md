@@ -1,10 +1,10 @@
 # Predictive Modeling Analysis - Cleanup Summary
 
-## 🧹 What Was Cleaned Up
+##  What Was Cleaned Up
 
 This folder was reorganized on **May 24, 2024** to eliminate redundancy and create a clear, logical structure.
 
-### ❌ Files Removed (Redundant/Unused)
+### [FAILED] Files Removed (Redundant/Unused)
 - `plot_combined_analysis.py` - Empty file (1 line)
 - `simple_plot.py` - Basic test plotting script
 - `plot_results.py` - Redundant with main plotting script
@@ -14,7 +14,7 @@ This folder was reorganized on **May 24, 2024** to eliminate redundancy and crea
 - `prepare_series_data.py` - Unused series data preparation
 - `series_data.csv` - Unused series-level dataset
 
-### ✅ Files Renamed (For Clarity)
+### [DONE] Files Renamed (For Clarity)
 - `prepare_episode_data.py` → `1_prepare_episode_data.py`
 - `feature_selection_episode.py` → `2_feature_selection_episode.py`
 - `model_episode_analysis.py` → `3_model_episode_analysis.py`
@@ -22,11 +22,11 @@ This folder was reorganized on **May 24, 2024** to eliminate redundancy and crea
 - `correlation_analysis.py` → `5_correlation_analysis_figure8b.py`
 - `analyze_random_forest_features.py` → `6_analyze_random_forest_features.py`
 
-### ➕ Files Added
+###  Files Added
 - `run_all.py` - Master script to run entire pipeline
 - `CLEANUP_SUMMARY.md` - This documentation
 
-## 📁 Final Clean Structure
+##  Final Clean Structure
 
 ### Core Pipeline (Run in Order)
 ```
@@ -62,7 +62,7 @@ RANDOM_FOREST_INSIGHTS.md          # Strategic insights
 CLEANUP_SUMMARY.md                 # This file
 ```
 
-## 🎯 Benefits of Cleanup
+##  Benefits of Cleanup
 
 ### 1. **Clear Execution Order**
 - Numbered scripts (1-6) show exact execution sequence
@@ -87,7 +87,7 @@ CLEANUP_SUMMARY.md                 # This file
 - Consistent naming convention
 - Self-documenting structure
 
-## 🚀 How to Use
+## FEATURE: How to Use
 
 ### Run Everything
 ```bash
@@ -114,7 +114,7 @@ with open('episode_model_results.pkl', 'rb') as f:
 data = pd.read_csv('episode_data.csv')
 ```
 
-## 📊 Impact
+## DATA: Impact
 
 - **Before**: 25 files, unclear structure, redundancy
 - **After**: 17 files, clear pipeline, no redundancy

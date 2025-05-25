@@ -1,93 +1,134 @@
-# Taskmaster Paper: Figures Implementation Plan
+# Taskmaster Analysis: Implementation Workflow and Structure
 
-## 1. Directory Structure
+## 1. Current Project Structure
 
 ```
-taskmaster_paper/
+taskmaster-paper/
 ├── config/
-│   ├── plot_config.yaml                # Main configuration file for all plots
-│   └── plot_utils.py                   # Shared utility functions for plotting
+│   ├── plot_config.yaml                      # Main configuration file for all plots
+│   └── plot_utils.py                         # Shared utility functions for plotting
 ├── data/
-│   ├── raw/                            # Original CSV files
-│   │   ├── contestants.csv
-│   │   ├── scores.csv
-│   │   ├── tasks.csv
-│   │   ├── sentiment.csv
-│   │   ├── imdb_ratings.csv
-│   │   ├── taskmaster_histograms_corrected.csv
-│   │   ├── taskmaster_UK_tasks.csv
-│   │   └── taskmaster_uk_episodes.csv
-│   └── processed/                      # Processed data files
-│       └── scores_by_series/           # Score data split by series
-├── figures/
-│   ├── figure1/                        # Series-Level IMDb Ratings
-│   │   ├── process_data_figure1.py     # Data processing script
-│   │   ├── plot_figure1.py             # Plotting script
-│   │   ├── figure1.md                  # Documentation
-│   │   ├── series_metrics.csv          # Processed data
-│   │   ├── series_pca.csv              # Processed data
-│   │   ├── pca_loadings.csv            # Processed data
-│   │   ├── explained_variance.npy      # Processed data
-│   │   ├── metrics.json                # Metrics for caption
-│   │   ├── figure1_output.pdf          # Generated figure
-│   │   └── caption.txt                 # Generated caption
-│   ├── figure2/                        # Episode Rating Trajectories
-│   │   ├── process_data_figure2.py
-│   │   ├── plot_figure2.py
-│   │   └── ...
-│   ├── figure3/                        # Task Type Landscape
-│   │   ├── process_data_figure3.py
-│   │   ├── plot_figure3.py
-│   │   └── ...
-│   ├── figure4/                        # Contestant Geography and Demographics
-│   │   ├── process_data_figure4.py
-│   │   ├── plot_figure4.py
-│   │   ├── britain_map.png
-│   │   └── ...
-│   ├── figure5/                        # Contestant Dynamics and Clustering
-│   │   ├── process_data_figure5.py
-│   │   ├── plot_figure5.py
-│   │   └── ...
-│   ├── figure6/                        # Task Scoring Patterns
-│   │   ├── process_data_figure6.py
-│   │   ├── plot_figure6.py
-│   │   └── ...
-│   ├── figure7/                        # Sentiment Profiles
-│   │   ├── process_data_figure7.py
-│   │   ├── plot_figure7.py
-│   │   └── ...
-│   └── figure8/                        # Synthesis of All Correlations
-│       ├── process_data_figure8.py
-│       ├── plot_figure8.py
-│       └── ...
-└── notebooks/                          # Optional exploratory notebooks
-    ├── explore_figure1.ipynb
-    └── ...
+│   ├── raw/                                  # Original datasets with comprehensive documentation
+│   │   ├── DATA_SOURCES_AND_METHODOLOGY.md  # Detailed data source documentation
+│   │   ├── sentiment_analysis.py            # Reference script for sentiment extraction
+│   │   ├── contestants.csv                  # Contestant demographics and performance data
+│   │   ├── imdb_ratings.csv                 # Official IMDb episode ratings
+│   │   ├── taskmaster_histograms_corrected.csv # Complete IMDb vote distributions (1-10)
+│   │   ├── sentiment.csv                    # Episode-level sentiment analysis results
+│   │   ├── _OL_tasks.csv                    # GPT-4o classified task characteristics
+│   │   ├── taskmaster_uk_episodes.csv       # Episode metadata and links
+│   │   ├── Cont_lon_lat.tsv                 # Contestant geographic coordinates
+│   │   └── [additional data files]
+│   ├── processed/                           # Processed data organized by analysis
+│   └── taskmaster_data_documentation.md     # Data processing overview
+├── figures/                                 # Analysis modules (descriptive naming)
+│   ├── series_ratings_analysis/             # IMDb rating distributions & mixture models
+│   │   ├── process_series_ratings_data.py   # Mixture model fitting & goodness of fit
+│   │   ├── plot_seaborn_ridgeline_decomposed.py # Ridge plot visualization
+│   │   ├── series_ratings_analysis_overview.md # Analysis documentation
+│   │   ├── series_metrics.csv               # Processed series-level metrics
+│   │   ├── series_pca_results.csv           # PCA analysis results
+│   │   ├── metrics.json                     # Key findings for paper
+│   │   ├── series_ratings_ridgeline.pdf     # Generated ridge plot
+│   │   └── series_ratings_ridgeline.png     # Generated ridge plot (PNG)
+│   ├── episode_rating_trajectories/         # Within-series rating pattern analysis
+│   │   ├── process_episode_trajectories.py
+│   │   ├── plot_trajectory_analysis.py
+│   │   ├── episode_rating_trajectories_overview.md
+│   │   └── [processed data and outputs]
+│   ├── task_characteristics_analysis/       # Task typology and demand analysis
+│   │   ├── process_task_characteristics.py
+│   │   ├── plot_task_analysis.py
+│   │   ├── task_characteristics_analysis_overview.md
+│   │   └── [processed data and outputs]
+│   ├── contestant_geographic_origins/       # Geographic distribution analysis
+│   │   ├── process_geographic_data.py
+│   │   ├── plot_geographic_analysis.py
+│   │   ├── contestant_geographic_origins_overview.md
+│   │   └── [processed data and outputs]
+│   ├── contestant_performance_archetypes/   # Performance-based clustering analysis
+│   │   ├── process_performance_archetypes.py
+│   │   ├── plot_archetype_analysis.py
+│   │   ├── contestant_performance_archetypes_overview.md
+│   │   └── [processed data and outputs]
+│   ├── sentiment_trends_analysis/           # Comedic sentiment pattern analysis
+│   │   ├── process_sentiment_trends.py
+│   │   ├── plot_sentiment_analysis.py
+│   │   ├── sentiment_trends_analysis_overview.md
+│   │   └── [processed data and outputs]
+│   ├── predictive_modeling_analysis/        # Episode success prediction models
+│   │   ├── process_predictive_models.py
+│   │   ├── plot_model_results.py
+│   │   ├── predictive_modeling_analysis_overview.md
+│   │   └── [processed data and outputs]
+│   ├── scoring_pattern_geometry/            # Task scoring system analysis
+│   │   ├── process_scoring_patterns.py
+│   │   ├── plot_scoring_analysis.py
+│   │   ├── scoring_pattern_geometry_overview.md
+│   │   └── [processed data and outputs]
+│   ├── task_skill_profiles/                 # Task-skill requirement mapping
+│   │   ├── process_skill_profiles.py
+│   │   ├── plot_skill_analysis.py
+│   │   ├── task_skill_profiles_overview.md
+│   │   └── [processed data and outputs]
+│   ├── individual_series_analysis/          # Series-specific deep dive analysis
+│   │   ├── process_individual_series.py
+│   │   ├── plot_series_deep_dive.py
+│   │   ├── individual_series_analysis_overview.md
+│   │   └── [processed data and outputs]
+│   └── FIGURE_NAMING_HISTORY.md            # Documentation of naming evolution
+└── [root level files]
 ```
 
-## 2. Configuration Setup
+## 2. Analysis Module Structure
 
-### `config/plot_config.yaml`
+Each analysis module follows a consistent structure with clear separation of concerns:
+
+### Standard Files in Each Module:
+- **`process_[module_name].py`**: Data processing and statistical analysis
+- **`plot_[module_name].py`**: Visualization generation
+- **`[module_name]_overview.md`**: Comprehensive documentation with key results
+- **`metrics.json`**: Quantitative findings for paper writing
+- **Generated outputs**: PDF/PNG visualizations and processed data files
+
+### Key Implementation Features:
+
+#### Advanced Statistical Methods
+- **Mixture Model Fitting**: IMDb distributions as delta functions (1s, 10s) + Gaussian (2-9)
+- **Goodness of Fit Analysis**: Quantitative model comparison (MAE: 1.8% vs 4.1%)
+- **Principal Component Analysis**: Series reception quality profiling
+- **Clustering Analysis**: Contestant archetype identification
+- **Correlation Analysis**: Multi-dimensional relationship exploration
+
+#### Data Quality and Validation
+- **Correlation Validation**: >99% correlation between raw histograms and official IMDb scores
+- **Reliability Assessment**: Transparent documentation of data source limitations
+- **Statistical Significance**: Proper hypothesis testing and confidence intervals
+
+## 3. Configuration and Styling
+
+### `config/plot_config.yaml` - Current Implementation
 
 ```yaml
 # Global plot settings
 global:
   dpi: 300
-  figure_size: [10, 6]
+  figure_size: [12, 8]
   font_family: "Arial"
-  output_format: "pdf"
+  output_formats: ["pdf", "png"]
   grid: True
-  version: "1.0"
+  version: "2.0"
 
-# Color schemes
+# Color schemes - Updated for current analyses
 colors:
-  series_colormap: "viridis"  # For 18 series
+  series_colormap: "RdYlGn"  # For μ-based coloring (Green=High, Red=Low)
+  series_discrete: "tab20"   # For 18 series identification
   archetype_palette: "Set2"
   task_type_palette: "Paired"
   highlight:
-    good: "#2ecc71"  # Green
-    neutral: "#3498db"  # Blue
-    bad: "#e74c3c"  # Red
+    good: "#2ecc71"    # Green
+    neutral: "#3498db" # Blue
+    bad: "#e74c3c"     # Red
   
   sentiment:
     humor: "#ff7f0e"
@@ -95,186 +136,110 @@ colors:
     awkwardness: "#9467bd"
     joy: "#2ca02c"
 
-# Text settings
-fonts:
-  title_size: 16
-  axis_label_size: 12
-  tick_label_size: 10
-  legend_size: 10
-
-# Line and marker styles
-styles:
-  line_width: 1.5
-  marker_size: 6
-  markers: ["o", "s", "^", "d", "P", "*"]
+# Advanced plotting parameters
+ridge_plot:
+  height_scaling: 0.8
+  overlap: 0.3
+  alpha: 0.7
+  
+mixture_model:
+  gaussian_alpha: 0.6
+  delta_marker_size: 100
+  
+pca:
+  explained_variance_threshold: 0.8
+  component_labels: ["PC1", "PC2"]
 ```
 
-## 3. Processing and Plotting Workflow
+## 4. Current Implementation Status
 
-Each figure follows a two-step process with a strict separation of concerns:
+### [DONE] Fully Implemented Modules:
 
-### Step 1: Data Processing (`process_data_figureX.py`)
+#### **Series Ratings Analysis**
+- **Mixture Model Fitting**: Delta functions + Gaussian for IMDb distributions
+- **Goodness of Fit**: Comprehensive comparison with naive Gaussian (MAE: 1.8% vs 4.1%)
+- **Ridge Plot Visualization**: μ-based coloring with RdYlGn colormap
+- **PCA Analysis**: Series reception quality profiling
+- **Statistical Validation**: Residual analysis across all 18 series
 
-This script:
-1. Loads raw data from `data/raw/`
-2. Performs necessary transformations and analyses
-3. Saves processed data files directly to the figure directory
-4. Generates metrics for the figure caption and saves them to `metrics.json`
+#### **Data Documentation**
+- **Comprehensive Source Documentation**: `DATA_SOURCES_AND_METHODOLOGY.md`
+- **Reliability Assessments**: Transparent discussion of limitations
+- **Methodology References**: Academic citations for AI-assisted analysis
 
-### Step 2: Plotting (`plot_figureX.py`)
+###  In Development:
+- Episode rating trajectories analysis
+- Task characteristics typology
+- Contestant performance archetypes
+- Sentiment trends analysis
 
-This script:
-1. Loads processed data from the figure directory
-2. Creates the figure with all subplots
-3. Applies consistent styling
-4. Saves the output image as `figureX_output.{format}`
-5. Generates and saves the caption
+###  Planned:
+- Predictive modeling analysis
+- Geographic origins analysis
+- Scoring pattern geometry
+- Task skill profiles
 
-## 4. Naming Conventions
+## 5. Key Research Findings (Current)
 
-- **Processing Script**: `process_data_figure{X}.py`
-- **Plotting Script**: `plot_figure{X}.py`
-- **Output Figure**: `figure{X}_output.pdf`
-- **Processed Data**: Descriptive names (e.g., `series_metrics.csv`, `pca_results.csv`)
-- **Metrics**: `metrics.json`
-- **Caption**: `caption.txt`
-- **Documentation**: `figure{X}.md`
+### Series-Level Reception Analysis
+- **Model Performance**: Mixture model significantly outperforms naive Gaussian
+- **Rating Patterns**: Clear identification of polarizing vs. consensus episodes
+- **Quality Metrics**: Quantitative series profiling using #1s, #10s, μ, σ
+- **Temporal Trends**: Evidence for series quality evolution over time
 
-## 5. Implementation Plan for Each Figure
+### Statistical Validation
+- **Correlation Validation**: >99% correlation between raw votes and official scores
+- **Goodness of Fit**: Comprehensive residual analysis (min, max, median, mean)
+- **Model Comparison**: Systematic evaluation of mixture vs. naive approaches
 
-### Figure 1: Series-Level IMDb Ratings
+## 6. Workflow for New Analysis Modules
 
-- **Data Processing**:
-  - Load `imdb_ratings.csv` and `taskmaster_histograms_corrected.csv`
-  - Fit Gaussian distributions to ratings 2-9 for each series
-  - Aggregate #1s and #10s counts
-  - Perform PCA on the series-level metrics
-  - Save: `series_metrics.csv`, `series_pca.csv`, `pca_loadings.csv`, `explained_variance.npy`
-  
-- **Plotting**:
-  - Create ridge plot of rating distributions (subplot A)
-  - Plot PCA results with series colored by reception quality (subplot B)
-  - Generate output: `figure1_output.pdf`, `caption.txt`
+### Step 1: Data Processing
+1. Load relevant raw data from `data/raw/`
+2. Perform statistical analysis and transformations
+3. Generate processed datasets
+4. Calculate key metrics for `metrics.json`
+5. Validate results and assess statistical significance
 
-### Figure 2: Episode Rating Trajectories
+### Step 2: Visualization
+1. Load processed data
+2. Create publication-quality visualizations
+3. Apply consistent styling from `plot_config.yaml`
+4. Generate both PDF and PNG outputs
+5. Create comprehensive documentation
 
-- **Data Processing**:
-  - Analyze episode ratings within each series
-  - Categorize series by trajectory patterns (Rising, J-shape, etc.)
-  - Calculate statistics for each trajectory type
-  - Save processed data directly to figure2 folder
-  
-- **Plotting**:
-  - Bar chart of trajectory types (subplot A)
-  - Violin plots of episode thirds by type (subplot B)
-  - Generate output: `figure2_output.pdf`, `caption.txt`
+### Step 3: Documentation
+1. Write detailed overview with methodology
+2. Include key quantitative results
+3. Document statistical assumptions and limitations
+4. Provide interpretation and context
 
-### Figure 3: Task Type Landscape
+## 7. Quality Assurance Standards
 
-- **Data Processing**:
-  - Load `tasks.csv` and `taskmaster_UK_tasks.csv`
-  - Perform t-SNE on task locations
-  - Analyze task type distributions
-  - Select extreme/unique tasks for radar plots
-  - Save processed data directly to figure3 folder
-  
-- **Plotting**:
-  - t-SNE plot of locations (subplot A)
-  - Distribution of task types (subplot B)
-  - Radar plots of selected tasks (subplot C)
-  - Heatmap of location vs. task type (subplot D)
-  - Generate output: `figure3_output.pdf`, `caption.txt`
+### Statistical Rigor
+- Proper hypothesis testing with p-values
+- Confidence intervals for all estimates
+- Goodness-of-fit metrics for all models
+- Multiple comparison corrections where appropriate
 
-### Figure 4: Contestant Geography and Demographics
+### Reproducibility
+- Clear separation of data processing and visualization
+- Comprehensive documentation of all methods
+- Version control of configuration and styling
+- Transparent discussion of limitations
 
-- **Data Processing**:
-  - Load `contestants.csv`
-  - Extract geographical information (birthplaces)
-  - Calculate demographic distributions
-  - Process spatial density of contestants across regions
-  - Save processed data directly to figure4 folder
-  
-- **Plotting**:
-  - Geographical map of contestant birthplaces with heatmap overlay (subplot A)
-  - Country/region distribution bar chart (subplot B)
-  - Demographic summary charts (age, gender, profession) (subplot C)
-  - Generate output: `figure4_output.pdf`, `caption.txt`
+### Academic Standards
+- Proper citation of methodologies
+- Transparent discussion of AI-assisted analysis
+- Clear distinction between exploratory and confirmatory analysis
+- Adherence to statistical reporting guidelines
 
-### Figure 5: Contestant Dynamics and Clustering
+## 8. Future Development Priorities
 
-- **Data Processing**:
-  - Load `contestants.csv` and `scores.csv`
-  - Calculate average scores and performance metrics per contestant
-  - Perform clustering analysis on contestant archetypes
-  - Extract score progression for selected series
-  - Save processed data directly to figure5 folder
-  
-- **Plotting**:
-  - Contestant clusters visualization (subplot A)
-  - Sorted average scores by archetype (subplot B)
-  - Line plots of score progression (subplot C)
-  - Generate output: `figure5_output.pdf`, `caption.txt`
+1. **Complete Core Analyses**: Finish episode trajectories and task characteristics
+2. **Advanced Modeling**: Implement predictive models for episode success
+3. **Comparative Analysis**: Cross-series and cross-season comparisons
+4. **Interactive Visualizations**: Web-based exploration tools
+5. **Academic Publication**: Prepare manuscript with comprehensive findings
 
-### Figure 6: Task Scoring Patterns
-
-- **Data Processing**:
-  - Load `scores.csv`
-  - Calculate score distributions
-  - Compute mean and variance of scores per series
-  - Save processed data directly to figure6 folder
-  
-- **Plotting**:
-  - Histogram of individual scores (subplot A)
-  - Scatter plot of mean vs. variance by series (subplot B)
-  - Generate output: `figure6_output.pdf`, `caption.txt`
-
-### Figure 7: Sentiment Profiles
-
-- **Data Processing**:
-  - Load `sentiment.csv`
-  - Analyze sentiment trends over series
-  - Calculate correlation matrix of sentiments
-  - Save processed data directly to figure7 folder
-  
-- **Plotting**:
-  - Line plots of key sentiments (subplot A)
-  - Correlation matrix or scatter plots (subplot B)
-  - Generate output: `figure7_output.pdf`, `caption.txt`
-
-### Figure 8: Synthesis of All Correlations
-
-- **Data Processing**:
-  - Merge data from all sources
-  - Calculate correlations between key variables
-  - Perform MDS on task composition
-  - Save processed data directly to figure8 folder
-  
-- **Plotting**:
-  - Boxplots of scores by task type/location (subplot A)
-  - Scatter plots of sentiment vs. metrics (subplot B)
-  - MDS plot and correlation table (subplot C)
-  - Generate output: `figure8_output.pdf`, `caption.txt`
-
-## 6. Execution Strategy
-
-1. **First Implementation Phase**:
-   - Create the `config` directory with `plot_config.yaml` and `plot_utils.py`
-   - Set up the directory structure
-   - Implement Figure 1 as a proof of concept
-
-2. **Parallel Development**:
-   - Assign figures to team members for concurrent development
-   - Use the templates to ensure consistency
-
-3. **Quality Control**:
-   - Review each figure for adherence to style guidelines
-   - Verify that all metrics are properly logged for captions
-   - Check for consistent colormaps and styling
-
-4. **Integration**:
-   - Create a master script to generate all figures
-   - Compile all captions into a single document for the paper
-
-5. **Version Control**:
-   - Tag versions of the figures as they are finalized
-   - Document any significant changes or improvements 
+This workflow ensures consistent, high-quality analysis across all modules while maintaining academic rigor and reproducibility standards. 

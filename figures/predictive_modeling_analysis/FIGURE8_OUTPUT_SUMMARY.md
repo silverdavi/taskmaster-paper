@@ -5,21 +5,21 @@ This document summarizes all outputs and analyses for Figure 8 of the taskmaster
 
 ## Generated Files
 
-### 📊 Figure 8a: Episode-Level ML Results
+### DATA: Figure 8a: Episode-Level ML Results
 - **PNG Output**: `figure8a_episode_ml.png`
 - **PDF Output**: `figure8a_episode_ml.pdf`
 - **Data Source**: 154 episodes with 12 features
 - **Best Model**: Random Forest with R² = 0.385 (38.5% variance explained)
 - **Models Compared**: Linear Regression, Ridge Regression, Random Forest
 
-### 📊 Figure 8b: Series-Level Correlation Analysis  
+### DATA: Figure 8b: Series-Level Correlation Analysis  
 - **PNG Output**: `figure8b_raw_correlations.png`
 - **PDF Output**: `figure8b_raw_correlations.pdf`
 - **Data Source**: 18 series with 35 valid input features
 - **Analysis**: Direct correlation between all features and mean IMDB scores
 - **Results**: Correlation distribution histogram with Gaussian fit
 
-### 🤖 Random Forest Feature Analysis
+###  Random Forest Feature Analysis
 - **PNG Output**: `random_forest_feature_analysis.png`  
 - **PDF Output**: `random_forest_feature_analysis.pdf`
 - **Purpose**: Actionable insights for maximizing IMDB scores
@@ -41,20 +41,20 @@ This document summarizes all outputs and analyses for Figure 8 of the taskmaster
 - **Standard Deviation**: 0.321
 
 #### Top 10 Strongest Correlations:
-1. **series_squared**: -0.660 (p=0.003) 📉
-2. **contestant_gender_diversity**: -0.629 (p=0.005) 📉  
-3. **contestant_prop_actors**: -0.621 (p=0.006) 📉
-4. **series_order**: -0.597 (p=0.009) 📉
-5. **avg_self_deprecation_std**: -0.541 (p=0.020) 📉
-6. **is_recent_series**: -0.500 (p=0.034) 📉
-7. **avg_sarcasm_std**: -0.491 (p=0.039) 📉
-8. **is_early_series**: +0.443 (p=0.066) 📈
-9. **contestant_avg_age**: +0.435 (p=0.071) 📈
-10. **num_episodes**: -0.431 (p=0.074) 📉
+1. **series_squared**: -0.660 (p=0.003) 
+2. **contestant_gender_diversity**: -0.629 (p=0.005)   
+3. **contestant_prop_actors**: -0.621 (p=0.006) 
+4. **series_order**: -0.597 (p=0.009) 
+5. **avg_self_deprecation_std**: -0.541 (p=0.020) 
+6. **is_recent_series**: -0.500 (p=0.034) 
+7. **avg_sarcasm_std**: -0.491 (p=0.039) 
+8. **is_early_series**: +0.443 (p=0.066) TREND:
+9. **contestant_avg_age**: +0.435 (p=0.071) TREND:
+10. **num_episodes**: -0.431 (p=0.074) 
 
 ### Random Forest Feature Importance & Strategy
 
-#### Features to MAXIMIZE (📈):
+#### Features to MAXIMIZE (TREND:):
 1. **Contestant Average Age** (39.5% importance, +0.396 correlation)
    - Target: >41.4 years (75th percentile)
    - Strategy: Cast older, more experienced performers
@@ -69,24 +69,24 @@ This document summarizes all outputs and analyses for Figure 8 of the taskmaster
 4. **Contestant Proportion Female** (5.2% importance, +0.108 correlation)
    - Strategy: Balanced or female-majority lineups
 
-#### Features to MINIMIZE (📉):
+#### Features to MINIMIZE ():
 1. **Average Awkwardness** (32.6% importance, -0.151 correlation)
    - Target: <2.39 (25th percentile)  
    - Strategy: Avoid awkward moments, maintain smooth flow
 
 ## Strategic Insights
 
-### 🎯 Golden Formula for High IMDB Scores:
+###  Golden Formula for High IMDB Scores:
 **Cast older (40+), experienced comedians with polished TV personas and minimal awkwardness.**
 
-### 📈 Professional Polish vs Amateur Charm:
+### TREND: Professional Polish vs Amateur Charm:
 The analysis reveals that professional polish significantly outperforms amateur charm:
 - Older contestants (41+ years) perform better
 - Professional comedians add value
 - TV experience correlates with success
 - Minimizing awkwardness is crucial
 
-### 🏆 Production Recommendations:
+###  Production Recommendations:
 1. **Casting Priority**: Target experienced performers aged 40+
 2. **Comedy Focus**: Include professional comedians in each series
 3. **Gender Balance**: Aim for balanced or female-majority lineups  

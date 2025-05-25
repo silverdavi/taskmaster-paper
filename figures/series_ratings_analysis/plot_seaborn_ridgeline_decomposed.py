@@ -98,11 +98,29 @@ def create_series_rating_distribution_plot():
             # Fallback for older matplotlib
             cmap = plt.cm.get_cmap(series_cmap_name)
     
-    # Create discrete colors for all 18 series
-    colors = [cmap(i/18) for i in range(18)]
-    series_numbers = df_gaussians['series'].values
-    # Map the series numbers to colors, adjusting for 0-indexed colormap
-    palette = [colors[int(s-1) % 18] for s in series_numbers]
+    # Override with RdYlGn colormap for intuitive color mapping
+    # Higher μ (better) = Green, Lower μ (worse) = Red
+    try:
+        cmap = plt.colormaps['RdYlGn']
+    except:
+        cmap = plt.cm.get_cmap('RdYlGn')
+    
+    print(f"Using colormap: RdYlGn (Green=High μ, Red=Low μ)")
+    print(f"μ (Gaussian mean) range: {df_gaussians['mu'].min():.3f} to {df_gaussians['mu'].max():.3f}")
+    
+    # Create colors based on mean rating (μ) instead of series number
+    min_mu = df_gaussians['mu'].min()
+    max_mu = df_gaussians['mu'].max()
+    mu_range = max_mu - min_mu
+    
+    # Create a list to store colors for each series
+    palette = []
+    for _, row in df_gaussians.iterrows():
+        # Normalize the mean rating to [0,1] range
+        normalized_mu = (row['mu'] - min_mu) / mu_range
+        # Get color from colormap
+        color = cmap(normalized_mu)
+        palette.append(color)
     
     # Create the figure with larger size for better detail
     fig, ax = plt.subplots(figsize=(8, 10))

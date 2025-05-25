@@ -40,7 +40,7 @@ Successfully completed **Figure 8b** using proper raw correlation analysis betwe
 4. **contestant_prop_comedians**: r = +0.331 (More comedians → higher IMDB)
 
 ### Strongest Negative Correlations  
-1. **contestant_prop_actors**: r = -0.547 (More actors → lower IMDB) ⭐ **STRONGEST**
+1. **contestant_prop_actors**: r = -0.547 (More actors → lower IMDB)  **STRONGEST**
 2. **task_prop_is_team**: r = -0.358 (More team tasks → lower IMDB)
 3. **task_prop_is_prize**: r = -0.331 (More prize tasks → lower IMDB)
 4. **task_prop_is_live**: r = -0.277 (More live tasks → lower IMDB)
