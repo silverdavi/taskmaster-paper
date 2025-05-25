@@ -1,0 +1,128 @@
+{
+  "skill_names": [
+    "Creativity",
+    "Physical Coordination",
+    "Problem Solving",
+    "Time Pressure",
+    "Originality",
+    "Entertainment",
+    "Strategic Planning",
+    "Adaptability"
+  ],
+  "polarized_examples": [
+    {
+      "task_title": "Guess the number on Alex\u2019s forearm",
+      "task_id": "7_2_276",
+      "series": 7,
+      "episode": 2,
+      "skills": {
+        "Creativity": 0.0,
+        "Physical Coordination": 0.0,
+        "Problem Solving": 0.0,
+        "Time Pressure": 0.1111111111111111,
+        "Originality": 0.6666666666666666,
+        "Entertainment": 0.7777777777777778,
+        "Strategic Planning": 0.0,
+        "Adaptability": 1.0
+      },
+      "skill_vector": [
+        0.0,
+        0.0,
+        0.0,
+        0.1111111111111111,
+        0.6666666666666666,
+        0.7777777777777778,
+        0.0,
+        1.0
+      ],
+      "distance_score": 1.7673304133985408
+    },
+    {
+      "task_title": "Get dressed while wearing handcuffs",
+      "task_id": "7_4_286",
+      "series": 7,
+      "episode": 4,
+      "skills": {
+        "Creativity": 0.7777777777777778,
+        "Physical Coordination": 0.8888888888888888,
+        "Problem Solving": 0.5555555555555556,
+        "Time Pressure": 1.0,
+        "Originality": 0.6666666666666666,
+        "Entertainment": 0.8888888888888888,
+        "Strategic Planning": 0.1111111111111111,
+        "Adaptability": 0.2222222222222222
+      },
+      "skill_vector": [
+        0.7777777777777778,
+        0.8888888888888888,
+        0.5555555555555556,
+        1.0,
+        0.6666666666666666,
+        0.8888888888888888,
+        0.1111111111111111,
+        0.2222222222222222
+      ],
+      "distance_score": 1.7673304133985408
+    },
+    {
+      "task_title": "Recite Pi",
+      "task_id": "16_2_2729",
+      "series": 16,
+      "episode": 2,
+      "skills": {
+        "Creativity": 0.0,
+        "Physical Coordination": 0.0,
+        "Problem Solving": 0.7777777777777778,
+        "Time Pressure": 0.8888888888888888,
+        "Originality": 0.3333333333333333,
+        "Entertainment": 0.5555555555555556,
+        "Strategic Planning": 0.2222222222222222,
+        "Adaptability": 0.1111111111111111
+      },
+      "skill_vector": [
+        0.0,
+        0.0,
+        0.7777777777777778,
+        0.8888888888888888,
+        0.3333333333333333,
+        0.5555555555555556,
+        0.2222222222222222,
+        0.1111111111111111
+      ],
+      "distance_score": 1.7673304133985406
+    },
+    {
+      "task_title": "The present that raises the most questions",
+      "task_id": "16_3_2735",
+      "series": 16,
+      "episode": 3,
+      "skills": {
+        "Creativity": 0.8888888888888888,
+        "Physical Coordination": 0.1111111111111111,
+        "Problem Solving": 0.0,
+        "Time Pressure": 0.0,
+        "Originality": 0.7777777777777778,
+        "Entertainment": 0.8888888888888888,
+        "Strategic Planning": 1.0,
+        "Adaptability": 0.0
+      },
+      "skill_vector": [
+        0.8888888888888888,
+        0.1111111111111111,
+        0.0,
+        0.0,
+        0.7777777777777778,
+        0.8888888888888888,
+        1.0,
+        0.0
+      ],
+      "distance_score": 1.7673304133985406
+    }
+  ],
+  "analysis_metadata": {
+    "skill_dimensions": 8,
+    "polarized_examples_count": 4,
+    "score_range": "0.0 to 1.0 (normalized)",
+    "method": "continuous_euclidean_distance"
+  }
+}

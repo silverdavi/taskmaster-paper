@@ -1,0 +1,59 @@
+=== POLARIZED TASK EXAMPLES (CONTINUOUS SKILL PROFILES) ===
+
+1. Guess the number on Alex’s forearm
+   Series 7, Episode 2
+   Skill Profile (0.0-1.0 scale):
+     Creativity        : 0.00 |░░░░░░░░░░░░░░░░░░░░|
+     Physical Coordination: 0.00 |░░░░░░░░░░░░░░░░░░░░|
+     Problem Solving   : 0.00 |░░░░░░░░░░░░░░░░░░░░|
+     Time Pressure     : 0.11 |██░░░░░░░░░░░░░░░░░░|
+     Originality       : 0.67 |█████████████░░░░░░░|
+     Entertainment     : 0.78 |███████████████░░░░░|
+     Strategic Planning: 0.00 |░░░░░░░░░░░░░░░░░░░░|
+     Adaptability      : 1.00 |████████████████████|
+   Dominant Skills: Entertainment (0.78), Adaptability (1.00)
+
+2. Get dressed while wearing handcuffs
+   Series 7, Episode 4
+   Skill Profile (0.0-1.0 scale):
+     Creativity        : 0.78 |███████████████░░░░░|
+     Physical Coordination: 0.89 |█████████████████░░░|
+     Problem Solving   : 0.56 |███████████░░░░░░░░░|
+     Time Pressure     : 1.00 |████████████████████|
+     Originality       : 0.67 |█████████████░░░░░░░|
+     Entertainment     : 0.89 |█████████████████░░░|
+     Strategic Planning: 0.11 |██░░░░░░░░░░░░░░░░░░|
+     Adaptability      : 0.22 |████░░░░░░░░░░░░░░░░|
+   Dominant Skills: Creativity (0.78), Physical Coordination (0.89), Time Pressure (1.00), Entertainment (0.89)
+
+3. Recite Pi
+   Series 16, Episode 2
+   Skill Profile (0.0-1.0 scale):
+     Creativity        : 0.00 |░░░░░░░░░░░░░░░░░░░░|
+     Physical Coordination: 0.00 |░░░░░░░░░░░░░░░░░░░░|
+     Problem Solving   : 0.78 |███████████████░░░░░|
+     Time Pressure     : 0.89 |█████████████████░░░|
+     Originality       : 0.33 |██████░░░░░░░░░░░░░░|
+     Entertainment     : 0.56 |███████████░░░░░░░░░|
+     Strategic Planning: 0.22 |████░░░░░░░░░░░░░░░░|
+     Adaptability      : 0.11 |██░░░░░░░░░░░░░░░░░░|
+   Dominant Skills: Problem Solving (0.78), Time Pressure (0.89)
+
+4. The present that raises the most questions
+   Series 16, Episode 3
+   Skill Profile (0.0-1.0 scale):
+     Creativity        : 0.89 |█████████████████░░░|
+     Physical Coordination: 0.11 |██░░░░░░░░░░░░░░░░░░|
+     Problem Solving   : 0.00 |░░░░░░░░░░░░░░░░░░░░|
+     Time Pressure     : 0.00 |░░░░░░░░░░░░░░░░░░░░|
+     Originality       : 0.78 |███████████████░░░░░|
+     Entertainment     : 0.89 |█████████████████░░░|
+     Strategic Planning: 1.00 |████████████████████|
+     Adaptability      : 0.00 |░░░░░░░░░░░░░░░░░░░░|
+   Dominant Skills: Creativity (0.89), Originality (0.78), Entertainment (0.89), Strategic Planning (1.00)
+
+=== ANALYSIS ===
+The continuous skill profiles show clear differentiation between tasks:
+- Tasks have smooth, interpretable intensity profiles
+- Different tasks emphasize different skill combinations
+- Polarized tasks show contrasting skill requirements
