@@ -36,12 +36,14 @@ taskmaster_paper/
 3. Place the raw data files in the `data/raw/` directory:
    - contestants.csv
    - scores.csv
-   - tasks.csv
+   - _OL_tasks._csv
    - sentiment.csv
    - imdb_ratings.csv
    - taskmaster_histograms_corrected.csv
    - taskmaster_UK_tasks.csv
    - taskmaster_uk_episodes.csv
+   - Cont_lon_lat.tsv
+   - long_task_scores.csv
 
 ## Usage
 
