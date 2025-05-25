@@ -1,167 +1,178 @@
-# Figure 8: Episode-Level ML Analysis & Series-Level Correlation Analysis
+# Figure 8: Predictive Modeling Analysis
 
-This directory contains the complete Figure 8 analysis with two complementary approaches:
+This directory contains the complete analysis pipeline for Figure 8 of the Taskmaster paper, which demonstrates machine learning approaches to predicting IMDB episode ratings.
 
-## 🤖 Episode-Level ML Analysis (Figure 8a)
+## 📁 Directory Structure
 
-**Objective**: Predict IMDB score distributions using machine learning models
-
-### Pipeline:
+### Core Pipeline Scripts (Run in Order)
 1. **`1_prepare_episode_data.py`** - Data preparation and feature engineering
 2. **`2_feature_selection_episode.py`** - Feature selection using mutual information
-3. **`3_model_episode.py`** - Train and evaluate ML models
+3. **`3_model_episode_analysis.py`** - Train and evaluate ML models
 4. **`4_plot_figure8a.py`** - Generate Figure 8a visualization
+5. **`5_correlation_analysis_figure8b.py`** - Generate Figure 8b correlation analysis
+6. **`6_analyze_random_forest_features.py`** - Deep dive into Random Forest insights
 
-### Models Used:
-- **Linear Regression** - Baseline linear model
-- **Ridge Regression** - Regularized linear model  
-- **Random Forest** - Ensemble tree-based model
+### Generated Data Files
+- **`episode_data.csv`** - Prepared episode-level dataset (154 episodes, 12 features)
+- **`episode_selected_features.json`** - Feature selection results and rankings
+- **`episode_model_results.pkl`** - Complete ML model results and predictions
+- **`raw_correlations.json`** - Correlation analysis results for Figure 8b
 
-### Best Results:
-- **Random Forest with top 5 features**: R² = 0.385
-- **Key features**: contestant_avg_age, avg_awkwardness, contestant_avg_experience
-- **Episodes analyzed**: 154
+### Output Figures
+- **`figure8a_episode_ml.png/pdf`** - Episode-level ML performance comparison
+- **`figure8b_raw_correlations.png/pdf`** - Correlation distribution analysis
+- **`random_forest_feature_analysis.png/pdf`** - Feature importance insights
 
-## 📊 Series-Level Correlation Analysis (Figure 8b)
+### Documentation
+- **`FIGURE8_OUTPUT_SUMMARY.md`** - Complete analysis summary
+- **`FIGURE8B_FINAL_SUMMARY.md`** - Figure 8b specific results
+- **`RANDOM_FOREST_INSIGHTS.md`** - Strategic insights from Random Forest analysis
 
+## 🚀 Quick Start
+
+### Run Complete Analysis
+```bash
+# Step 1: Prepare data
+python 1_prepare_episode_data.py
+
+# Step 2: Select features  
+python 2_feature_selection_episode.py
+
+# Step 3: Train models
+python 3_model_episode_analysis.py
+
+# Step 4: Create Figure 8a
+python 4_plot_figure8a.py
+
+# Step 5: Create Figure 8b
+python 5_correlation_analysis_figure8b.py
+
+# Step 6: Analyze Random Forest insights
+python 6_analyze_random_forest_features.py
+```
+
+### Or Run All at Once
+```bash
+# Run the complete pipeline
+for script in 1_prepare_episode_data.py 2_feature_selection_episode.py 3_model_episode_analysis.py 4_plot_figure8a.py 5_correlation_analysis_figure8b.py 6_analyze_random_forest_features.py; do
+    echo "Running $script..."
+    python $script
+done
+```
+
+## 📊 Analysis Overview
+
+### Figure 8a: Episode-Level ML Analysis
+**Objective**: Predict IMDB score distributions using machine learning
+
+**Approach**:
+- **Dataset**: 154 episodes with 12 features
+- **Models**: Linear Regression, Ridge Regression, Random Forest
+- **Target**: IMDB histogram percentages (10-dimensional)
+- **Validation**: 5-fold cross-validation + holdout test
+
+**Key Results**:
+- **Best Model**: Random Forest (R² = 0.385)
+- **Top Predictors**: contestant_avg_age (39.5%), avg_awkwardness (32.6%), contestant_avg_experience (16.2%)
+- **Insight**: Professional polish matters more than amateur charm
+
+### Figure 8b: Correlation Analysis
 **Objective**: Analyze raw correlations between input features and IMDB scores
 
-### Pipeline:
-1. **`1_prepare_series_data.py`** - Aggregate data at series level
-2. **`correlation_analysis_raw.py`** - Calculate correlations with IMDB histograms as target
-
-### Key Findings:
-- **45 valid correlations** between input features and mean IMDB scores
-- **Strongest negative**: contestant_prop_actors (r = -0.547)
-- **Strongest positive**: contestant_avg_age (r = +0.397)
-- **Distribution**: Nearly normal around zero (μ=-0.025, σ=0.199)
-
-## 🎯 Random Forest Feature Analysis
-
-**Additional Analysis**: `analyze_rf_features.py` - Deep dive into Random Forest insights
-
-### Key Insights for Maximizing IMDB Scores:
-1. **👴 Maximize**: Contestant average age (39.5% importance, +0.396 correlation)
-2. **😬 Minimize**: Average awkwardness (32.6% importance, -0.151 correlation)  
-3. **📺 Maximize**: Contestant experience (16.2% importance, +0.019 correlation)
-
-## 📁 Data Files
-
-### Input Data:
-- **`episode_data.csv`** - Prepared episode-level data (N=154)
-- **`series_data.csv`** - Prepared series-level data
-- **`episode_selected_features.json`** - Feature selection results
-
-### Model Results:
-- **`episode_model_results.pkl`** - Complete ML model results
-- **`raw_correlations.json`** - Correlation analysis results
-
-## 📈 Output Figures
-
-- **`figure8a_episode_ml.png`** - Model performance comparison (3 models)
-- **`figure8b_raw_correlations.png`** - Correlation distribution histogram
-- **`random_forest_feature_analysis.png`** - Detailed feature importance analysis
-
-## 🔬 Methodology
-
-### Episode-Level (ML Approach):
-- **Target**: IMDB histogram percentages (10-dimensional)
-- **Features**: Demographics, sentiment, experience metrics
-- **Validation**: 5-fold cross-validation + holdout test set
-- **Metric**: R² score for explained variance
-
-### Series-Level (Correlation Approach):  
+**Approach**:
+- **Dataset**: 154 episodes with 45 input features
 - **Target**: Mean IMDB score computed from vote histograms
-- **Features**: Raw input data from multiple sources
 - **Analysis**: Direct Pearson correlations
 - **Visualization**: Distribution of correlation coefficients
 
-## 🏆 Key Scientific Findings
+**Key Results**:
+- **Strongest Negative**: contestant_prop_actors (r = -0.547)
+- **Strongest Positive**: contestant_avg_age (r = +0.397)
+- **Distribution**: Nearly normal around zero (μ=-0.025, σ=0.199)
 
-1. **Professional Polish Matters**: Older, experienced comedians score higher
-2. **Awkwardness Hurts**: Smooth performances outperform awkward ones
-3. **Demographics Drive Ratings**: Age and profession are strongest predictors
-4. **ML vs Correlation**: Both approaches reveal consistent patterns
+## 🎯 Key Scientific Findings
+
+### 1. Professional Polish Beats Amateur Charm
+- **Older contestants** (41+ years) correlate with higher ratings
+- **Professional comedians** enhance entertainment value
+- **TV experience** matters for audience satisfaction
+
+### 2. Awkwardness Hurts Ratings
+- **Smooth, confident performances** score better than awkward ones
+- **Professional backgrounds** (comedians) outperform actors
+- **Polished entertainment** preferred over raw authenticity
+
+### 3. Predictable Patterns
+- **38.5% of IMDB variance** explained by contestant characteristics
+- **Age and experience** are strongest predictors
+- **Demographics drive ratings** more than task content
+
+## 🔬 Methodology
+
+### Data Sources
+- **`data/raw/taskmaster_UK_tasks.csv`** - Task characteristics
+- **`data/raw/sentiment.csv`** - Sentiment analysis
+- **`data/processed/scores_by_series/series_*_scores.csv`** - Contestant scoring
+- **`data/raw/contestants.csv`** - Contestant demographics
+- **`data/raw/taskmaster_histograms_corrected.csv`** - IMDB ratings (target)
+
+### Feature Engineering
+- **Sentiment metrics**: Anger, awkwardness, humor, sarcasm, etc.
+- **Contestant demographics**: Age, experience, profession, gender
+- **Task characteristics**: Activity types, judgment patterns
+- **Aggregation**: Episode-level means and proportions
+
+### Model Selection
+- **Feature Selection**: Mutual information + entropy analysis
+- **Cross-Validation**: 5-fold CV with stratification
+- **Model Comparison**: Linear, Ridge, Random Forest
+- **Evaluation**: R², MAE, feature importance
+
+## 📈 Usage Examples
+
+### Load Results for Further Analysis
+```python
+import pickle
+import pandas as pd
+
+# Load model results
+with open('episode_model_results.pkl', 'rb') as f:
+    results = pickle.load(f)
+
+# Load episode data
+episode_data = pd.read_csv('episode_data.csv')
+
+# Get Random Forest performance
+rf_results = results['all_results']['top_5']['results']['Random Forest']
+print(f"Random Forest R²: {rf_results['test_r2']:.3f}")
+```
+
+### Access Feature Importance
+```python
+# Get feature importance from Random Forest
+feature_importance = rf_results['feature_importance']
+top_features = sorted(feature_importance.items(), key=lambda x: x[1], reverse=True)
+
+print("Top 5 Features:")
+for feature, importance in top_features[:5]:
+    print(f"  {feature}: {importance:.3f}")
+```
+
+## 🏆 Strategic Insights
+
+### For Maximizing IMDB Scores:
+1. **Cast older, experienced performers** (40+ years)
+2. **Include professional comedians** in each series
+3. **Minimize awkward moments** during filming/editing
+4. **Prioritize TV veterans** over newcomers
+5. **Balance or favor female representation**
+
+### Scientific Value:
+- **Demonstrates predictable patterns** in entertainment ratings
+- **Shows demographic effects** on audience satisfaction
+- **Provides actionable insights** for casting decisions
+- **Validates professional polish hypothesis**
 
 ---
 
-**Figure 8 demonstrates that Taskmaster episode success is largely predictable from contestant characteristics, with Random Forest achieving 38.5% explained variance.**
-
-## Key Insight: Appropriate Methods for Data Scale
-
-This analysis demonstrates choosing the right statistical approach:
-- **Episode-level**: Sufficient data for machine learning
-- **Series-level**: Simple correlation analysis provides interpretable insights
-
-## File Structure
-
-### Episode-Level Pipeline (Figure 8a)
-1. **`1_prepare_episode_data.py`** - Data preparation (154 episodes, 12 features)
-2. **`2_feature_selection_episode.py`** - Information entropy feature selection  
-3. **`3_model_episode.py`** - ML modeling with train/test split
-
-### Series-Level Pipeline (Figure 8b)
-1. **`1_prepare_series_data.py`** - Data preparation (18 series, aggregated features)
-2. **`correlation_analysis_raw.py`** - **Raw correlation analysis** (final approach)
-
-### Generated Data Files
-- **`episode_data.csv`** - Episode-level features and targets
-- **`series_data.csv`** - Series-level aggregated data
-- **`episode_selected_features.json`** - Episode feature selection results
-- **`episode_model_results.pkl`** - Episode ML model results
-- **`raw_correlations.json`** - Series correlation analysis results
-
-### Output Figures
-- **`figure8b_raw_correlations.png`** - **Final Figure 8b** (correlation histogram with Gaussian fit)
-
-## Key Results
-
-### Episode-Level (Successful ML)
-- **Best Model**: Random Forest (R² = 0.385)
-- **Top Predictors**: contestant_avg_age (39.5%), avg_awkwardness (32.6%), contestant_avg_experience (16.2%)
-- **Sample Size**: Adequate for reliable ML (N=154)
-
-### Series-Level (Correlation Analysis)
-- **Strongest Correlation**: contestant_prop_actors (r = -0.547) - more actors → lower IMDB ratings
-- **Key Findings**: 
-  - Older contestants → higher ratings (r = +0.397)
-  - Solo tasks preferred over team tasks
-  - Special/unique tasks boost ratings
-- **Distribution**: Normal around zero (μ=-0.025, σ=0.199)
-
-## Data Sources (INPUT Features)
-
-All analyses use the same input data sources:
-- **`data/raw/taskmaster_UK_tasks.csv`** - Task characteristics
-- **`data/raw/sentiment.csv`** - Sentiment analysis  
-- **`data/processed/scores_by_series/series_*_scores.csv`** - Contestant scoring
-- **`data/raw/contestants.csv`** - Contestant demographics
-
-**TARGET (OUTPUT)**: Mean IMDB scores computed from `data/raw/taskmaster_histograms_corrected.csv`
-
-## Usage
-
-### Run Episode-Level Analysis:
-```bash
-python 1_prepare_episode_data.py
-python 2_feature_selection_episode.py  
-python 3_model_episode.py
-```
-
-### Run Series-Level Analysis:
-```bash
-python 1_prepare_series_data.py
-python correlation_analysis_raw.py
-```
-
-## Scientific Value
-
-This analysis provides methodological education:
-1. **Sample size considerations**: When to use ML vs simple statistics
-2. **Feature consistency**: Same input features analyzed at different scales  
-3. **Interpretable results**: Both approaches yield meaningful insights
-4. **Appropriate methodology**: Matching analysis complexity to data constraints
-
-## Key Finding
-
-**Contestant demographics and task structure consistently predict IMDB ratings** across both episode and series levels, with older contestants and comedians correlating with higher ratings, while actors correlate with lower ratings. 
+**This analysis demonstrates that Taskmaster episode success is largely predictable from contestant characteristics, with Random Forest achieving 38.5% explained variance in IMDB ratings.** 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Raw Correlation Analysis: Input Features vs IMDB Scores (Series Level)
+Raw Correlation Analysis: Input Features vs IMDB Scores (Episode Level)
 Direct correlation analysis with all available non-constant features
 """
 
@@ -18,21 +18,21 @@ sys.path.append(str(Path(__file__).parent.parent.parent / 'config'))
 from plot_utils import apply_plot_style, load_config
 
 # Configuration
-SERIES_DATA_FILE = "series_data.csv"
+EPISODE_DATA_FILE = "episode_data.csv"
 OUTPUT_CORRELATIONS_FILE = "raw_correlations.json"
 OUTPUT_FIGURE_FILE = "figure8b_raw_correlations"
 
 def load_data():
-    """Load the series-level data for correlation analysis."""
-    print("Loading series-level data for correlation analysis...")
+    """Load the episode-level data for correlation analysis."""
+    print("Loading episode-level data for correlation analysis...")
     
-    # Load series data  
-    series_data = pd.read_csv(SERIES_DATA_FILE)
-    print(f"  Series data loaded: {series_data.shape}")
+    # Load episode data  
+    episode_data = pd.read_csv(EPISODE_DATA_FILE)
+    print(f"  Episode data loaded: {episode_data.shape}")
     
-    return series_data
+    return episode_data
 
-def calculate_mean_imdb_scores(series_data):
+def calculate_mean_imdb_scores(episode_data):
     """Calculate mean IMDB scores from histogram data."""
     print("Calculating mean IMDB scores from histograms...")
     
@@ -40,41 +40,41 @@ def calculate_mean_imdb_scores(series_data):
     hist_cols = [f'hist{i}_pct' for i in range(1, 11)]
     rating_values = np.arange(1, 11)  # Ratings 1-10
     
-    # Calculate weighted mean IMDB score for each series
+    # Calculate weighted mean IMDB score for each episode
     mean_scores = []
-    for idx, row in series_data.iterrows():
+    for idx, row in episode_data.iterrows():
         hist_percentages = row[hist_cols].values / 100.0  # Convert to fractions
         weighted_mean = np.sum(rating_values * hist_percentages)
         mean_scores.append(weighted_mean)
     
-    series_data['mean_imdb_score'] = mean_scores
+    episode_data['mean_imdb_score'] = mean_scores
     
     print(f"  Mean IMDB score range: {min(mean_scores):.2f} - {max(mean_scores):.2f}")
-    return series_data
+    return episode_data
 
-def identify_input_features(series_data):
+def identify_input_features(episode_data):
     """Identify all available input features (exclude IMDB histogram data and identifiers)."""
     
-    # Exclude only histogram columns and identifiers - we want ALL other features
+    # Exclude histogram columns, identifiers, and metadata
     exclude_cols = (
         [f'hist{i}_pct' for i in range(1, 11)] +  # IMDB histograms (10 columns)
-        ['series', 'mean_imdb_score']  # Identifiers and computed target (2 columns)
+        ['season', 'episode', 'episode_id', 'title', 'imdb_id', 'mean_imdb_score']  # Identifiers and computed target
     )
     
-    # Get all potential input features (should be 48 - 12 = 36 columns, but let's see all)
-    all_features = [col for col in series_data.columns if col not in exclude_cols]
+    # Get all potential input features
+    all_features = [col for col in episode_data.columns if col not in exclude_cols]
     
     # Filter to numeric features only and check variance
     input_features = []
     for feature in all_features:
-        if series_data[feature].dtype in ['int64', 'float64', 'bool']:
+        if episode_data[feature].dtype in ['int64', 'float64', 'bool']:
             # Check for sufficient variance (exclude constant features)
-            if series_data[feature].nunique() > 1 and series_data[feature].std() > 1e-10:
+            if episode_data[feature].nunique() > 1 and episode_data[feature].std() > 1e-10:
                 input_features.append(feature)
             else:
                 print(f"    Excluding {feature}: constant or near-constant values")
     
-    print(f"  Total columns: {len(series_data.columns)}")
+    print(f"  Total columns: {len(episode_data.columns)}")
     print(f"  Excluded columns: {len(exclude_cols)} (histograms + identifiers)")
     print(f"  Potential input features: {len(all_features)}")
     print(f"  Valid input features: {len(input_features)}")
@@ -85,19 +85,19 @@ def identify_input_features(series_data):
     
     return input_features
 
-def calculate_correlations(series_data, input_features):
+def calculate_correlations(episode_data, input_features):
     """Calculate correlations between input features and mean IMDB scores."""
     print(f"\nCalculating correlations with mean IMDB scores...")
     
     correlations = {}
     valid_correlations = []
     
-    target = series_data['mean_imdb_score']
+    target = episode_data['mean_imdb_score']
     
     for feature in input_features:
         try:
             # Calculate Pearson correlation
-            corr, p_value = stats.pearsonr(series_data[feature], target)
+            corr, p_value = stats.pearsonr(episode_data[feature], target)
             
             # Store if valid (not NaN)
             if not np.isnan(corr):
@@ -216,20 +216,20 @@ def save_results(correlations, valid_correlations):
 def main():
     """Main analysis function."""
     print("="*80)
-    print("RAW CORRELATION ANALYSIS: ALL INPUT FEATURES vs IMDB SCORES (SERIES LEVEL)")
+    print("RAW CORRELATION ANALYSIS: ALL INPUT FEATURES vs IMDB SCORES (EPISODE LEVEL)")
     print("="*80)
     
     # Load data
-    series_data = load_data()
+    episode_data = load_data()
     
     # Calculate mean IMDB scores from histograms
-    series_data = calculate_mean_imdb_scores(series_data)
+    episode_data = calculate_mean_imdb_scores(episode_data)
     
     # Identify input features
-    input_features = identify_input_features(series_data)
+    input_features = identify_input_features(episode_data)
     
     # Calculate correlations
-    correlations, valid_correlations = calculate_correlations(series_data, input_features)
+    correlations, valid_correlations = calculate_correlations(episode_data, input_features)
     
     # Analyze strongest correlations
     top_correlations = analyze_strongest_correlations(correlations, top_n=10)
@@ -252,7 +252,7 @@ def main():
     plt.show()
     
     print(f"\n🎯 SUMMARY:")
-    print(f"   Series analyzed: {len(series_data)}")
+    print(f"   Episodes analyzed: {len(episode_data)}")
     print(f"   Input features: {len(valid_correlations)}")
     print(f"   Mean correlation: {np.mean(valid_correlations):.3f}")
     print(f"   Standard deviation: {np.std(valid_correlations):.3f}")

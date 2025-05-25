@@ -137,7 +137,8 @@ def create_feature_analysis_plot(analysis_df):
     # Load configuration and apply styling
     config = load_config()
     
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
+    # Increase figure width to give more space for labels
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 6))
     
     # Apply consistent styling to each axis separately
     apply_plot_style(fig, ax1)
@@ -160,8 +161,14 @@ def create_feature_analysis_plot(analysis_df):
     
     # Add importance values
     for i, (bar, imp) in enumerate(zip(bars1, analysis_df['importance'])):
-        ax1.text(imp + 0.005, bar.get_y() + bar.get_height()/2,
-                f'{imp:.3f}', va='center', fontsize=config['fonts']['tick_label_size'])
+        # Place text on bars with white background for consistency
+        x_pos = imp * 0.8  # 80% along the bar
+        y_pos = bar.get_y() + bar.get_height()/2
+        
+        ax1.text(x_pos, y_pos, f'{imp:.3f}', 
+                va='center', ha='center', 
+                fontsize=config['fonts']['tick_label_size'],
+                bbox=dict(boxstyle='round,pad=0.3', facecolor='white', alpha=0.9, edgecolor='none'))
     
     # Right plot: Correlation with IMDB scores
     correlation_colors = [colors['good'] if corr > 0 else colors['bad'] for corr in analysis_df['correlation']]
@@ -175,13 +182,25 @@ def create_feature_analysis_plot(analysis_df):
     ax2.grid(True, alpha=0.3, axis='x')
     ax2.axvline(x=0, color='black', linestyle='-', alpha=0.5)
     
-    # Add correlation values
+    # Add correlation values with better spacing
     for i, (bar, corr) in enumerate(zip(bars2, analysis_df['correlation'])):
-        ax2.text(corr + (0.01 if corr > 0 else -0.01), bar.get_y() + bar.get_height()/2,
-                f'{corr:+.3f}', va='center', ha='left' if corr > 0 else 'right', 
-                fontsize=config['fonts']['tick_label_size'])
+        # Place text on top of bars with white background
+        y_pos = bar.get_y() + bar.get_height()/2
+        
+        # Position text at the end of the bar (inside the bar)
+        if corr > 0:
+            x_pos = corr * 0.8  # 80% along the bar
+        else:
+            x_pos = corr * 0.8  # 80% along the bar (negative direction)
+        
+        ax2.text(x_pos, y_pos, f'{corr:+.3f}', 
+                va='center', ha='center', 
+                fontsize=config['fonts']['tick_label_size'],
+                bbox=dict(boxstyle='round,pad=0.3', facecolor='white', alpha=0.9, edgecolor='none'))
     
-    plt.tight_layout()
+    # Adjust layout to prevent overlapping
+    plt.subplots_adjust(left=0.15, right=0.95, wspace=0.4)
+    
     return fig
 
 def provide_strategic_recommendations(analysis_df, episode_data, rf_results):
