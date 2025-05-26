@@ -173,6 +173,8 @@ def add_key_pattern_annotations(ax, data):
     key_patterns = [
         # Extreme low: all zeros
         {'sorted_set': '{0, 0, 0, 0, 0}', 'histogram': '[5, 0, 0, 0, 0, 0]'},
+        # High variance: mostly zeros with one max
+        {'sorted_set': '{0, 0, 0, 0, 5}', 'histogram': '[4, 0, 0, 0, 0, 1]'},
         # Middle pattern: perfect spread
         {'sorted_set': '{1, 2, 3, 4, 5}', 'histogram': '[0, 1, 1, 1, 1, 1]'},
         # Extreme high: all fives
