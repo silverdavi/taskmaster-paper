@@ -157,11 +157,63 @@ def create_scoring_visualization(data, config):
         if legend_elements:
             ax.legend(handles=legend_elements, title="Frequency", loc="upper right")
     
+    # Add annotations for key patterns
+    add_key_pattern_annotations(ax, data)
+    
     # Customize appearance
     ax.set_xlabel('Mean Score')
     ax.set_ylabel('Variance')
 
     return fig, ax, actual_df
+
+def add_key_pattern_annotations(ax, data):
+    """Add annotations for key scoring patterns showing both score set and histogram."""
+    
+    # Define key patterns to annotate
+    key_patterns = [
+        # Extreme low: all zeros
+        {'sorted_set': '{0, 0, 0, 0, 0}', 'histogram': '[5, 0, 0, 0, 0, 0]'},
+        # Middle pattern: perfect spread
+        {'sorted_set': '{1, 2, 3, 4, 5}', 'histogram': '[0, 1, 1, 1, 1, 1]'},
+        # Extreme high: all fives
+        {'sorted_set': '{5, 5, 5, 5, 5}', 'histogram': '[0, 0, 0, 0, 0, 5]'}
+    ]
+    
+    for pattern_info in key_patterns:
+        # Find this pattern in the data
+        pattern_data = data[data['sorted_set'] == pattern_info['sorted_set']]
+        
+        if not pattern_data.empty:
+            row = pattern_data.iloc[0]
+            x, y = row['mean'], row['variance']
+            
+            # Create annotation text with both representations
+            annotation_text = f"{pattern_info['sorted_set']}\n{pattern_info['histogram']}"
+            
+            # Position annotation based on location
+            if x < 1.5:  # Left side (low scores)
+                xytext = (x + 0.3, y + 0.3)
+                ha = 'left'
+            elif x > 4.0:  # Right side (high scores)
+                xytext = (x - 0.3, y + 0.3)
+                ha = 'right'
+            else:  # Middle
+                xytext = (x, y + 0.5)
+                ha = 'center'
+            
+            # Add annotation
+            ax.annotate(
+                annotation_text,
+                xy=(x, y),
+                xytext=xytext,
+                ha=ha,
+                va='bottom',
+                fontsize=10,
+                fontweight='bold',
+                bbox=dict(boxstyle="round,pad=0.3", facecolor='white', alpha=0.8, edgecolor='black'),
+                arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0', color='black', lw=1.5),
+                zorder=3
+            )
 
 def save_figure(fig, output_dir, figure_name, config):
     """Save figure in multiple formats."""
