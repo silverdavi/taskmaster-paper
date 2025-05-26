@@ -1,14 +1,16 @@
-# A Quantitative Exploration of Taskmaster: Data Analysis and Visualization
+# Quantifying Audience Engagement in Hybrid Entertainment Through Analysis of 18 Series of Taskmaster UK
 
-This repository contains the complete codebase for a comprehensive quantitative analysis of the British comedy panel show Taskmaster. The project explores contestant archetypes, task dynamics, audience reception patterns, and comedic sentiment through rigorous statistical analysis and data visualization.
+This repository contains the complete codebase for a comprehensive quantitative analysis of the British comedy panel show Taskmaster. The project explores how competitive mechanics, performer characteristics, and emotional tone interact to shape viewer engagement in hybrid entertainment formats that blend structured gameplay with unscripted humor.
 
->  **For complete research methodology and findings, see [PaperGuide.MD](PaperGuide.MD)**
+>  **For complete research methodology and findings, see the published paper and [FiguresGuide.MD](FiguresGuide.MD)**
 
 ## Project Overview
 
-This analysis leverages multiple datasets to provide empirical insights into Taskmaster's enduring appeal and operational mechanics. The study employs advanced statistical techniques including mixture model fitting, principal component analysis, clustering algorithms, and sentiment analysis to understand the show's unique blend of structure and comedic unpredictability.
+This analysis leverages multiple datasets spanning 154 episodes, 917 tasks, and over 32,600 IMDb viewer ratings to provide empirical insights into what drives audience engagement in hybrid entertainment. The study employs advanced statistical techniques including mixture model fitting for rating distributions, principal component analysis, performance archetype clustering, and sentiment analysis to understand how Taskmaster balances structure with comedic unpredictability.
 
-> ANALYSIS: **For detailed analysis framework and module documentation, see [FiguresGuide.MD](FiguresGuide.MD)**
+**Key Finding**: Competitive scoring mechanics provide structural framework, but audience engagement correlates primarily with performer characteristics (age, experience) and emotional content rather than scoring dynamics.
+
+> **For detailed analysis framework and module documentation, see [FiguresGuide.MD](FiguresGuide.MD)**
 
 ## Directory Structure
 
@@ -27,8 +29,10 @@ taskmaster-paper/
 │   │   ├── sentiment.csv                    # Episode-level sentiment analysis
 │   │   ├── _OL_tasks.csv                    # GPT-4o classified task types
 │   │   ├── taskmaster_uk_episodes.csv       # Episode metadata
-│   │   ├── Cont_lon_lat.tsv                 # Contestant geographic coordinates
-│   │   └── ...
+│   │   ├── taskmaster_UK_tasks.csv          # Task metadata and classifications
+│   │   ├── scores.csv                       # Individual task scores
+│   │   ├── long_task_scores.csv             # Task scores in long format
+│   │   └── Cont_lon_lat.tsv                 # Contestant geographic coordinates
 │   ├── processed/                           # Processed data organized by analysis
 │   └── taskmaster_data_documentation.md     # Data processing overview
 ├── figures/                                 # Analysis modules (one per research question)
@@ -42,36 +46,63 @@ taskmaster-paper/
 │   ├── scoring_pattern_geometry/            # Task scoring system analysis
 │   ├── task_skill_profiles/                 # Task-skill requirement mapping
 │   └── individual_series_analysis/          # Series-specific deep dives
-├── PaperGuide.MD                           # Complete research methodology and findings
 ├── FiguresGuide.MD                         # Figure generation and interpretation guide
+├── figures_workflow.md                     # Implementation workflow standards
 ├── generate_all_figures.py                # Master script for all analyses
 └── requirements.txt                        # Python dependencies
 ```
 
-> DATA: **For comprehensive data statistics and insights, see [data/taskmaster_data_documentation.md](data/taskmaster_data_documentation.md)**
+> **For comprehensive data statistics and insights, see [data/taskmaster_data_documentation.md](data/taskmaster_data_documentation.md)**
 
-## Key Features
+## Key Research Findings
 
-### Advanced Statistical Methods
-- **Mixture Model Fitting**: IMDb rating distributions modeled as delta functions (ratings 1 & 10) + Gaussian (ratings 2-9)
-- **Goodness of Fit Analysis**: Quantitative comparison of mixture vs. naive Gaussian models
-- **Principal Component Analysis**: Series-level reception quality profiling
-- **Clustering Analysis**: Contestant archetype identification using demographic and performance data
-- **Sentiment Analysis**: GPT-4o powered extraction of comedic sentiment patterns
+### Scoring Dynamics vs. Audience Engagement
+- **Low-dimensional scoring analysis**: Mean (μ) and variance (σ²) of task score distributions showed no significant associations with IMDb ratings (μ: r = -0.012, p = 0.890; σ²: r = -0.118, p = 0.179)
+- **Scoring pattern usage**: Only 38.9% (98/252) of mathematically possible five-contestant scoring distributions occur in practice, clustering around moderate generosity and spread
+- **Conclusion**: Competitive mechanics provide framework but do not drive audience satisfaction
 
-### Comprehensive Data Documentation
-- Detailed methodology for each dataset with reliability assessments
-- Transparent discussion of AI-assisted data collection limitations
-- Correlation validation between raw vote histograms and official IMDb scores (>99% correlation)
+### Performer Characteristics Drive Engagement
+- **Contestant age**: Strongest predictor of episode ratings (39.5% ± 2.1% feature importance in Random Forest models)
+- **Experience matters**: More experienced performers consistently correlate with higher ratings (16.2% feature importance)
+- **Professional background**: Higher proportion of comedians vs. actors correlates positively with ratings (6.5% feature importance)
+- **Gender balance**: Modest positive correlation with balanced gender distributions (5.2% feature importance)
 
->  **For detailed data sources and collection methodology, see [data/raw/DATA_SOURCES_AND_METHODOLOGY.md](data/raw/DATA_SOURCES_AND_METHODOLOGY.md)**
+### Temporal and Emotional Patterns
+- **Episode trajectories**: 16 of 18 series follow Rising or J-shaped rating patterns, with final episodes averaging +0.28 points higher than premieres (p < 0.001)
+- **Sentiment evolution**: Significant increase in awkwardness over time (β = 0.0122, adjusted p = 0.0027), while other emotional tones remain stable
+- **Performance archetypes**: Five consistent performance patterns identified across all series (Steady Performer, Late Bloomer, Early Star, Chaotic Wildcard, Consistent Middle)
 
-### Reproducible Research Framework
-- Modular analysis structure with clear separation of data processing and visualization
-- Consistent styling and configuration across all figures
-- Comprehensive goodness-of-fit metrics and statistical validation
+### Statistical Methodology Innovations
+- **Mixture model performance**: Tri-peak model (δ(1) + δ(10) + Gaussian) reduced mean absolute error by 48.1% vs. single Gaussian
+- **Cross-validation approach**: Series-level splits prevent overfitting to seasonal patterns
+- **Low-dimensional representation**: Avoids multicollinearity issues common in entertainment research
 
->  **For implementation workflow and quality standards, see [figures_workflow.md](figures_workflow.md)**
+## Advanced Statistical Methods
+
+### Mixture Model Fitting for Rating Distributions
+IMDb rating distributions modeled as weighted combinations of:
+- Delta functions at ratings 1 & 10 (polarized responses)
+- Gaussian distribution for ratings 2-9 (consensus responses)
+- Quantitative validation shows superior fit vs. naive Gaussian models
+
+### Principal Component Analysis
+Series-level reception quality profiling using four orthogonal dimensions:
+- Percentage of 1-star ratings (polarization)
+- Percentage of 10-star ratings (enthusiasm)
+- Mean of Gaussian component (consensus quality)
+- Standard deviation (rating spread)
+
+### Performance Archetype Clustering
+Contestant classification using 15-dimensional feature vectors:
+- Score trajectory patterns and ranking evolution
+- Volatility, consistency, and comeback metrics
+- Greedy assignment ensuring one representative per archetype per series
+
+### Sentiment Analysis Pipeline
+GPT-4o powered extraction across seven emotional dimensions:
+- 95.3% accuracy vs. 66-71% for classical ML and 37.2% for lexicon methods
+- Episode-level aggregation from sentence-level annotations
+- Temporal trend analysis with False Discovery Rate correction
 
 ## Setup and Installation
 
@@ -87,8 +118,6 @@ taskmaster-paper/
    ```
 
 3. **Data Preparation**: Raw data files are included in `data/raw/` with comprehensive documentation
-
->  **For current project status and development roadmap, see [ISSUES_AND_ROADMAP.md](ISSUES_AND_ROADMAP.md)**
 
 ## Usage
 
@@ -117,63 +146,78 @@ python generate_all_figures.py --plot-only
 python generate_all_figures.py --list
 ```
 
-> FEATURE: **For complete usage examples and module descriptions, run the above command or see [FiguresGuide.MD](FiguresGuide.MD)**
-
-## Key Research Findings
-
-### Series-Level Reception Analysis
-- **Mixture Model Performance**: Mean Absolute Error of 1.8% vs. 4.1% for naive Gaussian
-- **Rating Distribution Patterns**: Clear identification of polarizing vs. consensus episodes
-- **Series Quality Metrics**: Quantitative profiling using #1s, #10s, μ, and σ parameters
-
-### Task Characteristics and Performance
-- **Task Typology**: Data-driven classification based on creativity, physicality, and technical demands
-- **Performance Correlations**: Systematic analysis of contestant archetype success across task types
-- **Scoring System Analysis**: Comprehensive evaluation of the 0-5 point scoring distribution
-
-### Audience Reception Dynamics
-- **Episode Trajectory Patterns**: Statistical identification of "Rising," "J-shape," and other rating patterns
-- **Sentiment-Reception Correlations**: Quantitative links between comedic sentiment and audience appreciation
-- **Geographic and Demographic Influences**: Analysis of contestant diversity impact on show reception
-
-> TREND: **For detailed findings and statistical analysis, see [PaperGuide.MD](PaperGuide.MD)**
-
-## Data Sources and Reliability
-
-### High Reliability (Statistical Analysis)
-- **IMDb Data**: Official ratings and vote distributions (>99% correlation validation)
-- **Episode Metadata**: Verified information from taskmaster.info
-
-### Medium Reliability (Exploratory Analysis)
-- **Contestant Demographics**: Web-sourced with manual verification
-- **Geographic Data**: Official birthplace coordinates
-
-### Exploratory Only (No Statistical Conclusions)
-- **Task Classifications**: GPT-4o assisted categorization for pattern identification
-- **Sentiment Analysis**: GPT-4o extraction with >80% accuracy vs. <60% for lexicon methods
-
-> ANALYSIS: **For complete data reliability assessment and collection methodology, see [data/raw/DATA_SOURCES_AND_METHODOLOGY.md](data/raw/DATA_SOURCES_AND_METHODOLOGY.md)**
-
-> DATA: **For comprehensive data statistics (90 contestants, 917 tasks, 154 episodes), see [data/taskmaster_data_documentation.md](data/taskmaster_data_documentation.md)**
-
 ## Analysis Modules
 
-The project includes 10 comprehensive analysis modules:
+The project includes 10 comprehensive analysis modules corresponding to the paper's main findings:
 
-1. **Series Ratings Analysis**: Mixture model fitting and goodness of fit analysis
-2. **Episode Rating Trajectories**: Within-series rating pattern analysis  
-3. **Task Characteristics Analysis**: Task typology and demand analysis
-4. **Geographic Origins**: Contestant birthplace and cultural analysis
-5. **Performance Archetypes**: Clustering analysis of contestant types
-6. **Sentiment Trends**: Comedic sentiment pattern analysis
-7. **Predictive Modeling**: Episode success prediction models
-8. **Scoring Pattern Geometry**: Task scoring system analysis
-9. **Task Skill Profiles**: Task-skill requirement mapping
-10. **Individual Series Analysis**: Series-specific deep dive analysis
+1. **Series Ratings Analysis**: Mixture model fitting and tri-peak distribution analysis
+2. **Episode Rating Trajectories**: Within-series rating pattern identification (Rising, J-shaped, etc.)
+3. **Task Characteristics Analysis**: Task typology stability across 18 series
+4. **Geographic Origins**: Contestant birthplace distribution and cultural analysis
+5. **Performance Archetypes**: Five-archetype clustering with consistent representation
+6. **Sentiment Trends**: Temporal evolution of comedic emotional tone
+7. **Predictive Modeling**: Random Forest models with series-level cross-validation
+8. **Scoring Pattern Geometry**: Mathematical analysis of used vs. unused scoring configurations
+9. **Task Skill Profiles**: GPT-4o assisted task difficulty profiling (exploratory only)
+10. **Individual Series Analysis**: Series-specific performance trajectory visualization
 
-> ANALYSIS: **For detailed module documentation and implementation status, see [FiguresGuide.MD](FiguresGuide.MD)**
+> **For detailed module documentation and implementation status, see [FiguresGuide.MD](FiguresGuide.MD)**
 
->  **For module naming history and evolution, see [figures/FIGURE_NAMING_HISTORY.md](figures/FIGURE_NAMING_HISTORY.md)**
+## Data Sources and Reliability Assessment
+
+### High Reliability (Statistical Analysis)
+- **IMDb Data**: Official ratings and vote distributions with >99% correlation validation between histograms and published scores
+- **Episode Metadata**: Verified information from taskmaster.info community database
+- **Contestant Demographics**: Manually verified from multiple public sources
+
+### Medium Reliability (Exploratory Analysis)
+- **Geographic Data**: Official birthplace coordinates with manual disambiguation
+- **Task Classifications**: Human-annotated with consensus verification
+
+### Exploratory Only (No Statistical Conclusions)
+- **GPT-4o Task Skill Profiles**: Used for visualization and pattern identification only
+- **Sentiment Analysis**: GPT-4o extraction validated against benchmarks but not used for causal inference
+
+> **For complete data reliability assessment and collection methodology, see [data/raw/DATA_SOURCES_AND_METHODOLOGY.md](data/raw/DATA_SOURCES_AND_METHODOLOGY.md)**
+
+## Key Methodological Innovations
+
+### Addressing Multicollinearity in Entertainment Research
+Traditional studies often use multiple overlapping metrics (volatility, variance, spread) that can inflate false positives. This study adopts a minimal two-dimensional representation (μ, σ²) that captures >90% of scoring pattern variation while avoiding intercorrelation issues.
+
+### Series-Level Cross-Validation
+Machine learning models use series-level splits rather than random episode splits, preventing overfitting to seasonal tone or cast-specific patterns and ensuring generalizability across different seasons.
+
+### Mixture Modeling for Audience Polarization
+Recognition that entertainment ratings often exhibit tri-modal rather than unimodal distributions, with distinct subpopulations of highly positive, highly negative, and moderate viewers.
+
+## Academic Context and Contributions
+
+This work contributes to the quantitative analysis of hybrid entertainment formats by:
+
+1. **Empirical validation** of theories about what drives engagement in comedy-competition hybrids
+2. **Methodological framework** for analyzing unscripted entertainment with structured elements
+3. **Statistical techniques** for handling polarized audience responses and temporal patterns
+4. **Reproducible pipeline** for similar analyses of other panel shows or hybrid formats
+
+The findings support theories that hybrid entertainment derives appeal from performer charisma and emotional tone rather than competitive tension alone, positioning the competitive framework as an enabling structure rather than the primary value driver.
+
+## Citation
+
+### Repository Citation
+```
+Silver, D. (2024). Quantifying Audience Engagement in Hybrid Entertainment Through Analysis 
+of 18 Series of Taskmaster UK. GitHub repository: 
+https://github.com/silverdavi/taskmaster-paper
+```
+
+### Data and Code Availability
+All data, analysis code, and reproducible pipeline are publicly available. The repository provides complete reproducibility with:
+- Raw datasets with comprehensive documentation and reliability assessments
+- 10 modular analysis components with statistical validation
+- Automated figure generation pipeline with consistent styling
+- Mixture model implementations with goodness-of-fit analysis
+- Cross-validated machine learning models with feature importance analysis
 
 ## Contributing
 
@@ -184,31 +228,20 @@ When contributing to this analysis:
 3. Document all statistical methods and assumptions
 4. Include goodness-of-fit metrics for model validation
 5. Update relevant documentation files
+6. Use series-level cross-validation for temporal data
 
->  **For detailed workflow standards and quality assurance, see [figures_workflow.md](figures_workflow.md)**
-
-## Academic Context
-
-This work contributes to the quantitative analysis of comedy television, providing empirical support for theories of humor (Incongruity, Superiority, Relief) and demonstrating methodologies for analyzing unscripted entertainment formats. The framework established here can serve as a model for studying other panel game shows or comedic formats.
-
->  **For complete academic context and research contributions, see [PaperGuide.MD](PaperGuide.MD)**
-
-## Citation
-
-If you use this work in academic research, please cite the associated paper and acknowledge the comprehensive dataset compilation and analysis methodology developed in this repository.
+> **For detailed workflow standards and quality assurance, see [figures_workflow.md](figures_workflow.md)**
 
 ## License
 
-This project is for academic research purposes. Raw data sources are acknowledged in `data/raw/DATA_SOURCES_AND_METHODOLOGY.md`.
+This project is for academic research purposes. Raw data sources are acknowledged in `data/raw/DATA_SOURCES_AND_METHODOLOGY.md`. The analysis code is available under standard academic use terms.
 
 ---
 
 ## Documentation Index
 
-- **[PaperGuide.MD](PaperGuide.MD)**: Complete research methodology, findings, and academic framework
 - **[FiguresGuide.MD](FiguresGuide.MD)**: Analysis module documentation and implementation guide
 - **[figures_workflow.md](figures_workflow.md)**: Implementation workflow and quality standards
 - **[data/taskmaster_data_documentation.md](data/taskmaster_data_documentation.md)**: Comprehensive data statistics and insights
 - **[data/raw/DATA_SOURCES_AND_METHODOLOGY.md](data/raw/DATA_SOURCES_AND_METHODOLOGY.md)**: Data collection methodology and reliability assessment
 - **[ISSUES_AND_ROADMAP.md](ISSUES_AND_ROADMAP.md)**: Issues tracker and development roadmap
-- **[figures/FIGURE_NAMING_HISTORY.md](figures/FIGURE_NAMING_HISTORY.md)**: Evolution of analysis module naming and structure

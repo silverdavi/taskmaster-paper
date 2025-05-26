@@ -75,21 +75,21 @@ def create_continuous_spider_plot(data, save_path=None):
         
         # Plot the polygon with continuous values
         ax.plot(angles, values, 'o-', linewidth=3, label=multiline_title, 
-                color=colors[i % len(colors)], markersize=8, alpha=0.8)
+                color=colors[i % len(colors)], markersize=5, alpha=0.8)
         ax.fill(angles, values, alpha=0.15, color=colors[i % len(colors)])
     
     # Add skill labels with better formatting
     ax.set_xticks(angles[:-1])
-    ax.set_xticklabels(skills, fontsize=12, fontweight='bold')
+    ax.set_xticklabels(skills, fontsize=22, fontweight='bold')
     
     # Set the range for the radial axis (0 to 1 for normalized scores)
     ax.set_ylim(0, 1)
     ax.set_yticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])
-    ax.set_yticklabels(['0.0', '0.2', '0.4', '0.6', '0.8', '1.0'], fontsize=10)
+    ax.set_yticklabels(['0.0', '0.2', '0.4', '0.6', '0.8', '1.0'], fontsize=18)
     ax.grid(True, alpha=0.4)
     
     # Position legend outside the plot with multiline support
-    plt.legend(loc='center left', bbox_to_anchor=(1.1, 0.5), fontsize=10, 
+    plt.legend(loc='center left', bbox_to_anchor=(1.1, 0.5), fontsize=22, 
                frameon=True, fancybox=True, shadow=True)
     
     # Adjust layout to accommodate legend
