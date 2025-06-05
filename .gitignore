@@ -167,3 +167,5 @@ cython_debug/
 
 # Jupyter Notebooks
 .ipynb_checkpoints 
+
+/paper/*

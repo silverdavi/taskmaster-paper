@@ -162,10 +162,10 @@ def main():
     print("Using continuous fractional values for meaningful spider plot shapes!")
     
     # Create spider plot
-    fig, ax = create_continuous_spider_plot(data, 'figure_sup9_spider_plot.png')
+    fig, ax = create_continuous_spider_plot(data, 'fig4.png')
     
     # Also save as PDF
-    fig.savefig('figure_sup9_spider_plot.pdf', 
+    fig.savefig('fig4.pdf', 
                 dpi=300, bbox_inches='tight', facecolor='white', edgecolor='none')
     
     # Create detailed summary
@@ -183,8 +183,8 @@ def main():
     
     print("\n=== Visualization Complete ===")
     print("Files created:")
-    print("  - figure_sup9_spider_plot.png")
-    print("  - figure_sup9_spider_plot.pdf") 
+    print("  - fig4.png")
+    print("  - fig4.pdf") 
     print("  - tasks_summary.txt")
     print("\nNow THIS is a proper spider plot with meaningful continuous values!")
 

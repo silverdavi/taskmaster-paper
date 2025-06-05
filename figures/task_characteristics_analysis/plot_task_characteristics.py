@@ -21,7 +21,7 @@ def plot_activity_judgment_bars(bubble_data, summary_stats, output_path_base=Non
     Create a clean, modern grouped bar chart showing judgment types across all activity types.
     """
     if output_path_base is None:
-        output_path_base = SCRIPT_DIR / 'figure3'
+        output_path_base = SCRIPT_DIR / 'fig2'
     
     # Set up the figure using the project configuration
     config = load_config()
@@ -202,7 +202,7 @@ def plot_series_distribution(summary_stats, config):
     plt.tight_layout(pad=1.0)
     
     # Save both PDF and PNG versions of the figure
-    output_base = SCRIPT_DIR / 'figure3_series_distribution'
+    output_base = SCRIPT_DIR / 'fig3'
     plt.savefig(f"{output_base}.pdf", bbox_inches='tight', dpi=config['global']['dpi'])
     plt.savefig(f"{output_base}.png", bbox_inches='tight', dpi=config['global']['dpi'])
     plt.close()

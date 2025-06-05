@@ -68,18 +68,17 @@ def create_series_rating_pca_visualization():
         # If not available, use placeholder values
         explained_variance = np.array([0.7, 0.2])  # Approximations
     
-    # Set up the figure with equal aspect ratio for proper distance perception
-    # Use a fixed, large size to ensure readability
-    plt.figure(figsize=(14, 14))
+    # Set up the figure and axes with portrait size to match the ridgeline plot
+    fig, ax = plt.subplots(figsize=(8, 10))
     
-    # Set style with improved aesthetics from config
+    # Set style with improved aesthetics from config, increase font sizes by 10% for readability
     plt.rcParams.update({
         'font.family': config['global']['font_family'],
-        'font.size': config['fonts']['axis_label_size'],
-        'axes.labelsize': config['fonts']['axis_label_size'],
-        'axes.titlesize': config['fonts']['title_size'],
-        'xtick.labelsize': config['fonts']['tick_label_size'],
-        'ytick.labelsize': config['fonts']['tick_label_size'],
+        'font.size': int(config['fonts']['axis_label_size'] * 1.1),
+        'axes.labelsize': int(config['fonts']['axis_label_size'] * 1.1),
+        'axes.titlesize': int(config['fonts']['title_size'] * 1.1),
+        'xtick.labelsize': int(config['fonts']['tick_label_size'] * 1.1),
+        'ytick.labelsize': int(config['fonts']['tick_label_size'] * 1.1),
     })
     
     sns.set_style("whitegrid", {
@@ -120,11 +119,11 @@ def create_series_rating_pca_visualization():
     pc2_range = pca_df['PC2'].max() - pca_df['PC2'].min() 
     max_range = max(pc1_range, pc2_range)
     
-    # Set manual axis limits instead of calculating them
-    xlim_min = -4.0
+    # Set manual axis limits to properly include all data points and feature vectors
+    xlim_min = -4.5  # Expanded to include S18 at -4.29
     xlim_max = 3.0
     ylim_min = -2.2
-    ylim_max = 3.0
+    ylim_max = 2.8   # Increased to accommodate the pct_10s feature vector
     
     # Calculate max_range based on manual limits for other calculations
     manual_pc1_range = xlim_max - xlim_min
@@ -171,24 +170,24 @@ def create_series_rating_pca_visualization():
     )
     
     # Draw the background shading
-    plt.pcolormesh(X, Y, goodness, cmap=cmap_bg, shading='gouraud', zorder=0)
+    pcm = ax.pcolormesh(X, Y, goodness, cmap=cmap_bg, shading='gouraud', zorder=0)
     
     # Add a simple contour line to show the boundary between good and bad regions
-    plt.contour(X, Y, goodness, levels=[0], colors=['#555555'], linewidths=1, linestyles='dashed', alpha=0.5, zorder=1)
+    ax.contour(X, Y, goodness, levels=[0], colors=['#555555'], linewidths=1, linestyles='dashed', alpha=0.5, zorder=1)
     
-    plt.xlim(xlim_min, xlim_max)
-    plt.ylim(ylim_min, ylim_max)
+    ax.set_xlim(xlim_min, xlim_max)
+    ax.set_ylim(ylim_min, ylim_max)
     
-    # Set axis equal to ensure distances are preserved
-    plt.gca().set_aspect('equal')
+    # Allow axes to use full figure space (removed equal aspect ratio)
+    # ax.set_aspect('equal')
     
     # Add grid if enabled in config
     if config['global'].get('grid', True):
-        plt.grid(True, linestyle='--', alpha=0.5, zorder=1)
+        ax.grid(True, linestyle='--', alpha=0.5, zorder=1)
     
     # Add origin lines
-    plt.axhline(y=0, color='#222222', linestyle='-', alpha=0.4, zorder=1, linewidth=1.5)
-    plt.axvline(x=0, color='#222222', linestyle='-', alpha=0.4, zorder=1, linewidth=1.5)
+    ax.axhline(y=0, color='#222222', linestyle='-', alpha=0.4, zorder=1, linewidth=1.5)
+    ax.axvline(x=0, color='#222222', linestyle='-', alpha=0.4, zorder=1, linewidth=1.5)
     
     # Use a fixed size for all circles based on config marker size
     base_marker_size = config['styles'].get('marker_size', 6)
@@ -207,7 +206,7 @@ def create_series_rating_pca_visualization():
         series_color = colors[int(season-1) % 18]
         
         # Plot point with more distinct border
-        plt.scatter(
+        ax.scatter(
             x, y,
             s=circle_size,
             color=series_color,
@@ -218,7 +217,7 @@ def create_series_rating_pca_visualization():
         )
         
         # Add season label with white outline for better visibility
-        text = plt.annotate(
+        ax.annotate(
             f"S{season}",
             xy=(x, y),
             fontsize=12,  # Reduced from 14 to be proportional to circles
@@ -258,22 +257,31 @@ def create_series_rating_pca_visualization():
         arrow_x = loadings.loc[feature, 'PC1'] * scale_factor
         arrow_y = loadings.loc[feature, 'PC2'] * scale_factor
         
-        plt.arrow(
-            origin[0], origin[1],
-            arrow_x, arrow_y,
-            head_width=max_range * 0.03,
-            head_length=max_range * 0.04,
-            fc='#555555', 
-            ec='#555555', 
-            alpha=0.75,
-            zorder=2,
-            linewidth=line_width
+        # Use annotate with arrowstyle for properly proportioned arrows
+        ax.annotate(
+            '',  # Empty text
+            xy=(arrow_x, arrow_y),  # Arrow tip
+            xytext=(origin[0], origin[1]),  # Arrow start
+            arrowprops=dict(
+                arrowstyle='->',
+                color='#555555',
+                alpha=0.75,
+                lw=line_width*2,
+                shrinkA=0,
+                shrinkB=0
+            ),
+            zorder=2
         )
         
         # Add feature labels with better positioning and styling
         # Calculate label position with more space from arrow tip
-        label_x = arrow_x * 1.2
-        label_y = arrow_y * 1.2
+        # Use closer positioning for pct_10s to keep it within bounds
+        if feature == 'pct_10s':
+            label_x = arrow_x * 1.05  # Closer to arrow head
+            label_y = arrow_y * 1.05
+        else:
+            label_x = arrow_x * 1.2
+            label_y = arrow_y * 1.2
         
         # Position labels more intelligently
         ha = 'center'
@@ -285,7 +293,7 @@ def create_series_rating_pca_visualization():
             va = 'bottom' if label_y > 0 else 'top'
             
         # Add feature label with better styling
-        plt.text(
+        ax.text(
             label_x, label_y,
             feature_names.get(feature, feature),
             fontsize=12,
@@ -300,15 +308,15 @@ def create_series_rating_pca_visualization():
                 boxstyle='round,pad=0.4',
                 linewidth=1
             ),
-            zorder=5
+            zorder=1
         )
     
     # Add explained variance
     explained_variance_labels = [f'PC{i+1} ({var:.1%})' for i, var in enumerate(explained_variance)]
     
     # Set axis labels with better styling
-    plt.xlabel(explained_variance_labels[0], fontsize=15, fontweight='bold', labelpad=15)
-    plt.ylabel(explained_variance_labels[1], fontsize=15, fontweight='bold', labelpad=15)
+    ax.set_xlabel(explained_variance_labels[0], fontsize=15, fontweight='bold', labelpad=15)
+    ax.set_ylabel(explained_variance_labels[1], fontsize=15, fontweight='bold', labelpad=15)
     
     # Create legend elements
     legend_elements = []
@@ -336,7 +344,7 @@ def create_series_rating_pca_visualization():
     )
     
     # Add legend with improved styling
-    plt.legend(
+    ax.legend(
         handles=legend_elements,
         loc='best',
         title="Legend",
@@ -364,7 +372,7 @@ def create_series_rating_pca_visualization():
     # Better positions for each direction - adjusted for smaller axis limits
     positions = {
         "max_pc1": {"offset": (offset_x * 0.65, offset_y * 0.5), "connection": "arc3,rad=0.2"},  # Moved slightly more to the right
-        "min_pc1": {"offset": (offset_x * 0.6, -offset_y * 0.6), "connection": "arc3,rad=-0.2"},  # Moved moderately downward
+        "min_pc1": {"offset": (offset_x * 1.2, -offset_y * 0.2), "connection": "arc3,rad=0.2"},  # Position between Std Dev and % Rating 1 labels
         "max_pc2": {"offset": (-offset_x * 0.5, -offset_y), "connection": "arc3,rad=-0.2"},  # Keep this one as is
         "min_pc2": {"offset": (offset_x * 0.4, -offset_y * 0.4), "connection": "arc3,rad=-0.2"}  # Keep this one as is
     }
@@ -407,7 +415,7 @@ def create_series_rating_pca_visualization():
         text_y = max(ylim_min + padding, min(ylim_max - padding, text_y))
         
         # Create the annotation with improved positioning
-        plt.annotate(
+        ax.annotate(
             annotation_text,
             xy=(x, y),  # Point to annotate
             xytext=(text_x, text_y),  # Text position, constrained to stay in bounds
@@ -437,16 +445,19 @@ def create_series_rating_pca_visualization():
     dpi = config['global'].get('dpi', 300)
     
     # Save both PDF and PNG versions with consistent appearance
-    pdf_file = SCRIPT_DIR / "figure1_pca_output.pdf"
-    png_file = SCRIPT_DIR / "figure1_pca_output.png"
+    pdf_file = SCRIPT_DIR / "fig1b.pdf"
+    png_file = SCRIPT_DIR / "fig1b.png"
     
     # For better PDF quality
-    plt.savefig(pdf_file, dpi=dpi*2, bbox_inches='tight', facecolor='white', format='pdf')
-    plt.savefig(png_file, dpi=dpi, bbox_inches='tight', facecolor='white')
+    plt.savefig(pdf_file, dpi=dpi*2, facecolor='white', format='pdf')
+    plt.savefig(png_file, dpi=dpi, facecolor='white')
     
     # Print completion message
     print(f"PCA plot created and saved to {pdf_file} and {png_file}")
     print(f"Explained variance: PC1={explained_variance[0]:.2%}, PC2={explained_variance[1]:.2%}")
+
+    # Show the plot interactively
+    plt.show()
 
 if __name__ == "__main__":
     create_series_rating_pca_visualization() 

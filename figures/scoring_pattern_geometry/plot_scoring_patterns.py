@@ -24,7 +24,7 @@ from pathlib import Path
 # Configuration
 INPUT_FILE = Path("figure6_scoring_patterns.csv")
 OUTPUT_DIR = Path(".")
-FIGURE_NAME = "figure6"
+FIGURE_NAME = "fig8"
 
 def load_configuration():
     """Load plotting configuration."""
@@ -234,7 +234,7 @@ def print_summary_statistics(data):
     used_patterns = data['is_used'].sum()
     used_percentage = used_patterns / total_patterns * 100
     
-    print(f"\n=== Figure 6: Scoring Patterns Summary ===")
+    print(f"\n=== Figure 8: Scoring Patterns Summary ===")
     print(f"Total possible patterns: {total_patterns}")
     print(f"Patterns used in show: {used_patterns} ({used_percentage:.1f}%)")
     print(f"Total task instances: {data['frequency'].sum()}")
@@ -247,8 +247,8 @@ def print_summary_statistics(data):
         print(f"  {row['sorted_set']}: {row['frequency']} times (mean={row['mean']:.2f}, var={row['variance']:.2f})")
 
 def main():
-    """Main function to create Figure 6."""
-    print("Creating Figure 6: Scoring Pattern Analysis...")
+    """Main function to create Figure 8."""
+    print("Creating Figure 8: Scoring Pattern Analysis...")
     
     # Load configuration and data
     config = load_configuration()
@@ -269,7 +269,7 @@ def main():
     # Print summary statistics
     print_summary_statistics(data)
     
-    print(f"\nFigure 6 complete! Check {OUTPUT_DIR} for output files.")
+    print(f"\nFigure 8 complete! Check {OUTPUT_DIR} for output files.")
 
 if __name__ == "__main__":
     main() 

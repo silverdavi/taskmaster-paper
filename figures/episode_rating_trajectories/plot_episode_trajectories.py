@@ -236,8 +236,8 @@ def create_violin_plot(episode_df, series_df, stats_df, config):
     plt.tight_layout()
     
     # Save the figure
-    output_file_pdf = SCRIPT_DIR / f"figure2_output.pdf"
-    output_file_png = SCRIPT_DIR / f"figure2_output.png"
+    output_file_pdf = SCRIPT_DIR / f"fig6.pdf"
+    output_file_png = SCRIPT_DIR / f"fig6.png"
     
     plt.savefig(output_file_pdf, dpi=dpi, bbox_inches='tight')
     plt.savefig(output_file_png, dpi=dpi, bbox_inches='tight')

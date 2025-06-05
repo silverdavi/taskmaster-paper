@@ -216,7 +216,7 @@ def main():
     for series_num in available_series:
         print(f"\nCreating plot for Series {series_num}...")
         
-        save_path = f'series_{series_num}_deep_dive.png'
+        save_path = f's3_fig_{series_num}.png'
         fig = create_series_deep_dive_plot(series_num, save_path)
         
         if fig is not None:

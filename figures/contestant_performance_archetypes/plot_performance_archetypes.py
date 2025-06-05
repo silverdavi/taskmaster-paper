@@ -48,7 +48,7 @@ def load_features_data(file_path='contestant_features.csv'):
     print(df[df['Series']==1][['ContestantName', 'ContestantID', 'last_rank']].to_string(index=False))
     return df
 
-def generate_6x3_grid_plot(archetypes_df, features_df, config, output_file='figure5_output.pdf'):
+def generate_6x3_grid_plot(archetypes_df, features_df, config, output_file='fig7.pdf'):
     """
     Generate a 3×6 grid plot (18 series) with a 2D representation of the five archetypes.
     Each subplot shows the five contestants from one series positioned according to their archetype.
@@ -110,15 +110,15 @@ def generate_6x3_grid_plot(archetypes_df, features_df, config, output_file='figu
             y += y_jitter
             
             # Plot the contestant
-            ax.plot(x, y, 'o', color=colors[archetype], markersize=10)
+            ax.plot(x, y, 'o', color=colors[archetype], markersize=16)
             
             # Add contestant name with white background
             last_name = name.split()[-1]
             text = ax.annotate(last_name, (x, y), 
-                        xytext=(0, 5), 
+                        xytext=(0, 9), 
                         textcoords='offset points',
                         ha='center', 
-                        fontsize=8,
+                        fontsize=12,
                         bbox=dict(boxstyle="round,pad=0.3", 
                                   facecolor='white', 
                                   alpha=0.8, 
@@ -126,11 +126,11 @@ def generate_6x3_grid_plot(archetypes_df, features_df, config, output_file='figu
             
             # Highlight the winner with a gold and black circle
             if series in winners and contestant_id == winners[series]:
-                # Add a gold circle around the winner
-                circle_gold = Circle((x, y), radius=0.08, fill=False, edgecolor='#FFD700', linewidth=2.5)
+                # Add a gold circle around the winner (larger to match bigger markers)
+                circle_gold = Circle((x, y), radius=0.10, fill=False, edgecolor='#FFD700', linewidth=2.5)
                 ax.add_patch(circle_gold)
                 # Add a black circle for contrast
-                circle_black = Circle((x, y), radius=0.085, fill=False, edgecolor='black', linewidth=1)
+                circle_black = Circle((x, y), radius=0.105, fill=False, edgecolor='black', linewidth=1)
                 ax.add_patch(circle_black)
                 
                 # DEBUG: Print when adding winner highlight
@@ -161,7 +161,7 @@ def generate_6x3_grid_plot(archetypes_df, features_df, config, output_file='figu
         ax.add_patch(title_bar)
         
         # Add the title on top of the bar
-        ax.set_title(f"Series {series}", fontsize=10, pad=2)
+        ax.set_title(f"Series {series}", fontsize=12, pad=2)
         
         # Only show axis labels for the first subplot (inside the box)
         if series == 1:
@@ -172,7 +172,7 @@ def generate_6x3_grid_plot(archetypes_df, features_df, config, output_file='figu
                         textcoords='axes fraction',
                         xycoords='axes fraction',
                         ha='left', va='center',
-                        fontsize=9,
+                        fontsize=12,
                         arrowprops=dict(arrowstyle="->",
                                         connectionstyle="arc3",
                                         color='black',
@@ -185,7 +185,7 @@ def generate_6x3_grid_plot(archetypes_df, features_df, config, output_file='figu
                         textcoords='axes fraction',
                         xycoords='axes fraction',
                         ha='center', va='bottom',
-                        fontsize=9,
+                        fontsize=12,
                         rotation=90,
                         arrowprops=dict(arrowstyle="->",
                                         connectionstyle="arc3",
@@ -199,7 +199,7 @@ def generate_6x3_grid_plot(archetypes_df, features_df, config, output_file='figu
                             xytext=(0, -15), 
                             textcoords='offset points',
                             ha='center', va='center', 
-                            fontsize=8, color='gray',
+                            fontsize=9, color='gray',
                             alpha=0.7,
                             bbox=dict(boxstyle="round,pad=0.2", 
                                      facecolor='white', 
@@ -211,10 +211,10 @@ def generate_6x3_grid_plot(archetypes_df, features_df, config, output_file='figu
     # Add winner to legend
     legend_elements.append(plt.Line2D([0], [0], marker='o', color='w', markerfacecolor='w',
                                      markeredgecolor='#FFD700', markeredgewidth=2.5,
-                                     markersize=10, label='Series Winner'))
+                                     markersize=16, label='Series Winner'))
     
     fig.legend(handles=legend_elements, loc='upper center', 
-               bbox_to_anchor=(0.5, 0.05), ncol=3, fontsize=10)
+               bbox_to_anchor=(0.5, 0.05), ncol=3, fontsize=12)
     
     # Adjust layout with more vertical space between rows
     plt.tight_layout()

@@ -20,7 +20,7 @@ from plot_utils import apply_plot_style, load_config
 # Configuration
 EPISODE_DATA_FILE = "episode_data.csv"
 OUTPUT_CORRELATIONS_FILE = "raw_correlations.json"
-OUTPUT_FIGURE_FILE = "figure8b_raw_correlations"
+OUTPUT_FIGURE_FILE = "s2_fig"
 
 def load_data():
     """Load the episode-level data for correlation analysis."""

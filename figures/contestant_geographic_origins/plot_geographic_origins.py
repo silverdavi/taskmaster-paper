@@ -237,12 +237,12 @@ def create_figure4():
     
     # Save the figure with configured DPI
     dpi = config['global'].get('dpi', 300)
-    plt.savefig(os.path.join(current_dir, "figure4.png"), dpi=dpi, bbox_inches='tight')
-    plt.savefig(os.path.join(current_dir, "figure4.pdf"), bbox_inches='tight')
+    plt.savefig(os.path.join(current_dir, "fig5.png"), dpi=dpi, bbox_inches='tight')
+    plt.savefig(os.path.join(current_dir, "fig5.pdf"), bbox_inches='tight')
     
     plt.close()
     
-    print("Figure 4 created successfully.")
+    print("Figure 5 created successfully.")
 
 if __name__ == "__main__":
     create_figure4() 

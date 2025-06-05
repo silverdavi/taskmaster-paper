@@ -473,8 +473,8 @@ def save_figures(fig7a, fig7b):
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     
     # Save Figure 7a
-    png_path_7a = OUTPUT_DIR / "figure7a.png"
-    pdf_path_7a = OUTPUT_DIR / "figure7a.pdf"
+    png_path_7a = OUTPUT_DIR / "fig9.png"
+    pdf_path_7a = OUTPUT_DIR / "fig9.pdf"
     
     fig7a.savefig(png_path_7a, dpi=300, bbox_inches='tight', 
                   facecolor='white', edgecolor='none')
@@ -482,8 +482,8 @@ def save_figures(fig7a, fig7b):
                   facecolor='white', edgecolor='none')
     
     # Save Figure 7b
-    png_path_7b = OUTPUT_DIR / "figure7b.png"
-    pdf_path_7b = OUTPUT_DIR / "figure7b.pdf"
+    png_path_7b = OUTPUT_DIR / "s1_fig.png"
+    pdf_path_7b = OUTPUT_DIR / "s1_fig.pdf"
     
     fig7b.savefig(png_path_7b, dpi=300, bbox_inches='tight', 
                   facecolor='white', edgecolor='none')

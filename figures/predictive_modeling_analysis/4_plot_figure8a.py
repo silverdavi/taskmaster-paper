@@ -19,7 +19,7 @@ from plot_utils import apply_plot_style, get_palette, load_config
 # Configuration
 RESULTS_FILE = "episode_model_results.pkl"
 FEATURES_FILE = "episode_selected_features.json"
-OUTPUT_FILE = "figure8a_episode_ml"
+OUTPUT_FILE = "fig10"
 
 def load_results():
     """Load ML results and feature selection."""

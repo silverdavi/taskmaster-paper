@@ -264,9 +264,9 @@ def main():
     config = load_config()
     
     # Save plot as both PNG and PDF with high DPI
-    fig.savefig('random_forest_feature_analysis.png', dpi=config['global']['dpi'], bbox_inches='tight')
-    fig.savefig('random_forest_feature_analysis.pdf', dpi=config['global']['dpi'], bbox_inches='tight')
-    print(f"\n✅ Feature analysis plot saved: random_forest_feature_analysis.png and random_forest_feature_analysis.pdf")
+    fig.savefig('fig11.png', dpi=config['global']['dpi'], bbox_inches='tight')
+    fig.savefig('fig11.pdf', dpi=config['global']['dpi'], bbox_inches='tight')
+    print(f"\n✅ Feature analysis plot saved: fig11.png and fig11.pdf")
     
     # Strategic recommendations
     provide_strategic_recommendations(analysis_df, episode_data, rf_results)

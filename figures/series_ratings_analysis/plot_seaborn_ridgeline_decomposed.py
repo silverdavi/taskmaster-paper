@@ -337,8 +337,8 @@ def create_series_rating_distribution_plot():
     
     # Save both PDF and PNG versions
     dpi = config['global'].get('dpi', 300)
-    pdf_file = SCRIPT_DIR / "figure1_ridge_output.pdf"
-    png_file = SCRIPT_DIR / "figure1_ridge_output.png"
+    pdf_file = SCRIPT_DIR / "fig1a.pdf"
+    png_file = SCRIPT_DIR / "fig1a.png"
     
     plt.savefig(pdf_file, dpi=dpi, bbox_inches='tight', facecolor='white')
     plt.savefig(png_file, dpi=dpi, bbox_inches='tight', facecolor='white')
