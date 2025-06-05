@@ -12,6 +12,29 @@ This analysis leverages multiple datasets spanning 154 episodes, 917 tasks, and 
 
 > **For detailed analysis framework and module documentation, see [FiguresGuide.MD](FiguresGuide.MD)**
 
+## Key Visualizations
+
+### IMDb Rating Distributions Across 18 Series
+![Series Rating Distributions](figures/series_ratings_analysis/fig1a.png)
+
+The figure above shows the tri-modal nature of IMDb ratings, with distinct peaks at ratings 1, 10, and a Gaussian distribution for intermediate ratings. This mixture model approach reduced prediction error by 48.1% compared to traditional single-distribution models.
+
+### Episode Rating Trajectories Within Series
+![Episode Rating Trajectories](figures/episode_rating_trajectories/fig6.png)
+
+This visualization reveals that 16 of 18 series follow Rising or J-shaped rating patterns, with final episodes averaging +0.28 points higher than premieres. The consistent upward trajectory suggests viewers develop stronger engagement as series progress.
+
+### Additional Key Figures
+
+| Analysis | Figure | Description |
+|----------|--------|-------------|
+| **Rating Distributions** | ![fig1a](figures/series_ratings_analysis/fig1a.png) | Tri-modal IMDb rating patterns across 18 series |
+| **Episode Trajectories** | ![fig6](figures/episode_rating_trajectories/fig6.png) | Within-series rating evolution patterns |
+| **Performance Archetypes** | ![fig7](figures/contestant_performance_archetypes/fig7.png) | Five consistent performer types across all series |
+| **Geographic Origins** | ![fig5](figures/contestant_geographic_origins/fig5.png) | Contestant birthplace distribution analysis |
+
+> **Note**: All figures are available in both PNG and PDF formats in their respective analysis directories.
+
 ## Directory Structure
 
 ```
